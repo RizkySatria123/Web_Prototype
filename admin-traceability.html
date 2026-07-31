@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Admin — Traceability</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .trace-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--gutter); }
+    .timeline-node { display: flex; gap: 16px; position: relative; }
+    .timeline-node:not(:last-child)::before { content: ''; position: absolute; left: 19px; top: 44px; bottom: -12px; width: 2px; background: var(--color-primary-container); opacity: 0.3; }
+    .node-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary-container); display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
+    .node-icon.completed { background: var(--color-bright-emerald); }
+    .node-icon.current { background: var(--color-dark-amber); box-shadow: 0 0 0 4px rgba(253,177,52,0.2); }
+    .node-content { flex: 1; padding-bottom: 24px; }
+    .node-title { font-size: 14px; font-weight: 700; color: var(--color-text-main); margin-bottom: 2px; }
+    .node-time { font-size: 12px; color: var(--color-text-muted); }
+    .node-body { background: var(--color-surface-container-low); border-radius: 8px; padding: 12px; margin-top: 8px; font-size: 13px; color: var(--color-text-muted); }
+    .qr-box { background: white; border: 2px dashed var(--color-border-muted); border-radius: var(--radius-md); padding: 28px; text-align: center; margin: 16px 0; }
+    .qr-placeholder { width: 140px; height: 140px; margin: 0 auto; background: var(--color-surface-container-low); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .batch-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--color-surface-container); }
+    .batch-row:last-child { border-bottom: none; }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:var(--color-dark-amber);">AD</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Traceability</h1>
+        <p class="page-subtitle">Buat dan kelola rantai traceability produk pertanian dari hulu ke hilir. Generate QR Code untuk setiap batch.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-buat-batch">
+        <span class="material-symbols-outlined" style="font-size:17px;">add_box</span>
+        + Buat Batch Baru
+      </button>
+    </div>
+
+    <!-- Stats Row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-label">Total Batch</div>
+        <div class="stat-value">24</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Semua klien</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Batch Aktif</div>
+        <div class="stat-value">18</div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">QR tersebar</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">QR Code Digenerate</div>
+        <div class="stat-value">18</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Scan: 142×</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Node Dicatat</div>
+        <div class="stat-value">97</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Avg 5.4 / batch</div>
+      </div>
+    </div>
+
+    <div class="trace-layout">
+      <!-- Left: Batch List -->
+      <div style="display:flex;flex-direction:column;gap:var(--gutter);">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Daftar Batch</span>
+            <div class="search-input-wrap" style="width:180px;">
+              <span class="material-symbols-outlined">search</span>
+              <input type="text" class="search-input" placeholder="Cari batch...">
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="batch-row" style="cursor:pointer;" onclick="selectBatch(this)">
+              <div>
+                <div style="font-size:14px;font-weight:700;">Arabica Q1 2026 · Batch #001</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Kadatuan, Puntang · Arabica Coffee · Grade A</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge badge-active">Selesai</span>
+                <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">6 Node · Mar 2026</div>
+              </div>
+            </div>
+            <div class="batch-row" style="cursor:pointer;" onclick="selectBatch(this)">
+              <div>
+                <div style="font-size:14px;font-weight:700;">Arabica Q4 2025 · Batch #023</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Kadatuan, Puntang · Arabica Coffee · Grade B</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge badge-active">Selesai</span>
+                <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">5 Node · Dec 2025</div>
+              </div>
+            </div>
+            <div class="batch-row" style="cursor:pointer;" onclick="selectBatch(this)">
+              <div>
+                <div style="font-size:14px;font-weight:700;">Palm Oil Q1 2026 · Batch #012</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">SMART Agribusiness · Oil Palm</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Proses</span>
+                <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">3/7 Node · Jan 2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">QR Code Batch</span></div>
+          <div class="card-body">
+            <div class="qr-box">
+              <div class="qr-placeholder">
+                <!-- QR-like visual with squares -->
+                <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" width="120">
+                  <!-- QR corners -->
+                  <rect x="10" y="10" width="40" height="40" rx="4" fill="none" stroke="#053B26" stroke-width="4"/>
+                  <rect x="18" y="18" width="24" height="24" rx="2" fill="#053B26"/>
+                  <rect x="90" y="10" width="40" height="40" rx="4" fill="none" stroke="#053B26" stroke-width="4"/>
+                  <rect x="98" y="18" width="24" height="24" rx="2" fill="#053B26"/>
+                  <rect x="10" y="90" width="40" height="40" rx="4" fill="none" stroke="#053B26" stroke-width="4"/>
+                  <rect x="18" y="98" width="24" height="24" rx="2" fill="#053B26"/>
+                  <!-- Data dots -->
+                  <rect x="58" y="10" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="70" y="10" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="58" y="22" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="58" y="46" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="70" y="34" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="58" y="58" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="70" y="58" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="82" y="58" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="94" y="58" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="106" y="58" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="118" y="58" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="58" y="70" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="82" y="70" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="106" y="70" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="70" y="82" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="94" y="82" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="118" y="82" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="58" y="94" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="82" y="94" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="94" y="106" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="106" y="106" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="58" y="118" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="70" y="118" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="94" y="118" width="8" height="8" fill="#053B26" rx="1"/>
+                  <rect x="118" y="118" width="8" height="8" fill="#053B26" rx="1"/>
+                </svg>
+              </div>
+              <div style="margin-top:12px;font-size:13px;font-weight:700;color:var(--color-text-main);">Batch #001 · ARA-Q1-2026</div>
+              <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px;">Scan untuk lihat info produk lengkap</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-primary" style="flex:1;justify-content:center;">
+                <span class="material-symbols-outlined" style="font-size:17px;">download</span>
+                Download QR
+              </button>
+              <button class="btn btn-ghost" style="flex:1;justify-content:center;">
+                <span class="material-symbols-outlined" style="font-size:17px;">share</span>
+                Bagikan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Timeline -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Timeline Perjalanan Produk</span>
+          <span style="font-size:12px;color:var(--color-text-muted);">Arabica Q1 2026 · Batch #001</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:0;">
+
+            <div class="timeline-node">
+              <div class="node-icon completed">
+                <span class="material-symbols-outlined" style="font-size:20px;color:white;font-variation-settings:'FILL' 1;">eco</span>
+              </div>
+              <div class="node-content">
+                <div class="node-title">Panen di Kebun</div>
+                <div class="node-time">10 Jan 2026 · Kadatuan, Puntang</div>
+                <div class="node-body">
+                  Panen kopi arabica di blok A1–A3. Berat basah: 1.250 kg. Curah hujan minggu lalu: 45mm. Petani: 12 orang. Koordinat: -7.1123°, 107.6234°
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon completed">
+                <span class="material-symbols-outlined" style="font-size:20px;color:white;font-variation-settings:'FILL' 1;">factory</span>
+              </div>
+              <div class="node-content">
+                <div class="node-title">Pengolahan (Wet Processing)</div>
+                <div class="node-time">12 Jan 2026 · Processing Unit Ciwidey</div>
+                <div class="node-body">
+                  Metode: Fully Washed. Fermentasi 36 jam. Hasil: 280 kg green bean. PIC: Budi Santoso. Quality control: PASSED.
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon completed">
+                <span class="material-symbols-outlined" style="font-size:20px;color:white;font-variation-settings:'FILL' 1;">opacity</span>
+              </div>
+              <div class="node-content">
+                <div class="node-title">Pengeringan &amp; Sortasi</div>
+                <div class="node-time">15–22 Jan 2026 · Drying Unit</div>
+                <div class="node-body">
+                  Pengeringan sun-dried 7 hari. Moisture: 11.2%. Grade: A (Specialty). Defect: 2.4%. Berat: 260 kg.
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon completed">
+                <span class="material-symbols-outlined" style="font-size:20px;color:white;font-variation-settings:'FILL' 1;">local_shipping</span>
+              </div>
+              <div class="node-content">
+                <div class="node-title">Pengiriman ke Roastery</div>
+                <div class="node-time">25 Jan 2026 · Logistics Partner</div>
+                <div class="node-body">
+                  Dikirim ke Roastery Bandung dengan kendaraan berpendingin. Suhu pengiriman: 18–22°C. Tracking: AGV-2026-B001.
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon current">
+                <span class="material-symbols-outlined" style="font-size:20px;color:white;font-variation-settings:'FILL' 1;">coffee</span>
+              </div>
+              <div class="node-content">
+                <div class="node-title">Roasting &amp; Packaging</div>
+                <div class="node-time">28 Jan 2026 · Bandung Specialty Roastery (Berjalan)</div>
+                <div class="node-body">
+                  Roasting profil: Medium-Light, 192°C. Pengemasan: 250g retail bag. QR code tertempel di setiap kemasan.
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline-node">
+              <div class="node-icon" style="background:var(--color-surface-container-high);">
+                <span class="material-symbols-outlined" style="font-size:20px;color:var(--color-text-muted);font-variation-settings:'FILL' 1;">storefront</span>
+              </div>
+              <div class="node-content">
+                <div class="node-title">Distribusi ke Konsumen</div>
+                <div class="node-time">Dijadwalkan: Feb 2026 · Pending</div>
+                <div class="node-body" style="border:1px dashed var(--color-border-muted);background:transparent;">
+                  Belum tercatat. Akan terupdate saat produk sampai di titik distribusi.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="divider"></div>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;" id="btn-add-node">
+            <span class="material-symbols-outlined" style="font-size:17px;">add_circle</span>
+            Tambah Node Baru
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+  <script>renderSidebar('admin','admin-traceability.html');</script>
+</body>
+</html>
+

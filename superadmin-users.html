@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Kelola Pengguna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .role-chip { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .role-chip.superadmin { background: rgba(139,92,246,0.15); color: #6d28d9; }
+    .role-chip.admin { background: rgba(253,177,52,0.15); color: #92400e; }
+    .role-chip.board { background: rgba(5,96,70,0.12); color: #056046; }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Kelola Pengguna</h1>
+        <p class="page-subtitle">Manajemen semua akun pengguna di platform Agrivision — Board, Admin, dan Super Admin.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-add-user">
+        <span class="material-symbols-outlined" style="font-size:17px;">person_add</span>
+        + Tambah Pengguna
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card"><div class="stat-label">Total Pengguna</div><div class="stat-value">47</div><div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">+4 bulan ini</div></div>
+      <div class="stat-card"><div class="stat-label">Board (Klien)</div><div class="stat-value">38</div></div>
+      <div class="stat-card"><div class="stat-label">Admin</div><div class="stat-value">7</div></div>
+      <div class="stat-card"><div class="stat-label">Super Admin</div><div class="stat-value">2</div></div>
+    </div>
+
+    <!-- Filter -->
+    <div style="display:flex;gap:12px;margin-bottom:var(--space-lg);flex-wrap:wrap;">
+      <div class="search-input-wrap" style="flex:1;min-width:200px;">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" class="search-input" style="width:100%;" placeholder="Cari nama atau email...">
+      </div>
+      <select class="form-input form-select" style="width:150px;"><option>Semua Role</option><option>Board</option><option>Admin</option><option>Super Admin</option></select>
+      <select class="form-input form-select" style="width:150px;"><option>Semua Status</option><option>Aktif</option><option>Nonaktif</option></select>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card">
+      <div class="table-container">
+        <table class="data-table" style="min-width:800px;" aria-label="Daftar Pengguna">
+          <thead>
+            <tr>
+              <th>Pengguna</th>
+              <th>Role</th>
+              <th>Organisasi</th>
+              <th>Terakhir Login</th>
+              <th>Status</th>
+              <th style="text-align:right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:34px;height:34px;background:#6d28d9;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">RS</div>
+                  <div><div style="font-weight:700;">Rizky Satria</div><div style="font-size:12px;color:var(--color-text-muted);">rizky@agrivisiontech.com</div></div>
+                </div>
+              </td>
+              <td><span class="role-chip superadmin">Super Admin</span></td>
+              <td>Agrivision (Internal)</td>
+              <td style="color:var(--color-text-muted);">Sekarang</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="text-align:right;"><button class="action-btn view" disabled>Edit</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:34px;height:34px;background:var(--color-dark-amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">AD</div>
+                  <div><div style="font-weight:700;">Ahmad Dani</div><div style="font-size:12px;color:var(--color-text-muted);">ahmad@agrivisiontech.com</div></div>
+                </div>
+              </td>
+              <td><span class="role-chip admin">Admin</span></td>
+              <td>Agrivision (Internal)</td>
+              <td style="color:var(--color-text-muted);">2 jam lalu</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="text-align:right;white-space:nowrap;"><button class="btn btn-ghost btn-sm" style="margin-right:4px;">Edit</button><button class="btn btn-ghost btn-sm" style="color:var(--color-error);">Nonaktifkan</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:34px;height:34px;background:var(--color-primary-container);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">FR</div>
+                  <div><div style="font-weight:700;">Fitrah Ramadhan</div><div style="font-size:12px;color:var(--color-text-muted);">fitrah@kadatuankopi.com</div></div>
+                </div>
+              </td>
+              <td><span class="role-chip board">Board</span></td>
+              <td>Kadatuan Puntang Farm</td>
+              <td style="color:var(--color-text-muted);">5 menit lalu</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="text-align:right;white-space:nowrap;"><button class="btn btn-ghost btn-sm" style="margin-right:4px;">Edit</button><button class="btn btn-ghost btn-sm" style="color:var(--color-error);">Nonaktifkan</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:34px;height:34px;background:#7c3aed;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">DP</div>
+                  <div><div style="font-weight:700;">Dani Prasetyo</div><div style="font-size:12px;color:var(--color-text-muted);">dani@smart-agri.id</div></div>
+                </div>
+              </td>
+              <td><span class="role-chip board">Board</span></td>
+              <td>SMART Agribusiness</td>
+              <td style="color:var(--color-text-muted);">2 jam lalu</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="text-align:right;white-space:nowrap;"><button class="btn btn-ghost btn-sm" style="margin-right:4px;">Edit</button><button class="btn btn-ghost btn-sm" style="color:var(--color-error);">Nonaktifkan</button></td>
+            </tr>
+            <tr style="opacity:0.7;">
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:34px;height:34px;background:#6b7280;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">AK</div>
+                  <div><div style="font-weight:700;">Andi Kurniawan</div><div style="font-size:12px;color:var(--color-text-muted);">andi@ckmbg.co.id</div></div>
+                </div>
+              </td>
+              <td><span class="role-chip board">Board</span></td>
+              <td>Kadatuan Cikembang</td>
+              <td style="color:var(--color-text-muted);">3 minggu lalu</td>
+              <td><span class="badge badge-expired">Nonaktif</span></td>
+              <td style="text-align:right;white-space:nowrap;"><button class="btn btn-ghost btn-sm" style="margin-right:4px;">Edit</button><button class="btn btn-ghost btn-sm" style="color:var(--color-bright-emerald);">Aktifkan</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:34px;height:34px;background:#dc2626;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">BS</div>
+                  <div><div style="font-weight:700;">Budi Santoso</div><div style="font-size:12px;color:var(--color-text-muted);">budi@pupukkujang.co.id</div></div>
+                </div>
+              </td>
+              <td><span class="role-chip board">Board</span></td>
+              <td>Pupuk Kujang</td>
+              <td style="color:var(--color-text-muted);">30 menit lalu</td>
+              <td><span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Trial</span></td>
+              <td style="text-align:right;white-space:nowrap;"><button class="btn btn-ghost btn-sm" style="margin-right:4px;">Edit</button><button class="btn btn-primary btn-sm">Upgrade</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+  <script>renderSidebar('superadmin','superadmin-users.html');</script>
+</body>
+</html>
+

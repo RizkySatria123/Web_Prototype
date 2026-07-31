@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Admin — Profil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .profile-layout { display: grid; grid-template-columns: 300px 1fr; gap: var(--gutter); }
+    .avatar-card { background: white; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); padding: var(--space-md); text-align: center; box-shadow: var(--shadow-card); }
+    .profile-avatar-lg { width: 80px; height: 80px; background: var(--color-dark-amber); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 32px; font-weight: 700; color: white; margin: 0 auto 12px; }
+    .profile-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--color-text-main); }
+    .profile-role-badge { display: inline-block; background: rgba(253,177,52,0.15); color: var(--color-dark-amber); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: var(--radius-pill); margin: 6px 0 12px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .info-field .info-label { font-size: 11px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+    .info-field .info-value { font-size: 15px; font-weight: 600; color: var(--color-text-main); }
+    .profile-stat-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--color-surface-container); }
+    .profile-stat-item:last-child { border-bottom: none; }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:var(--color-dark-amber);">AD</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Profile</h1>
+        <p class="page-subtitle">Kelola informasi akun admin dan pengaturan keamanan.</p>
+      </div>
+    </div>
+
+    <div class="profile-layout">
+      <div>
+        <div class="avatar-card">
+          <div class="profile-avatar-lg">AD</div>
+          <div class="profile-name">Ahmad Dani</div>
+          <div class="profile-role-badge">Admin · Agrivision</div>
+          <div style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;gap:5px;"><span class="material-symbols-outlined" style="font-size:15px;">mail</span>ahmad@agrivisiontech.com</div>
+          <div style="font-size:13px;color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;gap:5px;margin-top:4px;"><span class="material-symbols-outlined" style="font-size:15px;">calendar_month</span>Admin sejak Feb 2024</div>
+          <div style="border-top:1px solid var(--color-border-muted);margin-top:16px;">
+            <div class="profile-stat-item"><span style="font-size:13px;color:var(--color-text-muted);">Klien Dikelola</span><span style="font-size:14px;font-weight:700;">12</span></div>
+            <div class="profile-stat-item"><span style="font-size:13px;color:var(--color-text-muted);">Laporan Digenerate</span><span style="font-size:14px;font-weight:700;">36</span></div>
+            <div class="profile-stat-item"><span style="font-size:13px;color:var(--color-text-muted);">Total Lahan</span><span style="font-size:14px;font-weight:700;">847 Ha</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--gutter);">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Personal Information</span><button class="btn btn-ghost btn-sm">Edit</button></div>
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="info-field"><div class="info-label">Full Name</div><div class="info-value">Ahmad Dani</div></div>
+              <div class="info-field"><div class="info-label">Email</div><div class="info-value">ahmad@agrivisiontech.com</div></div>
+              <div class="info-field"><div class="info-label">Phone</div><div class="info-value">+62 821 9876 5432</div></div>
+              <div class="info-field"><div class="info-label">Role</div><div class="info-value">Admin — Data Management</div></div>
+              <div class="info-field"><div class="info-label">Location</div><div class="info-value">Bandung, West Java</div></div>
+              <div class="info-field"><div class="info-label">Department</div><div class="info-value">AgriTech Operations</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Akses &amp; Hak Izin</span></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-surface-container);">
+                <span style="font-size:14px;font-weight:600;">Kelola Klien</span>
+                <span style="font-size:12px;font-weight:700;color:var(--color-bright-emerald);">✓ Full Access</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-surface-container);">
+                <span style="font-size:14px;font-weight:600;">Indeks &amp; Data</span>
+                <span style="font-size:12px;font-weight:700;color:var(--color-bright-emerald);">✓ Read + Write</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-surface-container);">
+                <span style="font-size:14px;font-weight:600;">Generate Laporan</span>
+                <span style="font-size:12px;font-weight:700;color:var(--color-bright-emerald);">✓ Full Access</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-surface-container);">
+                <span style="font-size:14px;font-weight:600;">Hapus Pengguna</span>
+                <span style="font-size:12px;font-weight:700;color:var(--color-error);">✗ Restricted</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+                <span style="font-size:14px;font-weight:600;">Konfigurasi Platform</span>
+                <span style="font-size:12px;font-weight:700;color:var(--color-error);">✗ Super Admin Only</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+  <script>renderSidebar('admin','admin-profile.html');</script>
+</body>
+</html>
+

@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision — Super Admin Dashboard</title>
+  <meta name="description" content="Agrivision Super Admin Panel — Kontrol penuh atas seluruh platform, klien, dan administrator.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── SIDEBAR ── -->
+  <div id="sidebar-placeholder"></div>
+
+  <!-- ── TOP NAV ── -->
+  <header class="topnav">
+    <div class="search-input-wrap">
+      <span class="material-symbols-outlined">search</span>
+      <input type="text" class="search-input" placeholder="Cari klien, admin, lahan..." aria-label="Pencarian global">
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn" title="Notifikasi">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <button class="topnav-icon-btn" title="Pengaturan" onclick="window.location.href='superadmin-settings.html'">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+      <div class="topnav-avatar">SA</div>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-content">
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div>
+        <h1 class="page-title" style="margin-bottom:6px;">Platform Overview 🌍</h1>
+        <p style="font-size:16px;color:var(--color-text-muted);">Ringkasan kondisi seluruh platform Agrivision secara real-time</p>
+      </div>
+      <div class="super-admin-badge">
+        <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1;">shield_person</span>
+        Super Admin Access
+      </div>
+    </div>
+
+    <!-- Stats Row 1 (5 columns) -->
+    <div class="stats-grid" role="region" aria-label="Statistik Platform" style="margin-bottom:var(--gutter);">
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="stat-label" style="margin-bottom:0;font-size:13px;">Total Klien</span>
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--color-primary-container);">business</span>
+        </div>
+        <div class="stat-value" style="margin-top:8px;">14</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="stat-label" style="margin-bottom:0;font-size:13px;">Total Admin</span>
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--color-primary-container);">admin_panel_settings</span>
+        </div>
+        <div class="stat-value" style="margin-top:8px;">4</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="stat-label" style="margin-bottom:0;font-size:13px;">Total Lahan</span>
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--color-primary-container);">landscape</span>
+        </div>
+        <div class="stat-value" style="margin-top:8px;">47<span class="unit">Ha</span></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="stat-label" style="margin-bottom:0;font-size:13px;">Total Laporan</span>
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--color-primary-container);">description</span>
+        </div>
+        <div class="stat-value" style="margin-top:8px;">42</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="stat-label" style="margin-bottom:0;font-size:13px;">Uptime Platform</span>
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--color-bright-emerald);">cloud_done</span>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:8px;margin-top:8px;">
+          <div class="stat-value">99.8%</div>
+          <span class="badge badge-stable" style="margin-bottom:6px;">Stabil</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Stats Row 2 (3 columns) -->
+    <div class="stats-grid-3" style="margin-bottom:var(--space-lg);">
+
+      <!-- Revenue Card -->
+      <div class="card" style="padding:var(--space-md);">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--space-md);">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.08em;">Revenue</div>
+          <span class="material-symbols-outlined" style="font-size:22px;color:var(--color-secondary-container);">payments</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--color-text-main);margin-bottom:6px;">Rp 284 Jt</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--color-bright-emerald);">
+          <span class="material-symbols-outlined" style="font-size:16px;">trending_up</span>
+          +12% vs Q1
+        </div>
+      </div>
+
+      <!-- Klien Aktif Card -->
+      <div class="card" style="padding:var(--space-md);">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--space-md);">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.08em;">Klien Aktif</div>
+          <span class="material-symbols-outlined" style="font-size:22px;color:var(--color-primary-container);">group_add</span>
+        </div>
+        <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--color-text-main);margin-bottom:12px;">9/14</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:64%;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">64% klien aktif dari total</div>
+      </div>
+
+      <!-- Anomali Aktif Card -->
+      <div class="card" style="padding:var(--space-md);">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--space-md);">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.08em;">Anomali Aktif</div>
+          <span class="material-symbols-outlined" style="font-size:22px;color:var(--color-error);">warning</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--color-text-main);">5</div>
+          <span class="badge badge-expired" style="font-size:12px;">
+            <span class="material-symbols-outlined" style="font-size:14px;margin-right:2px;">error</span>
+            Perlu Perhatian
+          </span>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:8px;">Di 3 lahan berbeda</div>
+      </div>
+
+    </div>
+
+    <!-- Recent Activity + Quick Actions -->
+    <div style="display:grid;grid-template-columns:7fr 5fr;gap:var(--gutter);margin-bottom:var(--space-lg);">
+
+      <!-- Recent Activity Log -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Log Aktivitas Terbaru</span>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='superadmin-logs.html'">Lihat Semua</button>
+        </div>
+        <div class="table-container">
+          <table class="data-table" aria-label="Log Aktivitas Platform">
+            <thead>
+              <tr>
+                <th>Pengguna</th>
+                <th>Role</th>
+                <th>Aksi</th>
+                <th>Waktu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ahmad Rasyid</td>
+                <td><span class="badge badge-stable" style="font-size:11px;">Admin</span></td>
+                <td style="color:var(--color-text-muted);">Daftarkan klien SMART Agribusiness</td>
+                <td style="color:var(--color-text-muted);">2h lalu</td>
+              </tr>
+              <tr>
+                <td>Fitrah Ramadhan</td>
+                <td><span class="badge badge-active" style="font-size:11px;">Client</span></td>
+                <td style="color:var(--color-text-muted);">Generate Carbon Credit Report</td>
+                <td style="color:var(--color-text-muted);">5h lalu</td>
+              </tr>
+              <tr>
+                <td>Siti Rahayu</td>
+                <td><span class="badge badge-stable" style="font-size:11px;">Admin</span></td>
+                <td style="color:var(--color-text-muted);">Update data lahan Kadatuan Farm</td>
+                <td style="color:var(--color-text-muted);">1 hari lalu</td>
+              </tr>
+              <tr>
+                <td>Pupuk Kujang</td>
+                <td><span class="badge badge-active" style="font-size:11px;">Client</span></td>
+                <td style="color:var(--color-text-muted);">Download NDVI Report Q1 2026</td>
+                <td style="color:var(--color-text-muted);">2 hari lalu</td>
+              </tr>
+              <tr>
+                <td>Super Admin</td>
+                <td><span class="badge badge-warning" style="font-size:11px;">Super Admin</span></td>
+                <td style="color:var(--color-text-muted);">Toggle fitur Carbon Portfolio ON</td>
+                <td style="color:var(--color-text-muted);">3 hari lalu</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Actions Panel -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Aksi Cepat</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button class="btn btn-primary" style="justify-content:flex-start;width:100%;" onclick="window.location.href='superadmin-admins.html'">
+              <span class="material-symbols-outlined" style="font-size:18px;">person_add</span>
+              Tambah Administrator
+            </button>
+            <button class="btn btn-secondary" style="justify-content:flex-start;width:100%;" onclick="window.location.href='superadmin-clients.html'">
+              <span class="material-symbols-outlined" style="font-size:18px;">group_add</span>
+              Daftarkan Klien Baru
+            </button>
+            <button class="btn btn-ghost" style="justify-content:flex-start;width:100%;" onclick="window.location.href='superadmin-reports.html'">
+              <span class="material-symbols-outlined" style="font-size:18px;">assessment</span>
+              Buat Laporan Manual
+            </button>
+            <button class="btn btn-ghost" style="justify-content:flex-start;width:100%;" onclick="window.location.href='superadmin-features.html'">
+              <span class="material-symbols-outlined" style="font-size:18px;">settings_input_component</span>
+              Konfigurasi Fitur
+            </button>
+            <button class="btn btn-ghost" style="justify-content:flex-start;width:100%;color:var(--color-error);" onclick="window.location.href='superadmin-monitor.html'">
+              <span class="material-symbols-outlined" style="font-size:18px;">monitor_heart</span>
+              Pantau Sistem
+              <span class="badge badge-expired" style="margin-left:auto;font-size:10px;">5 Anomali</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Overview Table -->
+    <div class="card" style="margin-bottom:var(--space-lg);">
+      <div class="card-header">
+        <span class="card-title">Daftar Administrator</span>
+        <button class="btn btn-primary btn-sm" onclick="window.location.href='superadmin-admins.html'">
+          <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+          Tambah Admin
+        </button>
+      </div>
+      <div class="table-container">
+        <table class="data-table" aria-label="Daftar Administrator">
+          <thead>
+            <tr>
+              <th>Nama Admin</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Klien Dikelola</th>
+              <th>Login Terakhir</th>
+              <th style="text-align:right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ahmad Rasyid</td>
+              <td style="color:var(--color-text-muted);">ahmad.rasyid@agrivision.id</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="color:var(--color-text-muted);">5 Klien</td>
+              <td style="color:var(--color-text-muted);">2h yang lalu</td>
+              <td style="text-align:right;">
+                <button class="action-btn edit" title="Edit"><span class="material-symbols-outlined" style="font-size:16px;">edit</span></button>
+                <button class="action-btn delete" title="Nonaktifkan"><span class="material-symbols-outlined" style="font-size:16px;">block</span></button>
+              </td>
+            </tr>
+            <tr>
+              <td>Siti Rahayu</td>
+              <td style="color:var(--color-text-muted);">siti.rahayu@agrivision.id</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="color:var(--color-text-muted);">4 Klien</td>
+              <td style="color:var(--color-text-muted);">1 hari lalu</td>
+              <td style="text-align:right;">
+                <button class="action-btn edit" title="Edit"><span class="material-symbols-outlined" style="font-size:16px;">edit</span></button>
+                <button class="action-btn delete" title="Nonaktifkan"><span class="material-symbols-outlined" style="font-size:16px;">block</span></button>
+              </td>
+            </tr>
+            <tr>
+              <td>Budi Santoso</td>
+              <td style="color:var(--color-text-muted);">budi.santoso@agrivision.id</td>
+              <td><span class="badge badge-trial">Suspended</span></td>
+              <td style="color:var(--color-text-muted);">3 Klien</td>
+              <td style="color:var(--color-text-muted);">7 hari lalu</td>
+              <td style="text-align:right;">
+                <button class="action-btn edit" title="Edit"><span class="material-symbols-outlined" style="font-size:16px;">edit</span></button>
+                <button class="action-btn delete" title="Hapus"><span class="material-symbols-outlined" style="font-size:16px;">delete</span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+  <script>renderSidebar('superadmin','superadmin-dashboard.html');</script>
+</body>
+</html>
+
+

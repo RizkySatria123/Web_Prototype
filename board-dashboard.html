@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision — Board Dashboard</title>
+  <meta name="description" content="Agrivision Board — Pantau lahan, laporan, dan portofolio karbon Anda.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .carbon-progress { margin-top: 8px; }
+    .farm-card {
+      background: var(--color-surface-white);
+      border: 1px solid var(--color-border-muted);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      box-shadow: var(--shadow-card);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .farm-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-elevated); }
+    .farm-map-placeholder {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0, #6ee7b7);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-forest-green);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      gap: 8px;
+      margin-bottom: 12px;
+      border: 1px solid var(--color-border-muted);
+    }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── SIDEBAR ── -->
+  <div id="sidebar-placeholder"></div>
+
+  <!-- ── TOP NAV ── -->
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn" title="Notifikasi" style="position:relative;">
+        <span class="material-symbols-outlined">notifications</span>
+        <span style="position:absolute;top:0;right:0;width:8px;height:8px;background:var(--color-error);border-radius:50%;border:2px solid white;"></span>
+      </button>
+      <div class="topnav-avatar">FR</div>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Selamat datang, Fitrah 👋</h1>
+        <p class="page-subtitle">Berikut ringkasan kondisi semua lahan kamu — diperbarui triwulanan.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-view-farms" onclick="window.location.href='board-farms.html'">
+        <span class="material-symbols-outlined" style="font-size:18px;">grass</span>
+        Lihat Lahan
+      </button>
+    </div>
+
+    <!-- Stats Grid (5 columns) -->
+    <div class="stats-grid" role="region" aria-label="Ringkasan Lahan">
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon">grass</span>
+          <span class="stat-badge success">+1 farm aktif</span>
+        </div>
+        <div class="stat-label">Total Lahan Aktif</div>
+        <div class="stat-value">25<span class="unit">Ha</span></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon">public</span>
+          <span class="stat-badge success">+4.2 Ton</span>
+        </div>
+        <div class="stat-label">Total Stok Karbon</div>
+        <div class="stat-value">186<span class="unit">Ton C</span></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon" style="color:var(--color-dark-amber);">payments</span>
+        </div>
+        <div class="stat-label">Estimasi Carbon Credit</div>
+        <div class="stat-value" style="font-size:28px;">Rp 136 jt</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon" style="color:var(--color-error);">warning</span>
+          <span class="stat-badge danger">Anomali</span>
+        </div>
+        <div class="stat-label">Area Anomali</div>
+        <div class="stat-value">0.33<span class="unit">Ha</span></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon">bar_chart</span>
+        </div>
+        <div class="stat-label">Rerata NDVI</div>
+        <div class="stat-value">0.73</div>
+      </div>
+    </div>
+
+    <!-- Two column: Farm Cards + Carbon Progress -->
+    <div style="display:grid;grid-template-columns:5fr 7fr;gap:var(--gutter);margin-bottom:var(--space-lg);">
+
+      <!-- My Farms mini -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Lahan Saya</span>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='board-farms.html'">Semua Lahan</button>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="farm-card">
+              <div class="farm-map-placeholder">
+                <span class="material-symbols-outlined">map</span>
+                Kadatuan, Puntang
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                  <div style="font-weight:700;font-size:14px;color:var(--color-text-main);">Kadatuan Farm</div>
+                  <div style="font-size:12px;color:var(--color-text-muted);">15 Ha • Ciwidey, Bandung</div>
+                </div>
+                <span class="badge badge-active">Aktif</span>
+              </div>
+              <div class="divider"></div>
+              <div style="display:flex;gap:16px;font-size:12px;color:var(--color-text-muted);">
+                <span><strong style="color:var(--color-text-main);">0.76</strong> NDVI</span>
+                <span><strong style="color:var(--color-text-main);">98 Ton C</strong> Karbon</span>
+                <span><strong style="color:var(--color-text-main);">Mar 2026</strong> Update</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Reports -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Laporan Terbaru</span>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.href='board-reports.html'">Lihat Semua</button>
+        </div>
+        <div class="table-container">
+          <table class="data-table" style="min-width:500px;" aria-label="Laporan Terbaru">
+            <thead>
+              <tr>
+                <th>Nama Laporan</th>
+                <th>Farm</th>
+                <th>Parameter</th>
+                <th>Periode</th>
+                <th>Dibuat</th>
+                <th style="text-align:right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Carbon Credit Report</td>
+                <td style="color:var(--color-text-muted);">Kadatuan, Puntang</td>
+                <td style="color:var(--color-text-muted);">SOC</td>
+                <td style="color:var(--color-text-muted);">Q1 2025 – Q1 2026</td>
+                <td style="color:var(--color-text-muted);">Jun 2026</td>
+                <td style="text-align:right;"><button class="action-btn view"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span> Lihat</button></td>
+              </tr>
+              <tr>
+                <td>NDVI Analysis Report</td>
+                <td style="color:var(--color-text-muted);">Kadatuan, Puntang</td>
+                <td style="color:var(--color-text-muted);">NDVI</td>
+                <td style="color:var(--color-text-muted);">Q1 2026</td>
+                <td style="color:var(--color-text-muted);">Mar 2026</td>
+                <td style="text-align:right;"><button class="action-btn view"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span> Lihat</button></td>
+              </tr>
+              <tr>
+                <td>NPK Soil Report</td>
+                <td style="color:var(--color-text-muted);">Kadatuan, Puntang</td>
+                <td style="color:var(--color-text-muted);">Soil NPK</td>
+                <td style="color:var(--color-text-muted);">Q4 2025</td>
+                <td style="color:var(--color-text-muted);">Dec 2025</td>
+                <td style="text-align:right;"><button class="action-btn view"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span> Lihat</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carbon Portfolio Preview -->
+    <div class="card" style="margin-bottom:var(--space-lg);">
+      <div class="card-header">
+        <span class="card-title">Portofolio Karbon</span>
+        <button class="btn btn-secondary btn-sm" onclick="window.location.href='board-carbon.html'">
+          <span class="material-symbols-outlined" style="font-size:16px;">eco</span>
+          Detail Portofolio
+        </button>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter);">
+          <div style="text-align:center;padding:var(--space-md);background:var(--color-whisper-green);border-radius:var(--radius-md);">
+            <div style="font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Stok Karbon Total</div>
+            <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--color-text-main);">186</div>
+            <div style="font-size:14px;color:var(--color-text-muted);margin-bottom:8px;">Ton CO₂e</div>
+            <span class="badge badge-active">+4.2 Ton bulan ini</span>
+          </div>
+          <div style="text-align:center;padding:var(--space-md);background:var(--color-pale-yellow);border-radius:var(--radius-md);">
+            <div style="font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Estimasi Nilai Kredit</div>
+            <div style="font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--color-text-main);">Rp 136 jt</div>
+            <div style="font-size:14px;color:var(--color-text-muted);margin-bottom:8px;">Carbon Credit</div>
+            <span class="badge badge-warning">Harga: Rp 730/Ton</span>
+          </div>
+          <div style="text-align:center;padding:var(--space-md);background:var(--color-surface-container-low);border-radius:var(--radius-md);">
+            <div style="font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Periode Monitoring</div>
+            <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--color-text-main);">Q1 2025</div>
+            <div style="font-size:14px;color:var(--color-text-muted);margin-bottom:8px;">— Q1 2026</div>
+            <span class="badge badge-stable">Data Terbaru</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+  <script>renderSidebar('board','board-dashboard.html');</script>
+</body>
+</html>
+
+

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision — Prototype Index</title>
+  <meta name="description" content="Navigasi prototype Agrivision Web App — 3 Role: Board, Admin, Super Admin.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    body {
+      padding: 48px var(--margin-desktop);
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--color-surface);
+    }
+
+    .index-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .index-header-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .index-title {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--color-text-main);
+      margin-bottom: 12px;
+    }
+
+    .index-subtitle {
+      font-size: 18px;
+      color: var(--color-text-muted);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--gutter);
+      margin-bottom: 48px;
+    }
+
+    .role-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-muted);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .role-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .role-card-header {
+      padding: 28px 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .role-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .role-icon.board    { background: var(--color-whisper-green); }
+    .role-icon.admin    { background: rgba(5, 59, 38, 0.08); }
+    .role-icon.superadmin { background: var(--color-pale-yellow); }
+
+    .role-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-text-main);
+    }
+
+    .role-desc {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    .role-pages {
+      padding: 0 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .page-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      transition: all var(--transition);
+      text-decoration: none;
+    }
+
+    .page-link:hover {
+      background: var(--color-surface-container-low);
+      color: var(--color-text-main);
+    }
+
+    .page-link .material-symbols-outlined { font-size: 18px; }
+
+    .page-link.primary-link {
+      background: var(--color-primary-container);
+      color: white;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .page-link.primary-link:hover {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .role-card-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--color-border-muted);
+      background: var(--color-surface-container-low);
+    }
+
+    .auth-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .divider-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .divider-label::before,
+    .divider-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border-muted);
+    }
+
+    .design-system-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--color-border-muted);
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      box-shadow: var(--shadow-card);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="index-header">
+    <div class="index-header-brand">
+      <svg viewBox="0 0 581 581" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+        <g id="Daun">
+          <path d="M198.01,399.87c24.92,22.53,57.44,33.02,87,30.71,2.56-26.73-9.04-56.13-33.96-78.66-24.92-22.53-57.44-33.02-87-30.71-2.56,26.73,9.04,56.13,33.96,78.66Z" fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10"/>
+          <path d="M326.35,351.91c-24.92,22.53-36.52,51.94-33.96,78.66,29.56,2.31,62.08-8.17,87-30.71,24.92-22.53,36.52-51.94,33.96-78.66-29.56-2.31-62.08,8.17-87,30.71Z" fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10"/>
+        </g>
+        <path d="M361.48,495.36c15.57,11.34,23.36,17.02,22.93,22.01-1.44,16.91-86.86,34.25-165.88,14.87-34.1-8.36-56.79-21.01-65.36-26.16-9.95-5.98-35.67-22.46-61.33-53.23-9.79-11.74-26.38-32.07-37.93-63.15-8.41-22.65-15.72-42.34-7.95-63.1,5.38-14.35,15.91-23.72,28.43-34.85,13.31-11.84,26.16-19.31,35.22-23.85-.53,18,1.33,32.9,3.3,43.59,2.4,13.03,7.56,39.54,25.68,67.39,8.03,12.34,15.92,20.8,20.08,25.22,15.92,16.92,30.86,26.74,35.47,29.68,4.62,2.95,19.88,12.37,42.19,19.72,7.14,2.36,8.52,2.55,43.52,10.89,35.34,8.42,43.01,10.49,54.11,15.37,12.84,5.65,21.48,11.2,27.52,15.59Z" fill="#fdb134" stroke="#fdb134" stroke-width="3" stroke-miterlimit="10" opacity=".8"/>
+        <path d="M120.26,217.45c7.4-17.78,25.56-54.12,65.12-81.63,7.21-5.02,72.04-48.53,152.88-26.42,20.32,5.56,62.48,20.95,94.58,62.9,27.78,36.31,33.7,73.76,35.3,90.1,4.19-15.13,13.94-58.11-4.62-106.85-16.23-42.64-45.13-66.04-56.18-74.75-46.28-36.5-96.36-39.44-116.81-40.36-52.75-2.35-91.7,15.09-110.66,23.85-26.66,12.31-73.57,39.46-109.15,93.55-40.67,61.84-43.03,123.17-42.74,146.55,2.79-10.55,10.47-33.87,31.73-54.83,23.5-23.16,49.93-29.96,60.54-32.1Z" fill="#116a3a" stroke="#116a3a" stroke-width="3" stroke-miterlimit="10" opacity=".8"/>
+        <path d="M508.23,271.56c-16.94,8.67-30.02,18.45-39.44,26.6-1.2,15.13-5.09,39.53-18.68,66.07-4.82,9.4-18.65,34.3-46.44,56.84-21.65,17.56-42.95,26.53-56.87,31.18,6.7.63,26.44,3.37,44.03,19.26,14.78,13.35,20.19,28.91,22.11,35.66,41.93-26.96,68.63-57.07,84.28-77.85,10.77-14.29,30-40.69,43.11-80.71,12.6-38.47,13.75-72.09,12.84-93.55-12.18,2.86-27.87,7.77-44.94,16.51Z" fill="#fdb134" stroke="#fdb134" stroke-width="3" stroke-miterlimit="10" opacity=".8"/>
+      </svg>
+      <h1 class="index-title">Agrivision</h1>
+    </div>
+    <p class="index-subtitle">Prototype Wireframe — Pilih role untuk mulai menjelajahi tampilan dashboard masing-masing.</p>
+  </div>
+
+  <!-- Auth Pages -->
+  <div class="auth-section">
+    <a href="login.html" class="btn btn-primary" style="font-size:16px;padding:14px 40px;">
+      <span class="material-symbols-outlined">login</span>
+      Buka Halaman Login
+    </a>
+  </div>
+
+  <div class="divider-label">Atau langsung ke Dashboard per Role</div>
+
+  <!-- Role Cards -->
+  <div class="roles-grid">
+
+    <!-- Board Role -->
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-icon board">
+          <span class="material-symbols-outlined" style="font-size:28px;color:var(--color-main-green);">grass</span>
+        </div>
+        <div>
+          <div class="role-name">Board</div>
+          <div class="role-desc">Klien / Pemilik Lahan</div>
+        </div>
+      </div>
+      <div class="role-pages">
+        <a href="board-dashboard.html" class="page-link primary-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          Dashboard Utama
+        </a>
+        <a href="board-farms.html" class="page-link">
+          <span class="material-symbols-outlined">grass</span>
+          Lahan Saya
+        </a>
+        <a href="board-carbon.html" class="page-link">
+          <span class="material-symbols-outlined">eco</span>
+          Portofolio Karbon
+        </a>
+        <a href="board-reports.html" class="page-link">
+          <span class="material-symbols-outlined">description</span>
+          Laporan
+        </a>
+        <a href="board-notifications.html" class="page-link">
+          <span class="material-symbols-outlined">notifications</span>
+          Notifikasi
+        </a>
+        <a href="board-profile.html" class="page-link">
+          <span class="material-symbols-outlined">person</span>
+          Profil
+        </a>
+        <a href="board-settings.html" class="page-link">
+          <span class="material-symbols-outlined">settings</span>
+          Pengaturan
+        </a>
+      </div>
+      <div class="role-card-footer">
+        <div style="font-size:12px;color:var(--color-text-muted);">
+          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">check_circle</span>
+          <strong>7 halaman</strong> selesai dibuat ✓
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Role -->
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-icon admin">
+          <span class="material-symbols-outlined" style="font-size:28px;color:var(--color-primary-container);">manage_accounts</span>
+        </div>
+        <div>
+          <div class="role-name">Admin</div>
+          <div class="role-desc">Administrator Platform</div>
+        </div>
+      </div>
+      <div class="role-pages">
+        <a href="admin-dashboard.html" class="page-link primary-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          Dashboard Utama
+        </a>
+        <a href="admin-clients.html" class="page-link">
+          <span class="material-symbols-outlined">groups</span>
+          Kelola Klien
+        </a>
+        <a href="admin-indices.html" class="page-link">
+          <span class="material-symbols-outlined">data_thresholding</span>
+          Indeks &amp; Data
+        </a>
+        <a href="admin-traceability.html" class="page-link">
+          <span class="material-symbols-outlined">account_tree</span>
+          Traceability
+        </a>
+        <a href="admin-reports.html" class="page-link">
+          <span class="material-symbols-outlined">summarize</span>
+          Laporan &amp; Analitik
+        </a>
+        <a href="admin-monitoring.html" class="page-link">
+          <span class="material-symbols-outlined">monitor_heart</span>
+          Pantau Sistem
+        </a>
+        <a href="admin-profile.html" class="page-link">
+          <span class="material-symbols-outlined">person</span>
+          Profil
+        </a>
+        <a href="admin-settings.html" class="page-link">
+          <span class="material-symbols-outlined">settings</span>
+          Pengaturan
+        </a>
+      </div>
+      <div class="role-card-footer">
+        <div style="font-size:12px;color:var(--color-text-muted);">
+          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">check_circle</span>
+          <strong>8 halaman</strong> selesai dibuat ✓
+        </div>
+      </div>
+    </div>
+
+    <!-- Super Admin Role -->
+    <div class="role-card">
+      <div class="role-card-header">
+        <div class="role-icon superadmin">
+          <span class="material-symbols-outlined" style="font-size:28px;color:var(--color-dark-amber);">shield_person</span>
+        </div>
+        <div>
+          <div class="role-name">Super Admin</div>
+          <div class="role-desc">Administrator Tertinggi</div>
+        </div>
+      </div>
+      <div class="role-pages">
+        <a href="superadmin-dashboard.html" class="page-link primary-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          Dashboard Utama
+        </a>
+        <a href="superadmin-users.html" class="page-link">
+          <span class="material-symbols-outlined">manage_accounts</span>
+          Kelola Pengguna
+        </a>
+        <a href="superadmin-revenue.html" class="page-link">
+          <span class="material-symbols-outlined">payments</span>
+          Pendapatan
+        </a>
+        <a href="superadmin-subscriptions.html" class="page-link">
+          <span class="material-symbols-outlined">card_membership</span>
+          Langganan
+        </a>
+        <a href="superadmin-platform.html" class="page-link">
+          <span class="material-symbols-outlined">settings_applications</span>
+          Konfigurasi Platform
+        </a>
+        <a href="superadmin-audit.html" class="page-link">
+          <span class="material-symbols-outlined">policy</span>
+          Audit Log
+        </a>
+        <a href="superadmin-reports.html" class="page-link">
+          <span class="material-symbols-outlined">bar_chart</span>
+          Laporan Bisnis
+        </a>
+      </div>
+      <div class="role-card-footer">
+        <div style="font-size:12px;color:var(--color-text-muted);">
+          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">check_circle</span>
+          <strong>8 halaman</strong> selesai dibuat ✓
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Design System Note -->
+  <div style="text-align:center;padding:24px 0;">
+    <span class="design-system-badge">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--color-main-green);">palette</span>
+      Prototype menggunakan Agrivision Design System v1.0
+    </span>
+    <div style="margin-top:12px;font-size:13px;color:var(--color-text-muted);">
+      Font: Playfair Display + DM Sans &nbsp;|&nbsp; Colors: Earth Green + Harvest Gold &nbsp;|&nbsp; Icons: Material Symbols
+    </div>
+  </div>
+
+</body>
+</html>

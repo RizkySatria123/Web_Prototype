@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Laporan Bisnis</title>
+  <meta name="description" content="Laporan bisnis platform Agrivision — pertumbuhan, retensi klien, dan analitik operasional.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+  <style>
+    .chart-area { background: var(--color-surface-container-low); border-radius: var(--radius-sm); padding: 16px; height: 200px; display: flex; align-items: flex-end; gap: 0; position: relative; overflow: hidden; }
+    .chart-line { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
+    .chart-bars { display: flex; align-items: flex-end; gap: 8px; width: 100%; height: 100%; position: relative; z-index: 1; }
+    .chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .chart-bar { width: 100%; border-radius: 4px 4px 0 0; transition: opacity 200ms; cursor: pointer; }
+    .chart-bar:hover { opacity: 0.8; }
+    .chart-bar-label { font-size: 10px; color: var(--color-text-muted); white-space: nowrap; }
+    .report-kpi-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .report-kpi-item { background: var(--color-surface-container-low); border-radius: var(--radius-sm); padding: 14px 16px; }
+    .trend-up { color: var(--color-bright-emerald); font-weight: 700; font-size: 12px; }
+    .trend-down { color: var(--color-error); font-weight: 700; font-size: 12px; }
+    .funnel-bar { height: 36px; border-radius: 4px; display: flex; align-items: center; padding: 0 12px; color: white; font-size: 13px; font-weight: 700; margin-bottom: 6px; transition: width 500ms; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div style="font-size:14px;color:var(--color-text-muted);">
+      Super Admin · <strong style="color:var(--color-text-main);">Laporan Bisnis</strong>
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Laporan Bisnis</h1>
+        <p class="page-subtitle">Analitik pertumbuhan platform — pendapatan, akuisisi klien, retensi, dan KPI operasional.</p>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <select class="form-input form-select" style="width:160px;">
+          <option>Q2 2026 (Apr–Jun)</option>
+          <option>Q1 2026 (Jan–Mar)</option>
+          <option>Full Year 2025</option>
+          <option>Full Year 2024</option>
+        </select>
+        <button class="btn btn-primary" id="btn-export-biz">
+          <span class="material-symbols-outlined" style="font-size:17px;">download</span>
+          Export PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Top -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">payments</span><span class="stat-badge success">+22%</span></div>
+        <div class="stat-label">ARR</div>
+        <div class="stat-value" style="font-size:30px;">Rp 2.4M</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Annual Recurring Revenue</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:#7c3aed;font-variation-settings:'FILL' 1;">group_add</span><span class="stat-badge success">+4</span></div>
+        <div class="stat-label">Klien Baru</div>
+        <div class="stat-value">4</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Q2 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:#0ea5e9;font-variation-settings:'FILL' 1;">people</span></div>
+        <div class="stat-label">Total Klien Aktif</div>
+        <div class="stat-value">12</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">+1 trial → paid</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-bright-emerald);font-variation-settings:'FILL' 1;">autorenew</span></div>
+        <div class="stat-label">Retention Rate</div>
+        <div class="stat-value">91<span class="unit">%</span></div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">↑ Industri avg 80%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-error);font-variation-settings:'FILL' 1;">trending_down</span></div>
+        <div class="stat-label">Churn Rate</div>
+        <div class="stat-value">1.2<span class="unit">%</span></div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">↓ Sangat rendah</div>
+      </div>
+    </div>
+
+    <!-- Revenue Chart + Growth Table -->
+    <div style="display:grid;grid-template-columns:2fr 1.2fr;gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <!-- Bar Chart: Monthly Revenue -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Pertumbuhan MRR · 2026</span>
+          <div style="display:flex;gap:12px;font-size:12px;align-items:center;">
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;background:var(--color-primary-container);border-radius:2px;display:inline-block;"></span>MRR</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;background:#7c3aed;border-radius:2px;display:inline-block;"></span>Klien Baru</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;gap:12px;align-items:flex-end;height:180px;border-bottom:2px solid var(--color-border-muted);border-left:2px solid var(--color-border-muted);padding:0 4px 0 4px;position:relative;">
+            <!-- Y grid lines -->
+            <div style="position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;">
+              <div style="border-bottom:1px dashed var(--color-border-muted);width:100%;"></div>
+              <div style="border-bottom:1px dashed var(--color-border-muted);width:100%;"></div>
+              <div style="border-bottom:1px dashed var(--color-border-muted);width:100%;"></div>
+              <div style="border-bottom:1px dashed var(--color-border-muted);width:100%;height:0;"></div>
+            </div>
+            <!-- Bars Jan–Jun -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:100%;height:90px;background:var(--color-primary-container);border-radius:3px 3px 0 0;opacity:.7;"></div>
+              <div style="font-size:10px;color:var(--color-text-muted);">Jan</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:100%;height:101px;background:var(--color-primary-container);border-radius:3px 3px 0 0;opacity:.75;"></div>
+              <div style="font-size:10px;color:var(--color-text-muted);">Feb</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:100%;height:112px;background:var(--color-primary-container);border-radius:3px 3px 0 0;opacity:.8;"></div>
+              <div style="font-size:10px;color:var(--color-text-muted);">Mar</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:100%;height:126px;background:var(--color-primary-container);border-radius:3px 3px 0 0;opacity:.88;"></div>
+              <div style="font-size:10px;color:var(--color-text-muted);">Apr</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:100%;height:148px;background:var(--color-primary-container);border-radius:3px 3px 0 0;opacity:.95;"></div>
+              <div style="font-size:10px;color:var(--color-text-muted);">Mei</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:100%;height:168px;background:var(--color-primary-container);border-radius:3px 3px 0 0;box-shadow:0 -4px 12px rgba(5,59,38,0.2);"></div>
+              <div style="font-size:10px;color:var(--color-text-main);font-weight:700;">Jun ★</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:12px;">
+            <div style="font-size:13px;font-weight:700;">Rp 160 jt → Rp 200 jt <span class="trend-up">↑ 25%</span></div>
+            <div style="font-size:12px;color:var(--color-text-muted);">6 bulan terakhir</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Panel -->
+      <div style="display:flex;flex-direction:column;gap:var(--gutter);">
+        <!-- NPS Score -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">NPS Score</span></div>
+          <div class="card-body" style="text-align:center;">
+            <div style="font-family:var(--font-display);font-size:56px;font-weight:700;color:var(--color-dark-emerald);line-height:1;">72</div>
+            <div style="font-size:12px;color:var(--color-text-muted);margin-bottom:12px;">Net Promoter Score · Q2 2026</div>
+            <div style="display:flex;gap:4px;height:8px;border-radius:4px;overflow:hidden;">
+              <div style="background:var(--color-error);flex:1;"></div>
+              <div style="background:var(--color-dark-amber);flex:0.4;"></div>
+              <div style="background:var(--color-bright-emerald);flex:3;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-muted);margin-top:4px;">
+              <span>Detractor 10%</span><span>Passive 8%</span><span>Promoter 82%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operational KPIs -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">KPI Operasional</span></div>
+          <div class="card-body">
+            <div class="report-kpi-row">
+              <div class="report-kpi-item">
+                <div style="font-size:11px;color:var(--color-text-muted);">Uptime SLA</div>
+                <div style="font-size:22px;font-weight:700;color:var(--color-dark-emerald);">99.97%</div>
+              </div>
+              <div class="report-kpi-item">
+                <div style="font-size:11px;color:var(--color-text-muted);">Avg Response</div>
+                <div style="font-size:22px;font-weight:700;color:var(--color-text-main);">42ms</div>
+              </div>
+              <div class="report-kpi-item">
+                <div style="font-size:11px;color:var(--color-text-muted);">Lahan Dimonitor</div>
+                <div style="font-size:22px;font-weight:700;color:#7c3aed;">847 Ha</div>
+              </div>
+              <div class="report-kpi-item">
+                <div style="font-size:11px;color:var(--color-text-muted);">Laporan Generate</div>
+                <div style="font-size:22px;font-weight:700;color:var(--color-text-main);">36</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conversion Funnel + Client Growth Table -->
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:var(--gutter);">
+      <!-- Funnel -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">Funnel Akuisisi Klien</span></div>
+        <div class="card-body">
+          <div style="margin-bottom:20px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-muted);margin-bottom:6px;">
+              <span>Prospek Masuk</span><span style="font-weight:700;color:var(--color-text-main);">48</span>
+            </div>
+            <div class="funnel-bar" style="width:100%;background:var(--color-primary-container);">48 prospek</div>
+
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-muted);margin-bottom:6px;">
+              <span>Demo / Discovery Call</span><span style="font-weight:700;color:var(--color-text-main);">31</span>
+            </div>
+            <div class="funnel-bar" style="width:65%;background:#0369a1;">31 demo</div>
+
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-muted);margin-bottom:6px;">
+              <span>Trial Aktif</span><span style="font-weight:700;color:var(--color-text-main);">18</span>
+            </div>
+            <div class="funnel-bar" style="width:38%;background:#7c3aed;">18 trial</div>
+
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-muted);margin-bottom:6px;">
+              <span>Berlangganan Berbayar</span><span style="font-weight:700;color:var(--color-text-main);">12</span>
+            </div>
+            <div class="funnel-bar" style="width:25%;background:var(--color-bright-emerald);">12 klien</div>
+          </div>
+          <div style="border-top:1px solid var(--color-border-muted);padding-top:12px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+              <span style="color:var(--color-text-muted);">Conversion Rate (Trial → Paid)</span>
+              <span style="font-weight:700;color:var(--color-dark-emerald);">67%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;">
+              <span style="color:var(--color-text-muted);">Avg Sales Cycle</span>
+              <span style="font-weight:700;">24 hari</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Client Growth Table -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Pertumbuhan Klien per Kuartal</span>
+        </div>
+        <div class="table-container">
+          <table class="data-table" aria-label="Pertumbuhan Klien per Kuartal">
+            <thead>
+              <tr>
+                <th>Periode</th>
+                <th>Klien Baru</th>
+                <th>Churn</th>
+                <th>Total Aktif</th>
+                <th>MRR</th>
+                <th>Growth</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Q2 2026</strong></td>
+                <td><span style="color:var(--color-bright-emerald);font-weight:700;">+4</span></td>
+                <td><span style="color:var(--color-error);">−0</span></td>
+                <td style="font-weight:700;">12</td>
+                <td>Rp 200 jt</td>
+                <td><span class="trend-up">↑ 25%</span></td>
+              </tr>
+              <tr>
+                <td>Q1 2026</td>
+                <td><span style="color:var(--color-bright-emerald);font-weight:700;">+3</span></td>
+                <td><span style="color:var(--color-error);">−1</span></td>
+                <td>8</td>
+                <td>Rp 160 jt</td>
+                <td><span class="trend-up">↑ 14%</span></td>
+              </tr>
+              <tr>
+                <td>Q4 2025</td>
+                <td><span style="color:var(--color-bright-emerald);font-weight:700;">+2</span></td>
+                <td><span style="color:var(--color-error);">−0</span></td>
+                <td>6</td>
+                <td>Rp 140 jt</td>
+                <td><span class="trend-up">↑ 17%</span></td>
+              </tr>
+              <tr>
+                <td>Q3 2025</td>
+                <td><span style="color:var(--color-bright-emerald);font-weight:700;">+2</span></td>
+                <td><span style="color:var(--color-error);">−1</span></td>
+                <td>4</td>
+                <td>Rp 120 jt</td>
+                <td><span class="trend-up">↑ 20%</span></td>
+              </tr>
+              <tr>
+                <td>Q2 2025</td>
+                <td><span style="color:var(--color-bright-emerald);font-weight:700;">+2</span></td>
+                <td><span style="color:var(--color-error);">−0</span></td>
+                <td>3</td>
+                <td>Rp 100 jt</td>
+                <td><span class="trend-up">↑ 43%</span></td>
+              </tr>
+              <tr>
+                <td>Q1 2025</td>
+                <td><span style="color:var(--color-bright-emerald);font-weight:700;">+1</span></td>
+                <td><span style="color:var(--color-text-muted);">—</span></td>
+                <td>1</td>
+                <td>Rp 70 jt</td>
+                <td style="color:var(--color-text-muted);">Launch</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>renderSidebar('superadmin','superadmin-reports.html');</script>
+</body>
+</html>

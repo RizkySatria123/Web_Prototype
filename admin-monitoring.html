@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Admin — Pantau Sistem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .health-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--gutter); }
+    .health-card { background: white; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-card); }
+    .health-status-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .health-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .health-dot.ok { background: var(--color-bright-emerald); box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+    .health-dot.warn { background: var(--color-dark-amber); box-shadow: 0 0 0 3px rgba(253,177,52,0.2); }
+    .health-dot.error { background: var(--color-error); box-shadow: 0 0 0 3px rgba(186,26,26,0.2); }
+    .health-name { font-size: 14px; font-weight: 700; color: var(--color-text-main); }
+    .health-meta { font-size: 12px; color: var(--color-text-muted); margin-left: 18px; }
+    .metric-bar { height: 8px; background: var(--color-surface-container-low); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+    .metric-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+    .metric-fill.ok { background: var(--color-bright-emerald); }
+    .metric-fill.warn { background: var(--color-dark-amber); }
+    .metric-fill.error { background: var(--color-error); }
+    .log-item { display: flex; align-items: start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--color-surface-container); font-size: 13px; }
+    .log-item:last-child { border-bottom: none; }
+    .log-level { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; flex-shrink: 0; margin-top: 1px; }
+    .log-level.info { background: rgba(37,99,235,0.1); color: #1d4ed8; }
+    .log-level.warn { background: rgba(253,177,52,0.15); color: #92400e; }
+    .log-level.error { background: rgba(186,26,26,0.1); color: #93000a; }
+    .log-time { color: var(--color-text-muted); font-family: monospace; font-size: 11px; flex-shrink: 0; }
+    .user-online-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--color-surface-container); }
+    .user-online-item:last-child { border-bottom: none; }
+    .online-dot { width: 8px; height: 8px; background: var(--color-bright-emerald); border-radius: 50%; box-shadow: 0 0 0 2px rgba(34,197,94,0.2); flex-shrink: 0; }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:var(--color-dark-amber);">AD</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Pantau Sistem</h1>
+        <p class="page-subtitle">Cek ketersediaan layanan, performa server, dan pengguna aktif secara real-time.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--color-whisper-green);border:1px solid var(--color-primary-container);border-radius:var(--radius-pill);">
+        <div style="width:8px;height:8px;background:var(--color-bright-emerald);border-radius:50%;animation:pulse 2s infinite;"></div>
+        <span style="font-size:13px;font-weight:700;color:var(--color-dark-emerald);">Semua Layanan Normal</span>
+      </div>
+    </div>
+
+    <!-- Health Cards -->
+    <div class="health-grid" style="margin-bottom:var(--gutter);">
+      <div class="health-card">
+        <div class="health-status-row"><div class="health-dot ok"></div><div class="health-name">API Gateway</div></div>
+        <div class="health-meta">Uptime: 99.97% · Latency: 42ms</div>
+        <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">Requests: 1,247 / menit</div>
+        <div class="metric-bar"><div class="metric-fill ok" style="width:99%;"></div></div>
+      </div>
+      <div class="health-card">
+        <div class="health-status-row"><div class="health-dot ok"></div><div class="health-name">Data Processing Pipeline</div></div>
+        <div class="health-meta">CPU: 34% · RAM: 61%</div>
+        <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">Queue: 0 pending · Terakhir: 12 menit lalu</div>
+        <div class="metric-bar"><div class="metric-fill ok" style="width:61%;"></div></div>
+      </div>
+      <div class="health-card">
+        <div class="health-status-row"><div class="health-dot ok"></div><div class="health-name">Database (PostgreSQL)</div></div>
+        <div class="health-meta">Connections: 24/100 · Size: 2.4 GB</div>
+        <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">Read latency: 8ms · Write: 18ms</div>
+        <div class="metric-bar"><div class="metric-fill ok" style="width:24%;"></div></div>
+      </div>
+      <div class="health-card">
+        <div class="health-status-row"><div class="health-dot ok"></div><div class="health-name">Sentinel-2 Imagery Sync</div></div>
+        <div class="health-meta">Terakhir update: 3 jam lalu</div>
+        <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">Q1 2026 data: 100% tersedia</div>
+        <div class="metric-bar"><div class="metric-fill ok" style="width:100%;"></div></div>
+      </div>
+      <div class="health-card">
+        <div class="health-status-row"><div class="health-dot warn"></div><div class="health-name">ML Model Server</div></div>
+        <div class="health-meta">CPU: 78% · GPU: 82% ⚠</div>
+        <div style="font-size:11px;color:var(--color-dark-amber);margin-top:6px;font-weight:600;">Beban tinggi · Model NDVI inferencing</div>
+        <div class="metric-bar"><div class="metric-fill warn" style="width:82%;"></div></div>
+      </div>
+      <div class="health-card">
+        <div class="health-status-row"><div class="health-dot ok"></div><div class="health-name">Storage (Object Store)</div></div>
+        <div class="health-meta">Terpakai: 128 GB / 500 GB</div>
+        <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">CDN: All regions healthy</div>
+        <div class="metric-bar"><div class="metric-fill ok" style="width:26%;"></div></div>
+      </div>
+    </div>
+
+    <!-- Bottom: Active Users + System Log -->
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:var(--gutter);">
+      <!-- Active Users -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Pengguna Aktif</span>
+          <span class="badge badge-active">8 Online</span>
+        </div>
+        <div class="card-body">
+          <div class="user-online-item">
+            <div class="online-dot"></div>
+            <div><div style="font-size:13px;font-weight:700;">Fitrah Ramadhan</div><div style="font-size:11px;color:var(--color-text-muted);">Kadatuan Puntang · Carbon Portfolio</div></div>
+          </div>
+          <div class="user-online-item">
+            <div class="online-dot"></div>
+            <div><div style="font-size:13px;font-weight:700;">Dani Prasetyo</div><div style="font-size:11px;color:var(--color-text-muted);">SMART Agribusiness · NDVI Map</div></div>
+          </div>
+          <div class="user-online-item">
+            <div class="online-dot"></div>
+            <div><div style="font-size:13px;font-weight:700;">Sari Utami</div><div style="font-size:11px;color:var(--color-text-muted);">SMART Agribusiness · Reports</div></div>
+          </div>
+          <div class="user-online-item">
+            <div class="online-dot"></div>
+            <div><div style="font-size:13px;font-weight:700;">Budi Santoso</div><div style="font-size:11px;color:var(--color-text-muted);">Pupuk Kujang · Dashboard</div></div>
+          </div>
+          <div class="user-online-item" style="opacity:0.6;">
+            <div style="width:8px;height:8px;background:var(--color-light-gray);border-radius:50%;flex-shrink:0;"></div>
+            <div><div style="font-size:13px;font-weight:700;">Ahmad Dani (Kamu)</div><div style="font-size:11px;color:var(--color-text-muted);">Admin · System Monitor</div></div>
+          </div>
+          <div style="margin-top:8px;text-align:center;">
+            <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">Lihat Semua Sesi →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Log -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">System Log</span>
+          <div style="display:flex;gap:8px;">
+            <select class="form-input form-select" style="width:120px;padding:4px 24px 4px 8px;font-size:12px;">
+              <option>All Levels</option>
+              <option>Error</option>
+              <option>Warning</option>
+              <option>Info</option>
+            </select>
+            <button class="btn btn-ghost btn-sm"><span class="material-symbols-outlined" style="font-size:15px;">refresh</span></button>
+          </div>
+        </div>
+        <div class="card-body" style="max-height:360px;overflow-y:auto;font-family:monospace;">
+          <div class="log-item">
+            <span class="log-time">13:42:07</span>
+            <span class="log-level info">INFO</span>
+            <span style="color:var(--color-text-muted);">User fitrah@kadatuankopi.com logged in from 125.163.x.x</span>
+          </div>
+          <div class="log-item">
+            <span class="log-time">13:40:33</span>
+            <span class="log-level warn">WARN</span>
+            <span style="color:var(--color-text-muted);">ML Model GPU usage spiked to 82% — inferencing queue: 3 jobs</span>
+          </div>
+          <div class="log-item">
+            <span class="log-time">13:38:11</span>
+            <span class="log-level info">INFO</span>
+            <span style="color:var(--color-text-muted);">Carbon credit report generated for Kadatuan Puntang, Q1 2026</span>
+          </div>
+          <div class="log-item">
+            <span class="log-time">13:35:02</span>
+            <span class="log-level info">INFO</span>
+            <span style="color:var(--color-text-muted);">NDVI batch inference completed: 12 farms, 2.4s avg time</span>
+          </div>
+          <div class="log-item">
+            <span class="log-time">13:30:00</span>
+            <span class="log-level info">INFO</span>
+            <span style="color:var(--color-text-muted);">Scheduled satellite imagery sync started — Sentinel-2 Q1 2026</span>
+          </div>
+          <div class="log-item">
+            <span class="log-time">13:12:55</span>
+            <span class="log-level error">ERROR</span>
+            <span style="color:var(--color-text-muted);">SOC anomaly alert triggered: Kadatuan, Puntang — SOC 1.6% (threshold 1.8%) — notification sent</span>
+          </div>
+          <div class="log-item">
+            <span class="log-time">12:58:30</span>
+            <span class="log-level info">INFO</span>
+            <span style="color:var(--color-text-muted);">Traceability QR code generated: Batch #001 ARA-Q1-2026</span>
+          </div>
+          <div class="log-item">
+            <span class="log-time">12:45:00</span>
+            <span class="log-level info">INFO</span>
+            <span style="color:var(--color-text-muted);">Database backup completed successfully — 2.4 GB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<style>
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+  <script>renderSidebar('admin','admin-monitoring.html');</script>
+</body>
+</html>
+

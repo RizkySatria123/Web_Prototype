@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision — Carbon Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    /* SVG Line Chart */
+    .chart-container { background: white; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); padding: var(--space-md); }
+    .chart-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-md); }
+    .chart-legend { display: flex; align-items: center; gap: 16px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--color-text-muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .chart-area { position: relative; overflow: hidden; }
+    .chart-svg { width: 100%; display: block; }
+    .chart-y-labels { position: absolute; left: 0; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 0; }
+    .chart-y-label { font-size: 11px; color: var(--color-text-muted); text-align: right; }
+    .chart-x-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+    .chart-x-label { font-size: 11px; color: var(--color-text-muted); }
+    /* Bar Chart */
+    .bar-chart { display: flex; align-items: flex-end; gap: 16px; height: 200px; padding: 0 8px; }
+    .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 8px; }
+    .bar-wrap { display: flex; gap: 6px; align-items: flex-end; height: 180px; }
+    .bar { border-radius: 4px 4px 0 0; min-width: 28px; transition: opacity 200ms; }
+    .bar:hover { opacity: 0.8; }
+    .bar-label { font-size: 11px; color: var(--color-text-muted); }
+    /* Carbon Credit Calculator */
+    .calc-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--color-surface-container); }
+    .calc-row:last-of-type { border-bottom: none; }
+    .calc-label { font-size: 14px; color: var(--color-text-muted); }
+    .calc-value { font-size: 15px; font-weight: 700; color: var(--color-text-main); }
+    .calc-value.highlight { color: var(--color-bright-emerald); font-size: 18px; }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar">FR</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Carbon Portfolio</h1>
+        <p class="page-subtitle">Pantau akumulasi karbon dan estimasi nilai ekonomi dari seluruh lahan kamu.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-download-portfolio">
+        <span class="material-symbols-outlined" style="font-size:17px;">download</span>
+        Download Portfolio Report
+      </button>
+    </div>
+
+    <!-- Top Stats (4 cards) -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon" style="font-variation-settings:'FILL' 1;">compost</span>
+        </div>
+        <div class="stat-label">Total Stok Karbon</div>
+        <div class="stat-value">186.3<span class="unit">Ton C</span></div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px;">Jan – Mar 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon" style="font-variation-settings:'FILL' 1;">public</span>
+        </div>
+        <div class="stat-label">Total CO₂e</div>
+        <div class="stat-value">683.7<span class="unit">Ton</span></div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px;">× 3.67 konversi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon" style="color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">payments</span>
+        </div>
+        <div class="stat-label">Estimasi Nilai Klaim</div>
+        <div class="stat-value" style="font-size:28px;">Rp 136.7 jt</div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px;">@ Rp 200.000/Ton CO₂e</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header">
+          <span class="material-symbols-outlined stat-card-icon" style="color:var(--color-bright-emerald);font-variation-settings:'FILL' 1;">trending_up</span>
+          <span class="stat-badge success">↑ Naik</span>
+        </div>
+        <div class="stat-label">Tren Karbon</div>
+        <div class="stat-value">+4.2<span class="unit">Ton C</span></div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);margin-top:4px;font-weight:600;">↑ vs periode lalu</div>
+      </div>
+    </div>
+
+    <!-- Line Chart: Tren Akumulasi Karbon -->
+    <div class="chart-container" style="margin-bottom:var(--space-lg);">
+      <div class="chart-title-row">
+        <div>
+          <div class="card-title">Tren Akumulasi Karbon</div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px;">5 periode terakhir · Ton C</div>
+        </div>
+        <select class="form-input form-select" style="width:auto;padding:6px 32px 6px 12px;">
+          <option>5 Periode Terakhir</option>
+          <option>1 Tahun</option>
+          <option>2 Tahun</option>
+        </select>
+      </div>
+
+      <!-- SVG Line Chart -->
+      <div style="padding:16px 0 0;">
+        <!-- Y Axis Labels -->
+        <div style="display:flex;gap:16px;">
+          <div style="display:flex;flex-direction:column;justify-content:space-between;text-align:right;padding-bottom:28px;width:56px;flex-shrink:0;">
+            <span style="font-size:11px;color:var(--color-text-muted);">195 Ton</span>
+            <span style="font-size:11px;color:var(--color-text-muted);">190 Ton</span>
+            <span style="font-size:11px;color:var(--color-text-muted);">185 Ton</span>
+            <span style="font-size:11px;color:var(--color-text-muted);">180 Ton</span>
+            <span style="font-size:11px;color:var(--color-text-muted);">175 Ton</span>
+            <span style="font-size:11px;color:var(--color-text-muted);">170 Ton</span>
+            <span style="font-size:11px;color:var(--color-text-muted);">165 Ton</span>
+          </div>
+          <div style="flex:1;">
+            <svg viewBox="0 0 800 220" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+              <!-- Grid lines -->
+              <line x1="0" y1="0" x2="800" y2="0" stroke="#e5e7eb" stroke-width="1"/>
+              <line x1="0" y1="36.7" x2="800" y2="36.7" stroke="#e5e7eb" stroke-width="1"/>
+              <line x1="0" y1="73.3" x2="800" y2="73.3" stroke="#e5e7eb" stroke-width="1"/>
+              <line x1="0" y1="110" x2="800" y2="110" stroke="#e5e7eb" stroke-width="1"/>
+              <line x1="0" y1="146.7" x2="800" y2="146.7" stroke="#e5e7eb" stroke-width="1"/>
+              <line x1="0" y1="183.3" x2="800" y2="183.3" stroke="#e5e7eb" stroke-width="1"/>
+              <line x1="0" y1="220" x2="800" y2="220" stroke="#e5e7eb" stroke-width="1"/>
+              <!-- Area fill -->
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#053B26" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#053B26" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,183 L200,163 L400,147 L600,111 L800,92 L800,220 L0,220 Z" fill="url(#areaGrad)"/>
+              <!-- Line -->
+              <path d="M0,183 L200,163 L400,147 L600,111 L800,92" stroke="#053B26" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+              <!-- Data points -->
+              <circle cx="0" cy="183" r="5" fill="#053B26" stroke="white" stroke-width="2"/>
+              <circle cx="200" cy="163" r="5" fill="#053B26" stroke="white" stroke-width="2"/>
+              <circle cx="400" cy="147" r="5" fill="#053B26" stroke="white" stroke-width="2"/>
+              <circle cx="600" cy="111" r="5" fill="#053B26" stroke="white" stroke-width="2"/>
+              <circle cx="800" cy="92" r="6" fill="#053B26" stroke="white" stroke-width="2"/>
+            </svg>
+            <!-- X Labels -->
+            <div style="display:flex;justify-content:space-between;margin-top:6px;">
+              <span style="font-size:11px;color:var(--color-text-muted);">Q1 2025</span>
+              <span style="font-size:11px;color:var(--color-text-muted);">Q2 2025</span>
+              <span style="font-size:11px;color:var(--color-text-muted);">Q3 2025</span>
+              <span style="font-size:11px;color:var(--color-text-muted);">Q4 2025</span>
+              <span style="font-size:11px;color:var(--color-text-main);font-weight:700;">Q1 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: Bar Chart + Calculator -->
+    <div style="display:grid;grid-template-columns:7fr 5fr;gap:var(--gutter);margin-bottom:var(--space-lg);">
+
+      <!-- Bar Chart: Breakdown per Parameter -->
+      <div class="chart-container">
+        <div class="chart-title-row">
+          <div class="card-title">Breakdown per Parameter</div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#053B26;"></div>SOC</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#9cf973;"></div>Biomassa</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div>Total</div>
+          </div>
+        </div>
+
+        <!-- Horizontal bar chart -->
+        <div style="padding:16px 0;display:flex;flex-direction:column;gap:20px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:600;color:var(--color-text-main);">SOC</span>
+              <span style="font-size:13px;font-weight:700;color:var(--color-text-main);">186.3 Ton C</span>
+            </div>
+            <div style="height:28px;background:var(--color-surface-container-low);border-radius:4px;overflow:hidden;">
+              <div style="height:100%;width:42%;background:#053B26;border-radius:4px;transition:width 800ms ease;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:600;color:var(--color-text-main);">Biomassa</span>
+              <span style="font-size:13px;font-weight:700;color:var(--color-text-main);">311.4 Ton C</span>
+            </div>
+            <div style="height:28px;background:var(--color-surface-container-low);border-radius:4px;overflow:hidden;">
+              <div style="height:100%;width:70%;background:#9cf973;border-radius:4px;transition:width 800ms ease;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:600;color:var(--color-text-main);">Total</span>
+              <span style="font-size:13px;font-weight:700;color:var(--color-text-main);">497.7 Ton C</span>
+            </div>
+            <div style="height:28px;background:var(--color-surface-container-low);border-radius:4px;overflow:hidden;">
+              <div style="height:100%;width:100%;background:#3b82f6;border-radius:4px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carbon per Farm table -->
+        <div style="border-top:1px solid var(--color-border-muted);padding-top:16px;margin-top:4px;">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Carbon per Farm <span style="float:right;font-weight:400;">Data: Q1 2026</span></div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Farm Name</th>
+                <th>Luas (Ha)</th>
+                <th>SOC (Ton C/Ha)</th>
+                <th>Total SOC</th>
+                <th>CO₂e (Ton)</th>
+                <th>Est. Nilai</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div style="font-weight:700;">Kadatuan, Puntang</div>
+                  <div style="font-size:12px;color:var(--color-text-muted);">Arabica Coffee · Organic Agroforestry</div>
+                </td>
+                <td>25</td>
+                <td>7.45</td>
+                <td>186.3</td>
+                <td style="color:var(--color-dark-emerald);font-weight:700;">683.7</td>
+                <td style="color:var(--color-bright-emerald);font-weight:700;">Rp 136.7 jt</td>
+                <td><span class="badge badge-active">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Carbon Credit Calculator -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Carbon Credit Calculator</span>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom:16px;">
+            <label class="form-label">Harga Karbon (Rp / Ton CO₂e)</label>
+            <input type="number" id="carbon-price" class="form-input" value="200000" oninput="calcCredit()">
+            <div style="font-size:12px;color:var(--color-text-muted);margin-top:6px;">Ubah harga untuk melihat estimasi nilai klaim secara real-time.</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="calc-row"><span class="calc-label">Total SOC</span><span class="calc-value">186.3 Ton C</span></div>
+          <div class="calc-row"><span class="calc-label">Total CO₂e</span><span class="calc-value">683.7 Ton CO₂e</span></div>
+          <div class="calc-row"><span class="calc-label">Estimasi Nilai Klaim</span><span class="calc-value highlight" id="calc-result">Rp 136.7 jt</span></div>
+          <div class="calc-row"><span class="calc-label">Estimasi per Ha</span><span class="calc-value" id="calc-per-ha">Rp 5.5 jt/Ha</span></div>
+
+          <div class="divider"></div>
+
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="window.location.href='board-reports.html'">
+            Lihat Detail di Dashboard →
+          </button>
+          <div style="font-size:11px;color:var(--color-text-muted);text-align:center;font-style:italic;">Estimasi berdasarkan metodologi Verra VM0042</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function calcCredit() {
+  const price = parseFloat(document.getElementById('carbon-price').value) || 200000;
+  const totalCO2e = 683.7;
+  const luas = 25;
+  const total = price * totalCO2e;
+  const perHa = price * totalCO2e / luas;
+  const fmt = n => 'Rp ' + (n >= 1e6 ? (n/1e6).toFixed(1) + ' jt' : n.toLocaleString('id-ID'));
+  document.getElementById('calc-result').textContent = fmt(total);
+  document.getElementById('calc-per-ha').textContent = fmt(perHa) + '/Ha';
+}
+</script>
+  <script>renderSidebar('board','board-carbon.html');</script>
+</body>
+</html>
+

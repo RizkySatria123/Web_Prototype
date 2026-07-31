@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Audit Log</title>
+  <meta name="description" content="Rekam jejak aktivitas seluruh pengguna platform Agrivision untuk keperluan keamanan dan audit.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+  <style>
+    .log-timeline { display: flex; flex-direction: column; gap: 0; }
+    .log-entry { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--color-surface-container); position: relative; }
+    .log-entry:last-child { border-bottom: none; }
+    .log-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .log-dot.info    { background: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+    .log-dot.success { background: var(--color-bright-emerald); box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+    .log-dot.warning { background: var(--color-dark-amber); box-shadow: 0 0 0 3px rgba(217,119,6,0.15); }
+    .log-dot.danger  { background: var(--color-error); box-shadow: 0 0 0 3px rgba(186,26,26,0.15); }
+    .log-dot.config  { background: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+    .log-time { font-size: 11px; color: var(--color-text-muted); white-space: nowrap; font-family: monospace; width: 90px; flex-shrink: 0; }
+    .log-user-chip { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 5px; white-space: nowrap; }
+    .log-user-chip.superadmin { background: rgba(109,40,217,0.1); color: #6d28d9; }
+    .log-user-chip.admin { background: rgba(217,119,6,0.1); color: #92400e; }
+    .log-user-chip.board { background: rgba(5,96,70,0.1); color: #056046; }
+    .log-user-chip.system { background: rgba(107,114,128,0.1); color: #4b5563; }
+    .log-body { flex: 1; min-width: 0; }
+    .log-action { font-size: 14px; font-weight: 600; color: var(--color-text-main); margin-bottom: 2px; }
+    .log-meta { font-size: 12px; color: var(--color-text-muted); }
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: var(--space-lg); }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div style="font-size:14px;color:var(--color-text-muted);">
+      Super Admin · <strong style="color:var(--color-text-main);">Audit Log</strong>
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Audit Log</h1>
+        <p class="page-subtitle">Rekam jejak seluruh aktivitas platform — login, perubahan data, konfigurasi, dan aksi pengguna.</p>
+      </div>
+      <button class="btn btn-ghost" id="btn-export-log">
+        <span class="material-symbols-outlined" style="font-size:17px;">download</span>
+        Export Log (CSV)
+      </button>
+    </div>
+
+    <!-- Stats Row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-label">Total Event Hari Ini</div>
+        <div class="stat-value">284</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">31 Jul 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Login Sukses</div>
+        <div class="stat-value" style="color:var(--color-bright-emerald);">47</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Unique sessions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Perubahan Config</div>
+        <div class="stat-value" style="color:#7c3aed;">8</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Oleh Super Admin</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Event Keamanan</div>
+        <div class="stat-value" style="color:var(--color-error);">2</div>
+        <div style="font-size:12px;color:var(--color-dark-amber);font-weight:600;">Perlu perhatian</div>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-input-wrap" style="flex:1;min-width:240px;">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" class="search-input" style="width:100%;" placeholder="Cari berdasarkan user, aksi, atau IP...">
+      </div>
+      <select class="form-input form-select" style="width:160px;">
+        <option>Semua Kategori</option>
+        <option>Login / Auth</option>
+        <option>Data Change</option>
+        <option>Config Change</option>
+        <option>Report Generate</option>
+        <option>Security</option>
+      </select>
+      <select class="form-input form-select" style="width:150px;">
+        <option>Semua Role</option>
+        <option>Super Admin</option>
+        <option>Admin</option>
+        <option>Board</option>
+        <option>System</option>
+      </select>
+      <input type="date" class="form-input" style="width:160px;" value="2026-07-31">
+      <button class="btn btn-ghost btn-sm"><span class="material-symbols-outlined" style="font-size:16px;">refresh</span>Reset</button>
+    </div>
+
+    <!-- Log Timeline -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Log Aktivitas — 31 Juli 2026</span>
+        <span style="font-size:12px;color:var(--color-text-muted);">284 event · Showing 20 terbaru</span>
+      </div>
+      <div class="card-body">
+        <div class="log-timeline">
+
+          <div class="log-entry">
+            <div class="log-dot danger"></div>
+            <div class="log-time">08:42:17</div>
+            <span class="log-user-chip system">SYSTEM</span>
+            <div class="log-body">
+              <div class="log-action">⚠ Login gagal 5× berturut-turut — akun diblokir sementara</div>
+              <div class="log-meta">User: unknown@external.com · IP: 202.91.x.x · Browser: Chrome 125 · Lokasi: Jakarta</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot danger"></div>
+            <div class="log-time">08:38:04</div>
+            <span class="log-user-chip system">SYSTEM</span>
+            <div class="log-body">
+              <div class="log-action">⚠ Login gagal — password salah</div>
+              <div class="log-meta">User: unknown@external.com · IP: 202.91.x.x · Browser: Chrome 125</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot config"></div>
+            <div class="log-time">08:35:22</div>
+            <span class="log-user-chip superadmin">Super Admin</span>
+            <div class="log-body">
+              <div class="log-action">Konfigurasi platform diperbarui — Fitur AI Rekomendasi diaktifkan</div>
+              <div class="log-meta">Rizky Satria · rizky@agrivisiontech.com · IP: 125.163.x.x · Durasi sesi: 28 mnt</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot info"></div>
+            <div class="log-time">08:30:11</div>
+            <span class="log-user-chip superadmin">Super Admin</span>
+            <div class="log-body">
+              <div class="log-action">Login berhasil</div>
+              <div class="log-meta">Rizky Satria · rizky@agrivisiontech.com · IP: 125.163.x.x · Chrome 126 · Bandung</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot success"></div>
+            <div class="log-time">08:12:55</div>
+            <span class="log-user-chip admin">Admin</span>
+            <div class="log-body">
+              <div class="log-action">Laporan ESG Carbon Credit 2026 berhasil digenerate</div>
+              <div class="log-meta">Ahmad Dani · ahmad@agrivisiontech.com · Client: Kadatuan Puntang Farm · Format: PDF</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot warning"></div>
+            <div class="log-time">08:05:33</div>
+            <span class="log-user-chip system">SYSTEM</span>
+            <div class="log-body">
+              <div class="log-action">Anomali NDVI terdeteksi — alert dikirim ke Admin dan Klien</div>
+              <div class="log-meta">Farm: Kadatuan Cikembang · Blok B6 · NDVI: 0.22 (threshold: 0.40) · Notif: email + in-app</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot info"></div>
+            <div class="log-time">07:58:41</div>
+            <span class="log-user-chip board">Board</span>
+            <div class="log-body">
+              <div class="log-action">Login berhasil · Membuka halaman Portofolio Karbon</div>
+              <div class="log-meta">Fitrah Ramadhan · fitrah@kadatuankopi.com · IP: 182.1.x.x · Mobile Safari · Puntang</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot success"></div>
+            <div class="log-time">07:30:00</div>
+            <span class="log-user-chip system">SYSTEM</span>
+            <div class="log-body">
+              <div class="log-action">Sinkronisasi citra Sentinel-2 berhasil selesai</div>
+              <div class="log-meta">Periode: Q2 2026 · 12 farm diproses · 48 tile · Waktu proses: 4m 22s · GCS: uploaded</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot config"></div>
+            <div class="log-time">07:10:18</div>
+            <span class="log-user-chip admin">Admin</span>
+            <div class="log-body">
+              <div class="log-action">Data klien diperbarui — Kadatuan Cikembang area lahan diubah</div>
+              <div class="log-meta">Ahmad Dani · Perubahan: Luas lahan dari 15 Ha → 18 Ha · Blok: KC-A1</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot info"></div>
+            <div class="log-time">06:45:02</div>
+            <span class="log-user-chip board">Board</span>
+            <div class="log-body">
+              <div class="log-action">Login berhasil · Membuka halaman Dashboard</div>
+              <div class="log-meta">Dani Prasetyo · dani@smart-agri.id · IP: 103.28.x.x · Chrome 126 · Jakarta</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-dot success"></div>
+            <div class="log-time">02:00:00</div>
+            <span class="log-user-chip system">SYSTEM</span>
+            <div class="log-body">
+              <div class="log-action">Database backup otomatis berhasil — 2.4 GB</div>
+              <div class="log-meta">Backup ke GCS · Lokasi: asia-southeast1 · Durasi: 1m 48s · Checksum: verified</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Pagination -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid var(--color-border-muted);">
+          <div style="font-size:13px;color:var(--color-text-muted);">Menampilkan 1–11 dari 284 event</div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-ghost btn-sm" disabled>← Sebelumnya</button>
+            <button class="btn btn-ghost btn-sm" style="background:var(--color-primary-container);color:white;border-color:transparent;">1</button>
+            <button class="btn btn-ghost btn-sm">2</button>
+            <button class="btn btn-ghost btn-sm">3</button>
+            <span style="padding:6px 4px;color:var(--color-text-muted);">...</span>
+            <button class="btn btn-ghost btn-sm">26</button>
+            <button class="btn btn-ghost btn-sm">Berikutnya →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>renderSidebar('superadmin','superadmin-audit.html');</script>
+</body>
+</html>

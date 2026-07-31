@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Admin — Kelola Klien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .client-card { background: white; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); padding: 20px; transition: all var(--transition); cursor: pointer; }
+    .client-card:hover { box-shadow: var(--shadow-card); border-color: var(--color-primary-container); transform: translateY(-2px); }
+    .client-avatar { width: 44px; height: 44px; border-radius: 12px; background: var(--color-primary-container); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: white; font-size: 16px; flex-shrink: 0; }
+    .client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--gutter); }
+    .feature-tag { display: inline-flex; align-items: center; gap: 4px; background: var(--color-whisper-green); color: var(--color-dark-emerald); border-radius: 4px; font-size: 11px; font-weight: 700; padding: 2px 8px; margin: 2px 2px 0 0; }
+    .feature-tag.disabled { background: var(--color-surface-container); color: var(--color-text-muted); }
+    /* Modal Overlay */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: white; border-radius: var(--radius-md); padding: 28px; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .modal-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--color-text-main); margin-bottom: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .feature-checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .feature-checkbox { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--color-text-muted); padding: 8px 12px; border: 1px solid var(--color-border-muted); border-radius: 6px; cursor: pointer; transition: all var(--transition); }
+    .feature-checkbox input { accent-color: var(--color-primary-container); }
+    .feature-checkbox:has(input:checked) { background: var(--color-whisper-green); border-color: var(--color-primary-container); color: var(--color-dark-emerald); }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <!-- SIDEBAR (ADMIN) -->
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:var(--color-dark-amber);">AD</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Kelola Klien</h1>
+        <p class="page-subtitle">Daftarkan, ubah profil, dan atur hak akses untuk setiap klien perusahaan.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-add-client" onclick="openModal()">
+        <span class="material-symbols-outlined" style="font-size:17px;">person_add</span>
+        + Daftarkan Klien Baru
+      </button>
+    </div>
+
+    <!-- Quick Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-label">Total Klien</div>
+        <div class="stat-value">12</div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">+2 bulan ini</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Klien Aktif</div>
+        <div class="stat-value">9</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">75% dari total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Langganan Aktif</div>
+        <div class="stat-value">9</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Rata-rata 18 bln</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Lahan Dikelola</div>
+        <div class="stat-value">847 <span class="unit">Ha</span></div>
+        <div style="font-size:12px;color:var(--color-text-muted);">12 klien aktif</div>
+      </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div style="display:flex;gap:12px;margin-bottom:var(--space-lg);flex-wrap:wrap;">
+      <div class="search-input-wrap" style="flex:1;min-width:200px;">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" class="search-input" style="width:100%;" placeholder="Cari nama klien atau organisasi...">
+      </div>
+      <select class="form-input form-select" style="width:160px;">
+        <option>Semua Status</option>
+        <option>Aktif</option>
+        <option>Nonaktif</option>
+        <option>Trial</option>
+      </select>
+      <select class="form-input form-select" style="width:180px;">
+        <option>Semua Komoditas</option>
+        <option>Arabica Coffee</option>
+        <option>Robusta Coffee</option>
+        <option>Oil Palm</option>
+        <option>Sugarcane</option>
+      </select>
+    </div>
+
+    <!-- Client Cards Grid -->
+    <div class="client-grid">
+
+      <div class="client-card">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="client-avatar">KP</div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--color-text-main);">Kadatuan Puntang Farm</div>
+              <div style="font-size:12px;color:var(--color-text-muted);">fitrah@kadatuankopi.com</div>
+            </div>
+          </div>
+          <span class="badge badge-active">Aktif</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
+          <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">25</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">8</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">18<span style="font-size:12px;">bln</span></div><div style="font-size:11px;color:var(--color-text-muted);">Aktif</div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Fitur Aktif</div>
+          <div>
+            <span class="feature-tag">NDVI</span>
+            <span class="feature-tag">SOC</span>
+            <span class="feature-tag">Carbon Portfolio</span>
+            <span class="feature-tag">Laporan ESG</span>
+            <span class="feature-tag disabled">Traceability</span>
+            <span class="feature-tag disabled">Yield Forecast</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;">
+            <span class="material-symbols-outlined" style="font-size:15px;">edit</span> Edit
+          </button>
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;">
+            <span class="material-symbols-outlined" style="font-size:15px;">tune</span> Hak Akses
+          </button>
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;">
+            <span class="material-symbols-outlined" style="font-size:15px;">card_membership</span> Langganan
+          </button>
+        </div>
+      </div>
+
+      <div class="client-card">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="client-avatar" style="background:#7c3aed;">SM</div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--color-text-main);">SMART Agribusiness</div>
+              <div style="font-size:12px;color:var(--color-text-muted);">ops@smart-agri.id</div>
+            </div>
+          </div>
+          <span class="badge badge-active">Aktif</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
+          <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">340</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">24</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">36<span style="font-size:12px;">bln</span></div><div style="font-size:11px;color:var(--color-text-muted);">Aktif</div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Fitur Aktif</div>
+          <div>
+            <span class="feature-tag">NDVI</span>
+            <span class="feature-tag">SOC</span>
+            <span class="feature-tag">Biomassa</span>
+            <span class="feature-tag">Traceability</span>
+            <span class="feature-tag">Carbon Portfolio</span>
+            <span class="feature-tag">Laporan ESG</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><span class="material-symbols-outlined" style="font-size:15px;">edit</span> Edit</button>
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><span class="material-symbols-outlined" style="font-size:15px;">tune</span> Hak Akses</button>
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><span class="material-symbols-outlined" style="font-size:15px;">card_membership</span> Langganan</button>
+        </div>
+      </div>
+
+      <div class="client-card" style="opacity:0.7;">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="client-avatar" style="background:#6b7280;">KC</div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--color-text-main);">Kadatuan Cikembang</div>
+              <div style="font-size:12px;color:var(--color-text-muted);">admin@ckmbg.co.id</div>
+            </div>
+          </div>
+          <span class="badge badge-expired">Nonaktif</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
+          <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">18</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">3</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">—</div><div style="font-size:11px;color:var(--color-text-muted);">Aktif</div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Fitur Aktif</div>
+          <div>
+            <span class="feature-tag disabled">NDVI</span>
+            <span class="feature-tag disabled">SOC</span>
+            <span class="feature-tag disabled">Carbon Portfolio</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><span class="material-symbols-outlined" style="font-size:15px;">edit</span> Edit</button>
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;color:var(--color-bright-emerald);">
+            <span class="material-symbols-outlined" style="font-size:15px;">power_settings_new</span> Aktifkan
+          </button>
+        </div>
+      </div>
+
+      <!-- Pupuk Kujang Card -->
+      <div class="client-card">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="client-avatar" style="background:#dc2626;">PK</div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--color-text-main);">Pupuk Kujang</div>
+              <div style="font-size:12px;color:var(--color-text-muted);">digitalfarm@pupukkujang.co.id</div>
+            </div>
+          </div>
+          <span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Trial</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
+          <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">120</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">2</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">1<span style="font-size:12px;">bln</span></div><div style="font-size:11px;color:var(--color-text-muted);">Trial</div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Fitur Aktif</div>
+          <div>
+            <span class="feature-tag">NDVI</span>
+            <span class="feature-tag">SOC</span>
+            <span class="feature-tag disabled">Carbon Portfolio</span>
+            <span class="feature-tag disabled">Traceability</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><span class="material-symbols-outlined" style="font-size:15px;">edit</span> Edit</button>
+          <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><span class="material-symbols-outlined" style="font-size:15px;">tune</span> Hak Akses</button>
+          <button class="btn btn-primary btn-sm" style="flex:1;justify-content:center;"><span class="material-symbols-outlined" style="font-size:15px;">upgrade</span> Upgrade</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Daftarkan Klien Baru -->
+<div class="modal-overlay" id="modal-client">
+  <div class="modal-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <div class="modal-title">Daftarkan Klien Baru</div>
+      <button class="topnav-icon-btn" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nama Organisasi / Klien *</label>
+          <input type="text" class="form-input" placeholder="Contoh: Kadatuan Koffie">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email *</label>
+          <input type="email" class="form-input" placeholder="admin@perusahaan.com">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nama PIC</label>
+          <input type="text" class="form-input" placeholder="Nama penanggung jawab">
+        </div>
+        <div class="form-group">
+          <label class="form-label">No. Telepon</label>
+          <input type="tel" class="form-input" placeholder="+62 ...">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Total Lahan (Ha) *</label>
+          <input type="number" class="form-input" placeholder="e.g. 25">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Komoditas Utama</label>
+          <select class="form-input form-select">
+            <option>Arabica Coffee</option>
+            <option>Robusta Coffee</option>
+            <option>Oil Palm</option>
+            <option>Sugarcane</option>
+            <option>Cacao</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Paket Langganan</label>
+          <select class="form-input form-select">
+            <option>Standard</option>
+            <option>Premium</option>
+            <option>Enterprise</option>
+            <option>Trial (30 hari)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Masa Kontrak</label>
+          <select class="form-input form-select">
+            <option>12 Bulan</option>
+            <option>24 Bulan</option>
+            <option>36 Bulan</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Aktifkan Fitur</label>
+        <div class="feature-checkbox-group">
+          <label class="feature-checkbox"><input type="checkbox" checked> NDVI</label>
+          <label class="feature-checkbox"><input type="checkbox" checked> Soil Organic Carbon (SOC)</label>
+          <label class="feature-checkbox"><input type="checkbox"> Biomassa Karbon</label>
+          <label class="feature-checkbox"><input type="checkbox"> Crop Health Index</label>
+          <label class="feature-checkbox"><input type="checkbox"> Traceability</label>
+          <label class="feature-checkbox"><input type="checkbox"> Carbon Portfolio</label>
+          <label class="feature-checkbox"><input type="checkbox"> Laporan ESG</label>
+          <label class="feature-checkbox"><input type="checkbox"> Yield Forecast</label>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px;">
+        <button class="btn btn-ghost" onclick="closeModal()">Batal</button>
+        <button class="btn btn-primary" id="btn-submit-client">
+          <span class="material-symbols-outlined" style="font-size:17px;">person_add</span>
+          Daftarkan Klien
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal() { document.getElementById('modal-client').classList.add('open'); }
+function closeModal() { document.getElementById('modal-client').classList.remove('open'); }
+document.getElementById('modal-client').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+</script>
+  <script>renderSidebar('admin','admin-clients.html');</script>
+</body>
+</html>
+

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Konfigurasi Platform</title>
+  <meta name="description" content="Kelola konfigurasi global platform Agrivision — fitur, threshold, integrasi, dan branding.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+  <style>
+    .config-layout { display: grid; grid-template-columns: 260px 1fr; gap: var(--gutter); }
+    .config-menu { background: white; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); padding: 12px; box-shadow: var(--shadow-card); height: fit-content; position: sticky; top: 80px; }
+    .config-menu-label { font-size: 11px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .08em; padding: 4px 8px; margin-top: 8px; }
+    .config-menu-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--color-text-muted); transition: all var(--transition); }
+    .config-menu-item:hover, .config-menu-item.active { background: rgba(109,40,217,0.08); color: #6d28d9; }
+    .config-panel { display: none; }
+    .config-panel.active { display: flex; flex-direction: column; gap: var(--gutter); }
+    .setting-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--color-surface-container); gap: 20px; }
+    .setting-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .toggle-switch { width: 42px; height: 24px; background: var(--color-surface-container-high); border-radius: 12px; position: relative; cursor: pointer; transition: background 200ms; flex-shrink: 0; }
+    .toggle-switch.on { background: #7c3aed; }
+    .toggle-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform 200ms; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+    .toggle-switch.on::after { transform: translateX(18px); }
+    .integration-card { background: var(--color-surface-container-low); border: 1px solid var(--color-border-muted); border-radius: var(--radius-sm); padding: 16px; display: flex; align-items: center; gap: 12px; }
+    .integration-icon { width: 42px; height: 42px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-border-muted); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div style="font-size:14px;color:var(--color-text-muted);">
+      Super Admin · <strong style="color:var(--color-text-main);">Konfigurasi Platform</strong>
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Konfigurasi Platform</h1>
+        <p class="page-subtitle">Atur fitur global, integrasi eksternal, threshold sistem, dan branding Agrivision.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-save-all" onclick="alert('Konfigurasi disimpan!')">
+        <span class="material-symbols-outlined" style="font-size:17px;">save</span>
+        Simpan Semua Perubahan
+      </button>
+    </div>
+
+    <div class="config-layout">
+      <!-- Left Menu -->
+      <div class="config-menu">
+        <div class="config-menu-label">Konfigurasi</div>
+        <div class="config-menu-item active" onclick="showConfig('fitur', this)">
+          <span class="material-symbols-outlined" style="font-size:18px;">tune</span>Fitur Platform
+        </div>
+        <div class="config-menu-item" onclick="showConfig('integrasi', this)">
+          <span class="material-symbols-outlined" style="font-size:18px;">link</span>Integrasi Eksternal
+        </div>
+        <div class="config-menu-item" onclick="showConfig('threshold', this)">
+          <span class="material-symbols-outlined" style="font-size:18px;">warning</span>Threshold Global
+        </div>
+        <div class="config-menu-item" onclick="showConfig('branding', this)">
+          <span class="material-symbols-outlined" style="font-size:18px;">palette</span>Branding & Tampilan
+        </div>
+        <div class="config-menu-item" onclick="showConfig('notif', this)">
+          <span class="material-symbols-outlined" style="font-size:18px;">notifications</span>Notifikasi Global
+        </div>
+        <div class="config-menu-label">Sistem</div>
+        <div class="config-menu-item" onclick="showConfig('maintenance', this)">
+          <span class="material-symbols-outlined" style="font-size:18px;">build</span>Mode Maintenance
+        </div>
+      </div>
+
+      <!-- Panels -->
+      <div>
+        <!-- Panel: Fitur Platform -->
+        <div class="config-panel active" id="cfg-fitur">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Fitur Platform</span><span style="font-size:12px;color:var(--color-text-muted);">Toggle berlaku untuk semua klien</span></div>
+            <div class="card-body">
+              <div class="setting-row">
+                <div><div style="font-size:14px;font-weight:700;">NDVI Real-time Analysis</div><div style="font-size:12px;color:var(--color-text-muted);">Proses citra Sentinel-2 otomatis setiap hari</div></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="setting-row">
+                <div><div style="font-size:14px;font-weight:700;">Carbon Credit Generation</div><div style="font-size:12px;color:var(--color-text-muted);">Aktifkan modul kalkulasi karbon dan Verra VCS</div></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="setting-row">
+                <div><div style="font-size:14px;font-weight:700;">Traceability QR Code</div><div style="font-size:12px;color:var(--color-text-muted);">Generate QR untuk supply chain tracking</div></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="setting-row">
+                <div><div style="font-size:14px;font-weight:700;">Laporan ESG Otomatis</div><div style="font-size:12px;color:var(--color-text-muted);">Generate laporan quarterly secara terjadwal</div></div>
+                <div class="toggle-switch on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="setting-row">
+                <div><div style="font-size:14px;font-weight:700;">AI Rekomendasi Agronomi</div><div style="font-size:12px;color:var(--color-text-muted);">Aktifkan saran berbasis ML untuk optimasi lahan</div></div>
+                <div class="toggle-switch" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="setting-row">
+                <div><div style="font-size:14px;font-weight:700;">Notifikasi WhatsApp</div><div style="font-size:12px;color:var(--color-text-muted);">Kirim alert anomali via WhatsApp Business API</div></div>
+                <div class="toggle-switch" onclick="this.classList.toggle('on')"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Integrasi -->
+        <div class="config-panel" id="cfg-integrasi">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Integrasi Eksternal</span></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="integration-card">
+                  <div class="integration-icon"><span class="material-symbols-outlined" style="font-size:22px;color:#1a73e8;">satellite_alt</span></div>
+                  <div style="flex:1;">
+                    <div style="font-size:14px;font-weight:700;">Sentinel Hub (ESA)</div>
+                    <div style="font-size:12px;color:var(--color-text-muted);">Penyedia data citra satelit Sentinel-2 · L2A</div>
+                  </div>
+                  <span class="badge badge-active">Terhubung</span>
+                </div>
+                <div class="integration-card">
+                  <div class="integration-icon"><span class="material-symbols-outlined" style="font-size:22px;color:#34a853;">travel_explore</span></div>
+                  <div style="flex:1;">
+                    <div style="font-size:14px;font-weight:700;">Google Earth Engine</div>
+                    <div style="font-size:12px;color:var(--color-text-muted);">Komputasi geospasial skala besar</div>
+                  </div>
+                  <span class="badge badge-active">Terhubung</span>
+                </div>
+                <div class="integration-card">
+                  <div class="integration-icon"><span class="material-symbols-outlined" style="font-size:22px;color:#0ea5e9;">verified</span></div>
+                  <div style="flex:1;">
+                    <div style="font-size:14px;font-weight:700;">Verra VCS Registry</div>
+                    <div style="font-size:12px;color:var(--color-text-muted);">Platform verifikasi carbon credit internasional</div>
+                  </div>
+                  <span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Manual</span>
+                </div>
+                <div class="integration-card">
+                  <div class="integration-icon"><span class="material-symbols-outlined" style="font-size:22px;color:#25d366;">chat</span></div>
+                  <div style="flex:1;">
+                    <div style="font-size:14px;font-weight:700;">WhatsApp Business API</div>
+                    <div style="font-size:12px;color:var(--color-text-muted);">Notifikasi alert via WhatsApp</div>
+                  </div>
+                  <span class="badge badge-expired">Tidak Aktif</span>
+                </div>
+                <div class="integration-card">
+                  <div class="integration-icon"><span class="material-symbols-outlined" style="font-size:22px;color:#ea4335;">cloud</span></div>
+                  <div style="flex:1;">
+                    <div style="font-size:14px;font-weight:700;">Google Cloud Storage</div>
+                    <div style="font-size:12px;color:var(--color-text-muted);">Object storage untuk laporan & imagery</div>
+                  </div>
+                  <span class="badge badge-active">Terhubung</span>
+                </div>
+              </div>
+              <div style="margin-top:16px;">
+                <button class="btn btn-ghost btn-sm"><span class="material-symbols-outlined" style="font-size:16px;">add</span> Tambah Integrasi</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Threshold -->
+        <div class="config-panel" id="cfg-threshold">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Threshold Global</span><span style="font-size:12px;color:var(--color-text-muted);">Berlaku jika klien tidak set custom threshold</span></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--color-text-muted);background:var(--color-whisper-green);padding:10px 12px;border-radius:8px;margin-bottom:16px;">
+                Nilai di bawah threshold akan memicu alert anomali yang terkirim ke Admin dan klien terkait.
+              </p>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div>
+                  <label class="form-label">NDVI Minimum (Kritis)</label>
+                  <input type="number" class="form-input" value="0.40" step="0.01" min="0" max="1">
+                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Di bawah nilai ini → alert merah</div>
+                </div>
+                <div>
+                  <label class="form-label">NDVI Warning Level</label>
+                  <input type="number" class="form-input" value="0.55" step="0.01" min="0" max="1">
+                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Di bawah nilai ini → alert kuning</div>
+                </div>
+                <div>
+                  <label class="form-label">SOC Minimum (Ton C/Ha)</label>
+                  <input type="number" class="form-input" value="1.80" step="0.1" min="0">
+                </div>
+                <div>
+                  <label class="form-label">NDRE Warning Level</label>
+                  <input type="number" class="form-input" value="0.25" step="0.01" min="0">
+                </div>
+                <div>
+                  <label class="form-label">Biomassa Minimum (Ton/Ha)</label>
+                  <input type="number" class="form-input" value="80" step="5" min="0">
+                </div>
+                <div>
+                  <label class="form-label">Carbon Credit Alert (Ton CO₂e)</label>
+                  <input type="number" class="form-input" value="500" step="10" min="0">
+                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Alert jika karbon di bawah target ini</div>
+                </div>
+              </div>
+              <div style="margin-top:20px;">
+                <button class="btn btn-primary" id="btn-save-threshold">
+                  <span class="material-symbols-outlined" style="font-size:17px;">save</span>Simpan Threshold
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Branding -->
+        <div class="config-panel" id="cfg-branding">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Branding & Tampilan</span></div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <div>
+                  <label class="form-label">Nama Platform</label>
+                  <input type="text" class="form-input" value="Agrivision">
+                </div>
+                <div>
+                  <label class="form-label">Tagline</label>
+                  <input type="text" class="form-input" value="Precision Agriculture for Sustainable Future">
+                </div>
+                <div>
+                  <label class="form-label">Warna Utama (Hex)</label>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="color" value="#053b26" style="width:40px;height:36px;border:none;border-radius:6px;cursor:pointer;">
+                    <input type="text" class="form-input" value="#053B26" style="flex:1;">
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label">Warna Aksen (Hex)</label>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <input type="color" value="#fdb134" style="width:40px;height:36px;border:none;border-radius:6px;cursor:pointer;">
+                    <input type="text" class="form-input" value="#FDB134" style="flex:1;">
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label">Font Heading</label>
+                  <select class="form-input form-select">
+                    <option>Playfair Display</option>
+                    <option>DM Sans</option>
+                    <option>Poppins</option>
+                    <option>Inter</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label">Font Body</label>
+                  <select class="form-input form-select">
+                    <option>DM Sans</option>
+                    <option>Poppins</option>
+                    <option>Inter</option>
+                    <option>Roboto</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top:16px;">
+                <label class="form-label">Upload Logo</label>
+                <div style="border:2px dashed var(--color-border-muted);border-radius:var(--radius-sm);padding:24px;text-align:center;color:var(--color-text-muted);font-size:13px;cursor:pointer;">
+                  <span class="material-symbols-outlined" style="font-size:32px;display:block;margin-bottom:8px;">upload_file</span>
+                  Klik atau drag & drop file SVG/PNG (max 500KB)
+                </div>
+              </div>
+              <div style="margin-top:16px;">
+                <button class="btn btn-primary">
+                  <span class="material-symbols-outlined" style="font-size:17px;">save</span>Simpan Branding
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Notif Global -->
+        <div class="config-panel" id="cfg-notif">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Notifikasi Global</span></div>
+            <div class="card-body">
+              <div class="setting-row"><div><div style="font-size:14px;font-weight:700;">Alert Anomali Otomatis ke Klien</div><div style="font-size:12px;color:var(--color-text-muted);">Kirim email + in-app notif ke klien jika anomali terdeteksi</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div style="font-size:14px;font-weight:700;">Reminder Perpanjangan Langganan</div><div style="font-size:12px;color:var(--color-text-muted);">30 hari dan 7 hari sebelum langganan berakhir</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div style="font-size:14px;font-weight:700;">Weekly Digest ke Admin</div><div style="font-size:12px;color:var(--color-text-muted);">Ringkasan mingguan aktivitas platform setiap Senin pagi</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div style="font-size:14px;font-weight:700;">Alert ke Super Admin (Error Kritis)</div><div style="font-size:12px;color:var(--color-text-muted);">Notifikasi segera jika ada error kritis atau downtime</div></div><div class="toggle-switch on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div style="font-size:14px;font-weight:700;">Data Satellite Sync Sukses</div><div style="font-size:12px;color:var(--color-text-muted);">Konfirmasi saat data Sentinel baru berhasil diproses</div></div><div class="toggle-switch" onclick="this.classList.toggle('on')"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Maintenance -->
+        <div class="config-panel" id="cfg-maintenance">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Mode Maintenance</span></div>
+            <div class="card-body">
+              <div style="background:rgba(186,26,26,0.06);border:1px solid rgba(186,26,26,0.2);border-radius:var(--radius-sm);padding:16px;margin-bottom:20px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--color-error);margin-bottom:4px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1;">warning</span>
+                  Mode Maintenance akan membuat semua klien tidak dapat mengakses platform.
+                </div>
+                <div style="font-size:13px;color:var(--color-text-muted);">Gunakan hanya saat deployment atau perbaikan infrastruktur kritis.</div>
+              </div>
+              <div class="setting-row">
+                <div>
+                  <div style="font-size:14px;font-weight:700;">Mode Maintenance Global</div>
+                  <div style="font-size:12px;color:var(--color-text-muted);">Tampilkan halaman maintenance ke semua pengguna kecuali Super Admin</div>
+                </div>
+                <div class="toggle-switch" onclick="if(confirm('Yakin aktifkan Mode Maintenance? Semua klien tidak bisa akses!')) this.classList.toggle('on')"></div>
+              </div>
+              <div style="margin-top:16px;">
+                <label class="form-label">Pesan Maintenance untuk Pengguna</label>
+                <textarea class="form-input" rows="3" style="resize:vertical;">Platform Agrivision sedang dalam pemeliharaan terjadwal. Kami akan kembali dalam beberapa jam. Mohon maaf atas ketidaknyamanan ini.</textarea>
+              </div>
+              <div style="margin-top:12px;">
+                <label class="form-label">Perkiraan Selesai</label>
+                <input type="datetime-local" class="form-input" style="width:280px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function showConfig(id, btn) {
+  document.querySelectorAll('.config-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.config-menu-item').forEach(m => m.classList.remove('active'));
+  document.getElementById('cfg-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+renderSidebar('superadmin','superadmin-platform.html');
+</script>
+</body>
+</html>

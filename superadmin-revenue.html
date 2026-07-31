@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Pendapatan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <style>
+    .revenue-bar { height: 180px; background: var(--color-surface-container-low); border-radius: var(--radius-md); padding: 16px; display: flex; align-items: flex-end; gap: 12px; }
+    .rev-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .rev-bar-fill { width: 100%; border-radius: 4px 4px 0 0; background: var(--color-primary-container); transition: height 800ms ease; }
+    .rev-bar-label { font-size: 11px; color: var(--color-text-muted); }
+    .rev-bar-value { font-size: 12px; font-weight: 700; color: var(--color-text-main); }
+  </style>
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div></div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Pendapatan</h1>
+        <p class="page-subtitle">Ringkasan pendapatan platform Agrivision dari semua klien dan langganan aktif.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-export-revenue">
+        <span class="material-symbols-outlined" style="font-size:17px;">download</span>
+        Export Revenue Report
+      </button>
+    </div>
+
+    <!-- KPI Cards -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">payments</span><span class="stat-badge success">+22%</span></div>
+        <div class="stat-label">ARR (Annual Recurring)</div>
+        <div class="stat-value" style="font-size:28px;">Rp 2.4 M</div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">↑ vs tahun lalu</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="font-variation-settings:'FILL' 1;">account_balance</span></div>
+        <div class="stat-label">MRR (Monthly Recurring)</div>
+        <div class="stat-value" style="font-size:28px;">Rp 200 jt</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Jun 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:#7c3aed;font-variation-settings:'FILL' 1;">people</span></div>
+        <div class="stat-label">Revenue per Klien</div>
+        <div class="stat-value" style="font-size:28px;">Rp 200 jt</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Rata-rata · 12 klien</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-bright-emerald);font-variation-settings:'FILL' 1;">trending_up</span></div>
+        <div class="stat-label">Churn Rate</div>
+        <div class="stat-value">1.2<span class="unit">%</span></div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">↓ Sangat rendah</div>
+      </div>
+    </div>
+
+    <!-- Revenue Chart + Breakdown -->
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <!-- Bar Chart -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Revenue Bulanan · 2026</span>
+          <select class="form-input form-select" style="width:120px;padding:4px 24px 4px 8px;font-size:12px;"><option>2026</option><option>2025</option></select>
+        </div>
+        <div class="card-body">
+          <!-- Y labels + bars -->
+          <div style="display:flex;gap:12px;align-items:flex-end;">
+            <div style="display:flex;flex-direction:column;justify-content:space-between;text-align:right;height:150px;padding-bottom:20px;width:50px;flex-shrink:0;">
+              <span style="font-size:10px;color:var(--color-text-muted);">250 jt</span>
+              <span style="font-size:10px;color:var(--color-text-muted);">200 jt</span>
+              <span style="font-size:10px;color:var(--color-text-muted);">150 jt</span>
+              <span style="font-size:10px;color:var(--color-text-muted);">100 jt</span>
+              <span style="font-size:10px;color:var(--color-text-muted);">50 jt</span>
+            </div>
+            <div style="flex:1;display:flex;gap:8px;align-items:flex-end;height:150px;border-bottom:1px solid var(--color-border-muted);">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:100%;height:72px;background:var(--color-primary-container);border-radius:4px 4px 0 0;opacity:0.7;"></div>
+                <div style="font-size:10px;color:var(--color-text-muted);">Jan</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:100%;height:84px;background:var(--color-primary-container);border-radius:4px 4px 0 0;opacity:0.8;"></div>
+                <div style="font-size:10px;color:var(--color-text-muted);">Feb</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:100%;height:90px;background:var(--color-primary-container);border-radius:4px 4px 0 0;opacity:0.85;"></div>
+                <div style="font-size:10px;color:var(--color-text-muted);">Mar</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:100%;height:96px;background:var(--color-primary-container);border-radius:4px 4px 0 0;opacity:0.88;"></div>
+                <div style="font-size:10px;color:var(--color-text-muted);">Apr</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:100%;height:108px;background:var(--color-primary-container);border-radius:4px 4px 0 0;opacity:0.92;"></div>
+                <div style="font-size:10px;color:var(--color-text-muted);">Mei</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:100%;height:120px;background:var(--color-primary-container);border-radius:4px 4px 0 0;box-shadow:0 -3px 12px rgba(5,59,38,0.2);"></div>
+                <div style="font-size:10px;color:var(--color-text-main);font-weight:700;">Jun</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue Breakdown -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">Breakdown per Paket</span></div>
+        <div class="card-body">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px;"><span>Enterprise</span><span style="color:var(--color-primary-container);">Rp 960 jt (40%)</span></div>
+              <div style="height:10px;background:var(--color-surface-container-low);border-radius:5px;"><div style="height:100%;width:40%;background:var(--color-primary-container);border-radius:5px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px;"><span>Premium</span><span style="color:#7c3aed;">Rp 720 jt (30%)</span></div>
+              <div style="height:10px;background:var(--color-surface-container-low);border-radius:5px;"><div style="height:100%;width:30%;background:#7c3aed;border-radius:5px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px;"><span>Standard</span><span style="color:#22c55e;">Rp 480 jt (20%)</span></div>
+              <div style="height:10px;background:var(--color-surface-container-low);border-radius:5px;"><div style="height:100%;width:20%;background:#22c55e;border-radius:5px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:5px;"><span>Trial</span><span style="color:var(--color-dark-amber);">Rp 240 jt (10%)</span></div>
+              <div style="height:10px;background:var(--color-surface-container-low);border-radius:5px;"><div style="height:100%;width:10%;background:var(--color-dark-amber);border-radius:5px;"></div></div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--color-text-main);">Rp 2.4 M</div>
+            <div style="font-size:12px;color:var(--color-text-muted);">Total ARR 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue per Client Table -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">Revenue per Klien</span></div>
+      <div class="table-container">
+        <table class="data-table" aria-label="Revenue Per Klien">
+          <thead>
+            <tr><th>Klien</th><th>Paket</th><th>Lahan (Ha)</th><th>Mulai</th><th>MRR</th><th>ARR</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:700;">SMART Agribusiness</div><div style="font-size:12px;color:var(--color-text-muted);">ops@smart-agri.id</div></td>
+              <td><span class="badge" style="background:rgba(5,59,38,0.12);color:#056046;">Enterprise</span></td>
+              <td>340</td>
+              <td style="color:var(--color-text-muted);">Jan 2024</td>
+              <td style="font-weight:700;">Rp 80 jt</td>
+              <td style="font-weight:700;color:var(--color-dark-emerald);">Rp 960 jt</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:700;">Kadatuan Puntang Farm</div><div style="font-size:12px;color:var(--color-text-muted);">fitrah@kadatuankopi.com</div></td>
+              <td><span class="badge" style="background:rgba(124,58,237,0.12);color:#6d28d9;">Premium</span></td>
+              <td>25</td>
+              <td style="color:var(--color-text-muted);">Jan 2025</td>
+              <td style="font-weight:700;">Rp 30 jt</td>
+              <td style="font-weight:700;color:var(--color-dark-emerald);">Rp 360 jt</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:700;">Pupuk Kujang</div><div style="font-size:12px;color:var(--color-text-muted);">budi@pupukkujang.co.id</div></td>
+              <td><span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Trial</span></td>
+              <td>120</td>
+              <td style="color:var(--color-text-muted);">Jun 2026</td>
+              <td style="font-weight:700;">Rp 20 jt</td>
+              <td style="font-weight:700;color:var(--color-text-muted);">Trial</td>
+              <td><span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Trial</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+  <script>renderSidebar('superadmin','superadmin-revenue.html');</script>
+</body>
+</html>
+

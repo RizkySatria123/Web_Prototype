@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Langganan</title>
+  <meta name="description" content="Kelola paket langganan dan status klien platform Agrivision.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+  <style>
+    .plan-card {
+      background: white;
+      border: 2px solid var(--color-border-muted);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .plan-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-elevated); }
+    .plan-card.popular { border-color: var(--color-primary-container); }
+    .plan-popular-tag {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-primary-container);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 14px;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .plan-price {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--color-text-main);
+      line-height: 1;
+    }
+    .plan-feature { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text-muted); padding: 5px 0; }
+    .plan-feature .material-symbols-outlined { font-size: 16px; color: var(--color-bright-emerald); font-variation-settings: 'FILL' 1; }
+    .subs-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--color-surface-container); gap: 12px; }
+    .subs-row:last-child { border-bottom: none; }
+    .progress-mini { height: 6px; background: var(--color-surface-container-low); border-radius: 3px; margin-top: 4px; }
+    .progress-mini-fill { height: 100%; border-radius: 3px; background: var(--color-primary-container); }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div style="font-size:14px;color:var(--color-text-muted);">
+      Super Admin · <strong style="color:var(--color-text-main);">Langganan</strong>
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Langganan</h1>
+        <p class="page-subtitle">Kelola paket layanan, harga, dan status langganan seluruh klien Agrivision.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-add-plan">
+        <span class="material-symbols-outlined" style="font-size:17px;">add</span>
+        + Tambah Paket
+      </button>
+    </div>
+
+    <!-- KPI Row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="font-variation-settings:'FILL' 1;">card_membership</span><span class="stat-badge success">+3</span></div>
+        <div class="stat-label">Total Langganan Aktif</div>
+        <div class="stat-value">12</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Dari 12 klien</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:#7c3aed;font-variation-settings:'FILL' 1;">workspace_premium</span></div>
+        <div class="stat-label">Enterprise</div>
+        <div class="stat-value">2</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Rp 80 jt/bulan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:#0ea5e9;font-variation-settings:'FILL' 1;">star</span></div>
+        <div class="stat-label">Premium</div>
+        <div class="stat-value">5</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Rp 30 jt/bulan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">experiment</span></div>
+        <div class="stat-label">Trial / Standard</div>
+        <div class="stat-value">5</div>
+        <div style="font-size:12px;color:var(--color-dark-amber);font-weight:600;">2 kadaluwarsa bulan ini</div>
+      </div>
+    </div>
+
+    <!-- Plan Cards -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <!-- Trial -->
+      <div class="plan-card">
+        <div style="font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Trial</div>
+        <div class="plan-price">Gratis<span style="font-size:18px;font-weight:400;color:var(--color-text-muted);"> / 30 hari</span></div>
+        <p style="font-size:13px;color:var(--color-text-muted);margin:10px 0 16px;">Eksplorasi fitur dasar platform.</p>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>1 Lahan (max 50 Ha)</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>NDVI Dasar</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Dashboard Read-only</div>
+        <div class="plan-feature" style="color:var(--color-text-muted);opacity:0.5;"><span class="material-symbols-outlined" style="color:var(--color-text-muted);">cancel</span>Laporan ESG</div>
+        <div class="plan-feature" style="color:var(--color-text-muted);opacity:0.5;"><span class="material-symbols-outlined" style="color:var(--color-text-muted);">cancel</span>Traceability QR</div>
+        <div style="margin-top:16px;font-size:13px;font-weight:700;color:var(--color-text-muted);">2 klien aktif</div>
+        <div class="progress-mini" style="margin-top:4px;"><div class="progress-mini-fill" style="width:17%;background:#9ca3af;"></div></div>
+      </div>
+
+      <!-- Standard -->
+      <div class="plan-card">
+        <div style="font-size:12px;font-weight:700;color:var(--color-bright-emerald);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Standard</div>
+        <div class="plan-price">Rp 15jt<span style="font-size:18px;font-weight:400;color:var(--color-text-muted);"> / bln</span></div>
+        <p style="font-size:13px;color:var(--color-text-muted);margin:10px 0 16px;">Untuk usaha tani skala menengah.</p>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Hingga 3 Lahan (500 Ha)</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>NDVI + SOC + NDRE</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Laporan Kuartalan</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Traceability QR Code</div>
+        <div class="plan-feature" style="color:var(--color-text-muted);opacity:0.5;"><span class="material-symbols-outlined" style="color:var(--color-text-muted);">cancel</span>Carbon Credit Verified</div>
+        <div style="margin-top:16px;font-size:13px;font-weight:700;color:var(--color-text-muted);">3 klien aktif</div>
+        <div class="progress-mini" style="margin-top:4px;"><div class="progress-mini-fill" style="width:25%;"></div></div>
+      </div>
+
+      <!-- Premium -->
+      <div class="plan-card popular">
+        <div class="plan-popular-tag">Terlaris</div>
+        <div style="font-size:12px;font-weight:700;color:#0ea5e9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Premium</div>
+        <div class="plan-price">Rp 30jt<span style="font-size:18px;font-weight:400;color:var(--color-text-muted);"> / bln</span></div>
+        <p style="font-size:13px;color:var(--color-text-muted);margin:10px 0 16px;">Untuk klien korporat dengan multi-lahan.</p>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Hingga 10 Lahan (unlimited Ha)</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Semua Indeks Agronomi</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Laporan ESG Bulanan</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Carbon Credit Verra VCS</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Traceability + QR Custom</div>
+        <div style="margin-top:16px;font-size:13px;font-weight:700;color:#0ea5e9;">5 klien aktif</div>
+        <div class="progress-mini" style="margin-top:4px;"><div class="progress-mini-fill" style="width:42%;background:#0ea5e9;"></div></div>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="plan-card" style="background:linear-gradient(135deg,#f5f0ff,#fff);border-color:#7c3aed;">
+        <div style="font-size:12px;font-weight:700;color:#6d28d9;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Enterprise</div>
+        <div class="plan-price" style="color:#6d28d9;">Custom<span style="font-size:18px;font-weight:400;color:var(--color-text-muted);"> / negosiasi</span></div>
+        <p style="font-size:13px;color:var(--color-text-muted);margin:10px 0 16px;">Solusi penuh untuk konglomerasi agri.</p>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Lahan Unlimited</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>White-label Dashboard</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>API Akses Penuh</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>Dedicated Account Manager</div>
+        <div class="plan-feature"><span class="material-symbols-outlined">check_circle</span>SLA 99.9% Uptime</div>
+        <div style="margin-top:16px;font-size:13px;font-weight:700;color:#6d28d9;">2 klien aktif</div>
+        <div class="progress-mini" style="margin-top:4px;"><div class="progress-mini-fill" style="width:17%;background:#7c3aed;"></div></div>
+      </div>
+    </div>
+
+    <!-- Subscriptions Table -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Status Langganan Klien</span>
+        <div style="display:flex;gap:8px;">
+          <select class="form-input form-select" style="width:150px;padding:6px 28px 6px 10px;font-size:13px;">
+            <option>Semua Paket</option>
+            <option>Enterprise</option>
+            <option>Premium</option>
+            <option>Standard</option>
+            <option>Trial</option>
+          </select>
+          <select class="form-input form-select" style="width:150px;padding:6px 28px 6px 10px;font-size:13px;">
+            <option>Semua Status</option>
+            <option>Aktif</option>
+            <option>Trial</option>
+            <option>Kadaluwarsa</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table" aria-label="Daftar Langganan Klien">
+          <thead>
+            <tr>
+              <th>Klien</th>
+              <th>Paket</th>
+              <th>Mulai</th>
+              <th>Berakhir</th>
+              <th>Lahan (Ha)</th>
+              <th>Pembayaran</th>
+              <th>Status</th>
+              <th style="text-align:right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="font-weight:700;">SMART Agribusiness</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Dani Prasetyo · dani@smart-agri.id</div>
+              </td>
+              <td><span class="badge" style="background:rgba(109,40,217,0.12);color:#6d28d9;">Enterprise</span></td>
+              <td style="color:var(--color-text-muted);">Jan 2024</td>
+              <td style="color:var(--color-text-muted);">Des 2026</td>
+              <td>340</td>
+              <td style="font-weight:700;color:var(--color-dark-emerald);">Rp 80 jt/bln</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="text-align:right;white-space:nowrap;">
+                <button class="btn btn-ghost btn-sm" style="margin-right:4px;">Edit</button>
+                <button class="action-btn view">Detail</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">Kadatuan Puntang Farm</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Fitrah Ramadhan · fitrah@kadatuankopi.com</div>
+              </td>
+              <td><span class="badge" style="background:rgba(14,165,233,0.12);color:#0369a1;">Premium</span></td>
+              <td style="color:var(--color-text-muted);">Jan 2025</td>
+              <td style="color:var(--color-text-muted);">Des 2026</td>
+              <td>25</td>
+              <td style="font-weight:700;color:var(--color-dark-emerald);">Rp 30 jt/bln</td>
+              <td><span class="badge badge-active">Aktif</span></td>
+              <td style="text-align:right;white-space:nowrap;">
+                <button class="btn btn-ghost btn-sm" style="margin-right:4px;">Edit</button>
+                <button class="action-btn view">Detail</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">Kadatuan Cikembang</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Andi Kurniawan · andi@ckmbg.co.id</div>
+              </td>
+              <td><span class="badge" style="background:rgba(34,197,94,0.12);color:#15803d;">Standard</span></td>
+              <td style="color:var(--color-text-muted);">Jul 2025</td>
+              <td style="color:var(--color-dark-amber);font-weight:700;">31 Agu 2026 ⚠</td>
+              <td>18</td>
+              <td style="font-weight:700;">Rp 15 jt/bln</td>
+              <td><span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Segera Berakhir</span></td>
+              <td style="text-align:right;white-space:nowrap;">
+                <button class="btn btn-primary btn-sm" style="margin-right:4px;">Perpanjang</button>
+                <button class="action-btn view">Detail</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:700;">Pupuk Kujang</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Budi Santoso · budi@pupukkujang.co.id</div>
+              </td>
+              <td><span class="badge" style="background:rgba(156,163,175,0.15);color:#6b7280;">Trial</span></td>
+              <td style="color:var(--color-text-muted);">Jun 2026</td>
+              <td style="color:var(--color-dark-amber);font-weight:700;">30 Jul 2026 ⚠</td>
+              <td>120</td>
+              <td style="color:var(--color-text-muted);">—</td>
+              <td><span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Trial</span></td>
+              <td style="text-align:right;white-space:nowrap;">
+                <button class="btn btn-primary btn-sm">Upgrade</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+<script>renderSidebar('superadmin','superadmin-subscriptions.html');</script>
+</body>
+</html>
