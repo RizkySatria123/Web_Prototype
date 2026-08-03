@@ -1,7 +1,7 @@
 /**
  * AGRIVISION — Shared Sidebar Renderer
  * Satu sumber sidebar untuk setiap role.
- * Panggil renderSidebar('board'|'admin'|'superadmin', 'file.html') dari setiap halaman.
+ * Panggil renderSidebar('board'|'manager'|'superadmin', 'file.html') dari setiap halaman.
  */
 
 const LOGO_SVG = `
@@ -15,22 +15,25 @@ const LOGO_SVG = `
 
 /**
  * Navigasi canonical per role.
- * Semua halaman yang sama role WAJIB menampilkan menu yang identik.
+ * Terminologi mengikuti draw.io entity diagram Agrivision.
+ * Roles: Super Admin | Manager | Board (Investor)
  */
 const SIDEBAR_MENUS = {
+
+  // ── BOARD (Investor / Klien) ──────────────────────────────
   board: {
-    roleLabel: 'Precision Agriculture',
+    roleLabel: 'Investor · Board',
     userAvatar: 'FR',
     userName: 'Fitrah Ramadhan',
-    userRole: 'Board · Klien',
-    avatarBg: '', // default (primary-container)
+    userRole: 'Investor · Board',
+    avatarBg: '',
     sections: [
       { label: 'Utama', items: [
         { href: 'board-dashboard.html',     icon: 'dashboard',    text: 'Dashboard' },
-        { href: 'board-farms.html',         icon: 'grass',        text: 'Lahan Saya' },
+        { href: 'board-farms.html',         icon: 'grass',        text: 'Lahan Project' },
         { href: 'board-notifications.html', icon: 'notifications',text: 'Notifikasi', badge: '3' },
       ]},
-      { label: 'Analitik', items: [
+      { label: 'Data & Estimasi', items: [
         { href: 'board-carbon.html',   icon: 'eco',         text: 'Portofolio Karbon' },
         { href: 'board-reports.html',  icon: 'description', text: 'Laporan' },
       ]},
@@ -41,30 +44,32 @@ const SIDEBAR_MENUS = {
     ]
   },
 
-  admin: {
-    roleLabel: 'Admin Panel',
+  // ── MANAGER ──────────────────────────────────────────────
+  manager: {
+    roleLabel: 'Manager Panel',
     userAvatar: 'AD',
     userName: 'Ahmad Dani',
-    userRole: 'Admin · Agrivision',
+    userRole: 'Manager · Agrivision',
     avatarBg: 'var(--color-dark-amber)',
     sections: [
       { label: 'Utama', items: [
-        { href: 'admin-dashboard.html', icon: 'dashboard', text: 'Dashboard' },
-        { href: 'admin-clients.html',   icon: 'groups',    text: 'Kelola Klien' },
+        { href: 'manager-dashboard.html', icon: 'dashboard', text: 'Dashboard' },
+        { href: 'manager-clients.html',   icon: 'groups',    text: 'Klien (Perusahaan)' },
       ]},
-      { label: 'Data & Analitik', items: [
-        { href: 'admin-indices.html',      icon: 'data_thresholding', text: 'Indeks & Data' },
-        { href: 'admin-traceability.html', icon: 'account_tree',      text: 'Traceability' },
-        { href: 'admin-reports.html',      icon: 'summarize',         text: 'Laporan & Analitik' },
+      { label: 'Lahan & Observasi', items: [
+        { href: 'manager-indices.html',      icon: 'data_thresholding', text: 'Index Observasi' },
+        { href: 'manager-traceability.html', icon: 'account_tree',      text: 'Rantai Pasok' },
+        { href: 'manager-reports.html',      icon: 'summarize',         text: 'Laporan & Analitik' },
       ]},
       { label: 'Sistem', items: [
-        { href: 'admin-monitoring.html', icon: 'monitor_heart', text: 'Pantau Sistem' },
-        { href: 'admin-profile.html',    icon: 'person',        text: 'Profil' },
-        { href: 'admin-settings.html',   icon: 'settings',      text: 'Pengaturan' },
+        { href: 'manager-monitoring.html', icon: 'monitor_heart', text: 'Pantau Sistem' },
+        { href: 'manager-profile.html',    icon: 'person',        text: 'Profil' },
+        { href: 'manager-settings.html',   icon: 'settings',      text: 'Pengaturan' },
       ]},
     ]
   },
 
+  // ── SUPER ADMIN ───────────────────────────────────────────
   superadmin: {
     roleLabel: 'Super Admin',
     userAvatar: 'SA',
@@ -77,8 +82,8 @@ const SIDEBAR_MENUS = {
         { href: 'superadmin-users.html',     icon: 'manage_accounts', text: 'Kelola Pengguna' },
       ]},
       { label: 'Bisnis', items: [
-        { href: 'superadmin-revenue.html',       icon: 'payments',       text: 'Pendapatan' },
-        { href: 'superadmin-subscriptions.html', icon: 'card_membership',text: 'Langganan' },
+        { href: 'superadmin-revenue.html',       icon: 'payments',        text: 'Pendapatan' },
+        { href: 'superadmin-subscriptions.html', icon: 'card_membership', text: 'Paket Langganan' },
       ]},
       { label: 'Platform', items: [
         { href: 'superadmin-platform.html', icon: 'settings_applications', text: 'Konfigurasi Platform' },
@@ -91,8 +96,8 @@ const SIDEBAR_MENUS = {
 
 /**
  * Render sidebar ke elemen #sidebar-placeholder.
- * @param {string} role   - 'board' | 'admin' | 'superadmin'
- * @param {string} currentPage - nama file html saat ini (e.g. 'board-farms.html')
+ * @param {string} role        - 'board' | 'manager' | 'superadmin'
+ * @param {string} currentPage - nama file html saat ini (e.g. 'manager-dashboard.html')
  */
 function renderSidebar(role, currentPage) {
   const cfg = SIDEBAR_MENUS[role];

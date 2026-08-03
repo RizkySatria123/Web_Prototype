@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agrivision Admin — Kelola Klien</title>
+  <title>Agrivision Manager — Kelola Klien</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/design-system.css">
   <style>
     .client-card { background: white; border: 1px solid var(--color-border-muted); border-radius: var(--radius-md); padding: 20px; transition: all var(--transition); cursor: pointer; }
@@ -42,7 +42,7 @@
   <main class="main-content">
     <div class="page-header">
       <div>
-        <h1 class="page-title">Kelola Klien</h1>
+        <h1 class="page-title">Klien (Perusahaan)</h1>
         <p class="page-subtitle">Daftarkan, ubah profil, dan atur hak akses untuk setiap klien perusahaan.</p>
       </div>
       <button class="btn btn-primary" id="btn-add-client" onclick="openModal()">
@@ -121,8 +121,8 @@
             <span class="feature-tag">NDVI</span>
             <span class="feature-tag">SOC</span>
             <span class="feature-tag">Carbon Portfolio</span>
-            <span class="feature-tag">Laporan ESG</span>
-            <span class="feature-tag disabled">Traceability</span>
+            <span class="feature-tag">Laporan &amp; Analitik</span>
+            <span class="feature-tag disabled">Rantai Pasok</span>
             <span class="feature-tag disabled">Yield Forecast</span>
           </div>
         </div>
@@ -161,9 +161,9 @@
             <span class="feature-tag">NDVI</span>
             <span class="feature-tag">SOC</span>
             <span class="feature-tag">Biomassa</span>
-            <span class="feature-tag">Traceability</span>
+            <span class="feature-tag">Rantai Pasok</span>
             <span class="feature-tag">Carbon Portfolio</span>
-            <span class="feature-tag">Laporan ESG</span>
+            <span class="feature-tag">Laporan &amp; Analitik</span>
           </div>
         </div>
         <div style="display:flex;gap:8px;">
@@ -228,7 +228,7 @@
             <span class="feature-tag">NDVI</span>
             <span class="feature-tag">SOC</span>
             <span class="feature-tag disabled">Carbon Portfolio</span>
-            <span class="feature-tag disabled">Traceability</span>
+            <span class="feature-tag disabled">Rantai Pasok</span>
           </div>
         </div>
         <div style="display:flex;gap:8px;">
@@ -335,7 +335,10 @@ function openModal() { document.getElementById('modal-client').classList.add('op
 function closeModal() { document.getElementById('modal-client').classList.remove('open'); }
 document.getElementById('modal-client').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
 </script>
-  <script>renderSidebar('admin','admin-clients.html');</script>
+  <script>renderSidebar('manager','manager-clients.html');</script>
 </body>
 </html>
+
+
+
 

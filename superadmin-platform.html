@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agrivision Super Admin — Konfigurasi Platform</title>
-  <meta name="description" content="Kelola konfigurasi global platform Agrivision — fitur, threshold, integrasi, dan branding.">
+  <title>Agrivision Super Admin â€” Konfigurasi Platform</title>
+  <meta name="description" content="Kelola konfigurasi global platform Agrivision â€” fitur, threshold, integrasi, dan branding.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/design-system.css">
   <script src="js/sidebar.js"></script>
   <style>
@@ -32,7 +32,7 @@
 
   <header class="topnav">
     <div style="font-size:14px;color:var(--color-text-muted);">
-      Super Admin · <strong style="color:var(--color-text-main);">Konfigurasi Platform</strong>
+      Super Admin Â· <strong style="color:var(--color-text-main);">Konfigurasi Platform</strong>
     </div>
     <div class="topnav-actions">
       <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
@@ -122,7 +122,7 @@
                   <div class="integration-icon"><span class="material-symbols-outlined" style="font-size:22px;color:#1a73e8;">satellite_alt</span></div>
                   <div style="flex:1;">
                     <div style="font-size:14px;font-weight:700;">Sentinel Hub (ESA)</div>
-                    <div style="font-size:12px;color:var(--color-text-muted);">Penyedia data citra satelit Sentinel-2 · L2A</div>
+                    <div style="font-size:12px;color:var(--color-text-muted);">Penyedia data citra satelit Sentinel-2 Â· L2A</div>
                   </div>
                   <span class="badge badge-active">Terhubung</span>
                 </div>
@@ -178,12 +178,12 @@
                 <div>
                   <label class="form-label">NDVI Minimum (Kritis)</label>
                   <input type="number" class="form-input" value="0.40" step="0.01" min="0" max="1">
-                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Di bawah nilai ini → alert merah</div>
+                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Di bawah nilai ini â†’ alert merah</div>
                 </div>
                 <div>
                   <label class="form-label">NDVI Warning Level</label>
                   <input type="number" class="form-input" value="0.55" step="0.01" min="0" max="1">
-                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Di bawah nilai ini → alert kuning</div>
+                  <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Di bawah nilai ini â†’ alert kuning</div>
                 </div>
                 <div>
                   <label class="form-label">SOC Minimum (Ton C/Ha)</label>
@@ -198,7 +198,7 @@
                   <input type="number" class="form-input" value="80" step="5" min="0">
                 </div>
                 <div>
-                  <label class="form-label">Carbon Credit Alert (Ton CO₂e)</label>
+                  <label class="form-label">Carbon Credit Alert (Ton COâ‚‚e)</label>
                   <input type="number" class="form-input" value="500" step="10" min="0">
                   <div style="font-size:11px;color:var(--color-text-muted);margin-top:4px;">Alert jika karbon di bawah target ini</div>
                 </div>
@@ -335,3 +335,4 @@ renderSidebar('superadmin','superadmin-platform.html');
 </script>
 </body>
 </html>
+

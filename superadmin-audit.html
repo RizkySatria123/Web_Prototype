@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agrivision Super Admin — Audit Log</title>
   <meta name="description" content="Rekam jejak aktivitas seluruh pengguna platform Agrivision untuk keperluan keamanan dan audit.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/design-system.css">
   <script src="js/sidebar.js"></script>
   <style>
@@ -97,7 +97,7 @@
       <select class="form-input form-select" style="width:150px;">
         <option>Semua Role</option>
         <option>Super Admin</option>
-        <option>Admin</option>
+        <option>Manager</option>
         <option>Board</option>
         <option>System</option>
       </select>
@@ -157,7 +157,7 @@
           <div class="log-entry">
             <div class="log-dot success"></div>
             <div class="log-time">08:12:55</div>
-            <span class="log-user-chip admin">Admin</span>
+            <span class="log-user-chip admin">Manager</span>
             <div class="log-body">
               <div class="log-action">Laporan ESG Carbon Credit 2026 berhasil digenerate</div>
               <div class="log-meta">Ahmad Dani · ahmad@agrivisiontech.com · Client: Kadatuan Puntang Farm · Format: PDF</div>
@@ -197,7 +197,7 @@
           <div class="log-entry">
             <div class="log-dot config"></div>
             <div class="log-time">07:10:18</div>
-            <span class="log-user-chip admin">Admin</span>
+            <span class="log-user-chip admin">Manager</span>
             <div class="log-body">
               <div class="log-action">Data klien diperbarui — Kadatuan Cikembang area lahan diubah</div>
               <div class="log-meta">Ahmad Dani · Perubahan: Luas lahan dari 15 Ha → 18 Ha · Blok: KC-A1</div>
@@ -246,3 +246,5 @@
 <script>renderSidebar('superadmin','superadmin-audit.html');</script>
 </body>
 </html>
+
+
