@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Pantau Sistem</title>
+  <meta name="description" content="Monitoring real-time platform Agrivision — anomali NDVI, status server, dan alert aktif.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+  <style>
+    .anomali-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--color-surface-container);
+    }
+    .anomali-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .anomali-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .anomali-dot.kritis  { background: var(--color-error); box-shadow: 0 0 0 4px rgba(186,26,26,.12); }
+    .anomali-dot.warning { background: var(--color-dark-amber); box-shadow: 0 0 0 4px rgba(217,119,6,.12); }
+    .server-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--color-surface-container); }
+    .server-row:last-child { border-bottom: none; }
+    .meter { height: 6px; background: var(--color-surface-container-high); border-radius: 3px; flex: 1; margin: 0 12px; overflow: hidden; }
+    .meter-fill { height: 100%; border-radius: 3px; }
+    .pulse { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--color-bright-emerald); animation: pulse 1.5s infinite; margin-right: 6px; }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div style="font-size:14px;color:var(--color-text-muted);">
+      Super Admin · <strong style="color:var(--color-text-main);">Pantau Sistem</strong>
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Pantau Sistem</h1>
+        <p class="page-subtitle">Monitoring real-time seluruh infrastruktur dan anomali platform Agrivision.</p>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-ghost" id="btn-refresh" onclick="alert('Data direfresh!')">
+          <span class="material-symbols-outlined" style="font-size:17px;">refresh</span>Refresh
+        </button>
+        <button class="btn btn-primary" onclick="alert('Semua anomali ditandai selesai!')">
+          <span class="material-symbols-outlined" style="font-size:17px;">check_circle</span>Resolve Semua
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div style="background:linear-gradient(135deg,#fff7ed,#fff);border:1.5px solid #fed7aa;border-radius:var(--radius-md);padding:14px 20px;display:flex;align-items:center;gap:16px;margin-bottom:var(--space-lg);">
+      <span class="material-symbols-outlined" style="font-size:24px;color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">warning</span>
+      <div>
+        <div style="font-weight:700;font-size:14px;color:#92400e;">5 Anomali Aktif Membutuhkan Perhatian</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Terakhir diperbarui: 3 Agu 2026, 09:15 WIB · Auto-refresh setiap 5 menit</div>
+      </div>
+      <div style="margin-left:auto;font-size:12px;color:var(--color-text-muted);">
+        <span class="pulse"></span>Live Monitoring Aktif
+      </div>
+    </div>
+
+    <!-- KPI Row -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-error);font-variation-settings:'FILL' 1;">error</span><span class="stat-badge danger">5</span></div>
+        <div class="stat-label">Anomali Aktif</div>
+        <div class="stat-value" style="color:var(--color-error);">5</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">Di 3 lahan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="font-variation-settings:'FILL' 1;">cloud_done</span></div>
+        <div class="stat-label">Uptime</div>
+        <div class="stat-value">99.97<span class="unit">%</span></div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">SLA Terpenuhi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:#0ea5e9;font-variation-settings:'FILL' 1;">speed</span></div>
+        <div class="stat-label">Response Time</div>
+        <div class="stat-value">42<span class="unit">ms</span></div>
+        <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">Sangat Cepat</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:#7c3aed;font-variation-settings:'FILL' 1;">satellite_alt</span></div>
+        <div class="stat-label">Sync Sentinel</div>
+        <div class="stat-value" style="font-size:24px;">Berhasil</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">07:30 WIB hari ini</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-header"><span class="material-symbols-outlined stat-card-icon" style="color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">database</span></div>
+        <div class="stat-label">DB Storage</div>
+        <div class="stat-value">68<span class="unit">%</span></div>
+        <div style="font-size:12px;color:var(--color-text-muted);">340 GB / 500 GB</div>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:var(--gutter);margin-bottom:var(--space-lg);">
+
+      <!-- Anomali List -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Daftar Anomali Aktif</span>
+          <span class="badge badge-expired">5 Aktif</span>
+        </div>
+        <div class="card-body">
+          <div class="anomali-item">
+            <div class="anomali-dot kritis"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:700;color:var(--color-text-main);">NDVI Kritis — Kadatuan Cikembang Blok B6</div>
+              <div style="font-size:12px;color:var(--color-text-muted);margin:3px 0;">NDVI: 0.22 (threshold: 0.40) · Terdeteksi 2h lalu</div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <button class="btn btn-ghost btn-sm">Lihat Peta</button>
+                <button class="btn btn-primary btn-sm" onclick="alert('Alert dikirim ke Manager!')">Kirim Alert</button>
+              </div>
+            </div>
+            <span class="badge badge-expired" style="white-space:nowrap;">Kritis</span>
+          </div>
+          <div class="anomali-item">
+            <div class="anomali-dot kritis"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:700;color:var(--color-text-main);">SOC Rendah — SMART Agribusiness Blok A2</div>
+              <div style="font-size:12px;color:var(--color-text-muted);margin:3px 0;">SOC: 1.2 Ton C/Ha (minimum: 1.8) · Terdeteksi 5h lalu</div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <button class="btn btn-ghost btn-sm">Lihat Detail</button>
+                <button class="btn btn-primary btn-sm" onclick="alert('Alert dikirim!')">Kirim Alert</button>
+              </div>
+            </div>
+            <span class="badge badge-expired" style="white-space:nowrap;">Kritis</span>
+          </div>
+          <div class="anomali-item">
+            <div class="anomali-dot warning"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:700;color:var(--color-text-main);">NDVI Warning — Pupuk Kujang Blok C1</div>
+              <div style="font-size:12px;color:var(--color-text-muted);margin:3px 0;">NDVI: 0.48 (warning: 0.55) · Terdeteksi 1 hari lalu</div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <button class="btn btn-ghost btn-sm">Lihat Peta</button>
+                <button class="btn btn-ghost btn-sm">Resolve</button>
+              </div>
+            </div>
+            <span class="badge badge-warning" style="white-space:nowrap;">Warning</span>
+          </div>
+          <div class="anomali-item">
+            <div class="anomali-dot warning"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:700;color:var(--color-text-main);">Biomassa Rendah — Kadatuan Puntang Blok D3</div>
+              <div style="font-size:12px;color:var(--color-text-muted);margin:3px 0;">72 Ton/Ha (minimum: 80) · Terdeteksi 1 hari lalu</div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <button class="btn btn-ghost btn-sm">Lihat Detail</button>
+                <button class="btn btn-ghost btn-sm">Resolve</button>
+              </div>
+            </div>
+            <span class="badge badge-warning" style="white-space:nowrap;">Warning</span>
+          </div>
+          <div class="anomali-item">
+            <div class="anomali-dot warning"></div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:700;color:var(--color-text-main);">Sync Error — NDRE data Kadatuan Cikembang</div>
+              <div style="font-size:12px;color:var(--color-text-muted);margin:3px 0;">Data NDRE Q2 gagal diproses ulang · Coba lagi otomatis pukul 12:00</div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <button class="btn btn-primary btn-sm" onclick="alert('Sync diulang!')">Retry Sync</button>
+              </div>
+            </div>
+            <span class="badge badge-warning" style="white-space:nowrap;">Warning</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Server Status -->
+      <div style="display:flex;flex-direction:column;gap:var(--gutter);">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Status Server</span><span style="font-size:12px;color:var(--color-bright-emerald);font-weight:700;"><span class="pulse"></span>Live</span></div>
+          <div class="card-body">
+            <div class="server-row">
+              <div style="font-size:13px;font-weight:700;width:100px;">API Gateway</div>
+              <div class="meter"><div class="meter-fill" style="width:32%;background:var(--color-bright-emerald);"></div></div>
+              <div style="font-size:12px;font-weight:700;width:45px;text-align:right;color:var(--color-bright-emerald);">32%</div>
+              <span class="badge badge-active" style="margin-left:8px;">OK</span>
+            </div>
+            <div class="server-row">
+              <div style="font-size:13px;font-weight:700;width:100px;">Database</div>
+              <div class="meter"><div class="meter-fill" style="width:68%;background:var(--color-dark-amber);"></div></div>
+              <div style="font-size:12px;font-weight:700;width:45px;text-align:right;color:var(--color-dark-amber);">68%</div>
+              <span class="badge badge-warning" style="margin-left:8px;">Waspada</span>
+            </div>
+            <div class="server-row">
+              <div style="font-size:13px;font-weight:700;width:100px;">GCS Storage</div>
+              <div class="meter"><div class="meter-fill" style="width:45%;background:var(--color-bright-emerald);"></div></div>
+              <div style="font-size:12px;font-weight:700;width:45px;text-align:right;color:var(--color-bright-emerald);">45%</div>
+              <span class="badge badge-active" style="margin-left:8px;">OK</span>
+            </div>
+            <div class="server-row">
+              <div style="font-size:13px;font-weight:700;width:100px;">Sentinel Sync</div>
+              <div class="meter"><div class="meter-fill" style="width:100%;background:var(--color-bright-emerald);"></div></div>
+              <div style="font-size:12px;font-weight:700;width:45px;text-align:right;color:var(--color-bright-emerald);">OK</div>
+              <span class="badge badge-active" style="margin-left:8px;">Aktif</span>
+            </div>
+            <div class="server-row">
+              <div style="font-size:13px;font-weight:700;width:100px;">Worker Queue</div>
+              <div class="meter"><div class="meter-fill" style="width:18%;background:var(--color-bright-emerald);"></div></div>
+              <div style="font-size:12px;font-weight:700;width:45px;text-align:right;color:var(--color-bright-emerald);">18%</div>
+              <span class="badge badge-active" style="margin-left:8px;">OK</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Jadwal Maintenance</span></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="background:var(--color-surface-container-low);border-radius:8px;padding:12px;">
+                <div style="font-size:12px;color:var(--color-text-muted);margin-bottom:4px;">Terjadwal Berikutnya</div>
+                <div style="font-size:14px;font-weight:700;">Database Backup</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Besok, 02:00 WIB (Otomatis)</div>
+              </div>
+              <div style="background:var(--color-surface-container-low);border-radius:8px;padding:12px;">
+                <div style="font-size:12px;color:var(--color-text-muted);margin-bottom:4px;">Minggu Depan</div>
+                <div style="font-size:14px;font-weight:700;">Sentinel Data Batch Processing</div>
+                <div style="font-size:12px;color:var(--color-text-muted);">Senin, 10 Agu 2026 · 03:00 WIB</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" style="width:100%;" onclick="window.location.href='superadmin-platform.html'">
+                <span class="material-symbols-outlined" style="font-size:16px;">build</span>
+                Atur Mode Maintenance
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>renderSidebar('superadmin','superadmin-monitor.html');</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Konfigurasi Fitur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+  <style>
+    .feature-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px; border: 1px solid var(--color-border-muted);
+      border-radius: var(--radius-md); margin-bottom: 12px;
+      background: var(--color-surface-white); transition: all var(--transition);
+    }
+    .feature-item:hover { border-color: var(--color-primary-container); box-shadow: var(--shadow-card); }
+    .feature-info { flex: 1; }
+    .feature-title { font-size: 15px; font-weight: 700; color: var(--color-text-main); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .feature-desc { font-size: 13px; color: var(--color-text-muted); }
+    
+    /* Toggle Switch */
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--color-bright-emerald); }
+    input:checked + .slider:before { transform: translateX(20px); }
+    input:disabled + .slider { opacity: 0.5; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div style="font-size:14px;color:var(--color-text-muted);">
+      Super Admin · Konfigurasi Platform · <strong style="color:var(--color-text-main);">Konfigurasi Fitur</strong>
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Konfigurasi Fitur Platform</h1>
+        <p class="page-subtitle">Aktifkan atau nonaktifkan modul spesifik untuk seluruh pengguna di platform.</p>
+      </div>
+      <button class="btn btn-ghost" onclick="window.history.back()">
+        <span class="material-symbols-outlined" style="font-size:17px;">arrow_back</span>Kembali
+      </button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gutter);">
+      
+      <!-- Modul Utama -->
+      <div>
+        <h2 style="font-size:16px;font-weight:700;color:var(--color-text-main);margin-bottom:16px;">Modul Inti Platform</h2>
+        
+        <div class="feature-item">
+          <div class="feature-info">
+            <div class="feature-title"><span class="material-symbols-outlined" style="color:var(--color-primary-container);">eco</span> Portofolio Karbon</div>
+            <div class="feature-desc">Modul perhitungan estimasi carbon credit dan stok karbon di lahan.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-info">
+            <div class="feature-title"><span class="material-symbols-outlined" style="color:var(--color-primary-container);">account_tree</span> Rantai Pasok (Traceability)</div>
+            <div class="feature-desc">Pelacakan pasokan panen terintegrasi untuk klien Enterprise.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-info">
+            <div class="feature-title"><span class="material-symbols-outlined" style="color:var(--color-primary-container);">bar_chart</span> Laporan & Analitik Lanjut</div>
+            <div class="feature-desc">Modul generator laporan otomatis format PDF/Excel.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <!-- Integrasi & Data -->
+      <div>
+        <h2 style="font-size:16px;font-weight:700;color:var(--color-text-main);margin-bottom:16px;">Integrasi & Sistem Data</h2>
+        
+        <div class="feature-item">
+          <div class="feature-info">
+            <div class="feature-title"><span class="material-symbols-outlined" style="color:#0ea5e9;">satellite_alt</span> Sinkronisasi Sentinel-2</div>
+            <div class="feature-desc">Penarikan citra satelit otomatis untuk analisis NDVI & NDRE.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-info">
+            <div class="feature-title"><span class="material-symbols-outlined" style="color:var(--color-error);">notification_important</span> Alert Anomali Otomatis</div>
+            <div class="feature-desc">Kirim email otomatis ke Manager saat anomali lahan terdeteksi.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-info">
+            <div class="feature-title"><span class="material-symbols-outlined" style="color:var(--color-text-muted);">api</span> API Pihak Ketiga (BETA)</div>
+            <div class="feature-desc">Akses endpoint API untuk integrasi sistem klien. Saat ini masih fase Beta.</div>
+          </div>
+          <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+<script>renderSidebar('superadmin','superadmin-platform.html');</script>
+</body>
+</html>

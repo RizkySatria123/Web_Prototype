@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrivision Super Admin — Daftarkan Klien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/design-system.css">
+  <script src="js/sidebar.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <div id="sidebar-placeholder"></div>
+
+  <header class="topnav">
+    <div style="font-size:14px;color:var(--color-text-muted);">
+      Super Admin · Kelola Pengguna · <strong style="color:var(--color-text-main);">Daftarkan Klien Baru</strong>
+    </div>
+    <div class="topnav-actions">
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="topnav-avatar" style="background:#6d28d9;">SA</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Daftarkan Klien Baru (Board)</h1>
+        <p class="page-subtitle">Onboarding perusahaan/organisasi baru ke dalam platform Agrivision.</p>
+      </div>
+      <button class="btn btn-ghost" onclick="window.history.back()">
+        <span class="material-symbols-outlined" style="font-size:17px;">arrow_back</span>Kembali
+      </button>
+    </div>
+
+    <div class="card" style="max-width:800px; margin:0 auto;">
+      <div class="card-header">
+        <span class="card-title">Formulir Onboarding Klien</span>
+      </div>
+      <div class="card-body">
+        <form onsubmit="event.preventDefault(); alert('Klien berhasil didaftarkan!'); window.location.href='superadmin-users.html';">
+          
+          <h3 style="font-size:14px;color:var(--color-text-main);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--color-border-muted);">Informasi Organisasi / Perusahaan</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+            <div>
+              <label class="form-label">Nama Organisasi / Perusahaan</label>
+              <input type="text" class="form-input" placeholder="Misal: PT Cipta Tani Lestari" required>
+            </div>
+            <div>
+              <label class="form-label">Bidang Industri</label>
+              <select class="form-input form-select">
+                <option>Perkebunan Sawit</option>
+                <option>Kopi & Teh</option>
+                <option>Kehutanan & HTI</option>
+                <option>Lainnya</option>
+              </select>
+            </div>
+            <div style="grid-column: span 2;">
+              <label class="form-label">Alamat Kantor Pusat</label>
+              <input type="text" class="form-input" placeholder="Alamat lengkap">
+            </div>
+          </div>
+
+          <h3 style="font-size:14px;color:var(--color-text-main);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--color-border-muted);">Data PIC (Akun Login)</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+            <div>
+              <label class="form-label">Nama Lengkap PIC (Board)</label>
+              <input type="text" class="form-input" placeholder="Masukkan nama perwakilan" required>
+            </div>
+            <div>
+              <label class="form-label">Alamat Email (Akun Login)</label>
+              <input type="email" class="form-input" placeholder="email@perusahaan.com" required>
+            </div>
+          </div>
+
+          <h3 style="font-size:14px;color:var(--color-text-main);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--color-border-muted);">Detail Langganan</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px;">
+            <div>
+              <label class="form-label">Paket Langganan</label>
+              <select class="form-input form-select" required>
+                <option value="trial">Trial (14 Hari)</option>
+                <option value="basic">Basic Plan</option>
+                <option value="pro" selected>Pro Plan</option>
+                <option value="enterprise">Enterprise Custom</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Kuota Total Lahan (Ha)</label>
+              <input type="number" class="form-input" placeholder="Contoh: 1000" min="10" required>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1px solid var(--color-border-muted);padding-top:20px;">
+            <button type="button" class="btn btn-ghost" onclick="window.history.back()">Batal</button>
+            <button type="submit" class="btn btn-primary">Daftarkan Klien</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script>renderSidebar('superadmin','superadmin-users.html');</script>
+</body>
+</html>
