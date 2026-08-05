@@ -1,17 +1,48 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agrivision — Admin Dashboard</title>
+  <title>Agrivision — Manager Dashboard</title>
   <meta name="description" content="Agrivision Manager Panel — Kelola klien, lahan, dan laporan pertanian presisi.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/design-system.css">
   <style>
-    .mid-grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--gutter); margin-bottom: var(--space-lg); }
-    .legend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 16px; border-top: 1px solid var(--color-border-muted); text-align: center; }
+    /* Styling khusus mengikuti layout referensi (Board Dashboard style) */
+    .dashboard-stat-card {
+      background: white; border-radius: 16px; padding: 24px;
+      border: 1px solid var(--color-border-muted);
+      box-shadow: 0 2px 10px rgba(5,59,38,0.03); transition: transform 0.2s;
+    }
+    .dashboard-stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+    .stat-icon-box {
+      width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .stat-label-ref { font-size: 11px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .stat-value-ref { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--color-text-main); line-height: 1; margin-bottom: 12px; }
+    .stat-trend { font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+    
+    .panel-card {
+      background: white; border-radius: 16px; border: 1px solid var(--color-border-muted);
+      box-shadow: 0 2px 10px rgba(5,59,38,0.03);
+    }
+    .panel-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--color-border-muted);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .panel-title { font-size: 13px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    
+    .clean-table { width: 100%; border-collapse: collapse; }
+    .clean-table th { font-size: 11px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; padding: 16px 24px; border-bottom: 1px solid var(--color-surface-container); text-align: left; }
+    .clean-table td { padding: 16px 24px; font-size: 13px; border-bottom: 1px solid var(--color-surface-container); color: var(--color-text-main); }
+    .clean-table tr:last-child td { border-bottom: none; }
+    
+    .alert-item { display: flex; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--color-surface-container); }
+    .alert-item:last-child { border-bottom: none; }
+    .alert-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   </style>
   <script src="js/sidebar.js"></script>
 </head>
@@ -23,15 +54,13 @@
 
   <!-- ── TOP NAV ── -->
   <header class="topnav">
-    <div></div>
+    <div style="font-weight:600;font-size:15px;color:var(--color-text-main);">Dashboard</div>
     <div class="topnav-actions">
-      <button class="topnav-icon-btn" title="Notifikasi" aria-label="Notifikasi">
-        <span class="material-symbols-outlined">notifications</span>
+      <button class="topnav-icon-btn" title="Notifikasi" style="position:relative;">
+        <span class="material-symbols-outlined" style="color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">notifications</span>
+        <div style="position:absolute;top:0;right:0;width:8px;height:8px;background:var(--color-error);border-radius:50%;border:2px solid white;"></div>
       </button>
-      <button class="topnav-icon-btn" title="Pengaturan" aria-label="Pengaturan">
-        <span class="material-symbols-outlined">settings</span>
-      </button>
-      <div class="topnav-avatar">AR</div>
+      <div class="topnav-avatar" style="background:var(--color-dark-emerald);color:white;">AR</div>
     </div>
   </header>
 
@@ -39,220 +68,209 @@
   <main class="main-content">
 
     <!-- Page Header -->
-    <div class="page-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;">
       <div>
-        <h1 class="page-title">Selamat datang, Ahmad Rasyid 👋</h1>
-        <p class="page-subtitle">Ringkasan aktivitas platform Agrivision hari ini</p>
+        <h1 class="page-title" style="margin-bottom:6px;">Selamat datang, Ahmad Rasyid 👋</h1>
+        <p class="page-subtitle">Berikut ringkasan aktivitas dan kondisi lahan klien — diperbarui secara real-time.</p>
       </div>
-      <button class="btn btn-primary" id="btn-add-client" onclick="window.location.href='admin-clients.html'">
-        <span class="material-symbols-outlined" style="font-size:18px;">add</span>
-        Daftarkan Klien Baru
+      <button class="btn btn-primary" onclick="window.location.href='manager-clients.html'" style="background:var(--color-primary);border-radius:8px;font-weight:600;">
+        <span class="material-symbols-outlined" style="font-size:18px;">add</span> Daftarkan Klien Baru
       </button>
     </div>
 
-    <!-- Stats Grid (5 columns) -->
-    <div class="stats-grid" role="region" aria-label="Statistik Ringkasan">
-
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <span class="material-symbols-outlined stat-card-icon" style="color:var(--color-primary-container);">group</span>
-          <span class="stat-badge success">+2 bulan ini</span>
+    <!-- 5 Stat Cards (Sesuai Referensi) -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:32px;">
+      
+      <!-- Card 1 -->
+      <div class="dashboard-stat-card">
+        <div class="stat-icon-box" style="background:var(--color-whisper-green);">
+          <span class="material-symbols-outlined" style="color:var(--color-medium-emerald);font-variation-settings:'FILL' 1;">group</span>
         </div>
-        <div class="stat-label">Total Klien Aktif</div>
-        <div class="stat-value">9</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <span class="material-symbols-outlined stat-card-icon">grass</span>
-        </div>
-        <div class="stat-label">Total Lahan Terdaftar</div>
-        <div class="stat-value">47<span class="unit">Ha</span></div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <span class="material-symbols-outlined stat-card-icon">description</span>
-        </div>
-        <div class="stat-label">Laporan Bulan Ini</div>
-        <div class="stat-value">12</div>
-      </div>
-
-      <div class="stat-card" style="--circle-bg: var(--color-pale-yellow);">
-        <div class="stat-card-header">
-          <span class="material-symbols-outlined stat-card-icon" style="color:var(--color-dark-amber);">hourglass_empty</span>
-          <span class="stat-badge warning">Warning</span>
-        </div>
-        <div class="stat-label">Klien Trial/Pending</div>
-        <div class="stat-value">3</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <span class="material-symbols-outlined stat-card-icon" style="color:var(--color-error);">block</span>
-          <span class="stat-badge danger">Danger</span>
-        </div>
-        <div class="stat-label">Klien Expired</div>
-        <div class="stat-value">2</div>
-      </div>
-
-    </div>
-
-    <!-- Middle Section: Table + Donut Chart -->
-    <div class="mid-grid">
-
-      <!-- Aktivitas Klien Terbaru -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Aktivitas Klien Terbaru</span>
-          <button class="btn btn-ghost btn-sm" onclick="window.location.href='admin-clients.html'">Lihat Semua</button>
-        </div>
-        <div class="table-container">
-          <table class="data-table" aria-label="Aktivitas Klien Terbaru">
-            <thead>
-              <tr>
-                <th>Klien</th>
-                <th>Aksi</th>
-                <th>Waktu</th>
-                <th style="text-align:right;">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>SMART Agribusiness</td>
-                <td style="color:var(--color-text-muted);">Login</td>
-                <td style="color:var(--color-text-muted);">2h yang lalu</td>
-                <td style="text-align:right;"><span class="badge badge-active">Aktif</span></td>
-              </tr>
-              <tr>
-                <td>Pupuk Kujang</td>
-                <td style="color:var(--color-text-muted);">Generate Laporan</td>
-                <td style="color:var(--color-text-muted);">5h yang lalu</td>
-                <td style="text-align:right;"><span class="badge badge-active">Aktif</span></td>
-              </tr>
-              <tr>
-                <td>Kadatuan Farm</td>
-                <td style="color:var(--color-text-muted);">Lihat Peta</td>
-                <td style="color:var(--color-text-muted);">1 hari lalu</td>
-                <td style="text-align:right;"><span class="badge badge-trial">Trial</span></td>
-              </tr>
-              <tr>
-                <td>PTPN IV</td>
-                <td style="color:var(--color-text-muted);">Upload Data</td>
-                <td style="color:var(--color-text-muted);">2 hari lalu</td>
-                <td style="text-align:right;"><span class="badge badge-active">Aktif</span></td>
-              </tr>
-              <tr>
-                <td>Green Valley Corp</td>
-                <td style="color:var(--color-text-muted);">—</td>
-                <td style="color:var(--color-text-muted);">45 hari lalu</td>
-                <td style="text-align:right;"><span class="badge badge-expired">Expired</span></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="stat-label-ref">TOTAL KLIEN AKTIF</div>
+        <div class="stat-value-ref">9</div>
+        <div class="stat-trend" style="color:var(--color-medium-emerald);">
+          <span class="material-symbols-outlined" style="font-size:14px;">arrow_upward</span> +2 klien bulan ini
         </div>
       </div>
 
-      <!-- Status Klien Donut Chart -->
-      <div class="card" style="display:flex;flex-direction:column;">
-        <div class="card-header">
-          <span class="card-title">Status Klien</span>
+      <!-- Card 2 -->
+      <div class="dashboard-stat-card">
+        <div class="stat-icon-box" style="background:#f0f9ff;">
+          <span class="material-symbols-outlined" style="color:#0ea5e9;font-variation-settings:'FILL' 1;">landscape</span>
         </div>
-        <div class="card-body" style="display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;">
-          <div class="donut-chart" style="background: conic-gradient(#9cf973 0% 64%, #feb235 64% 85%, #ba1a1a 85% 100%);">
-            <div class="donut-inner">
-              <span class="donut-value">14</span>
-              <span class="donut-label">Total</span>
-            </div>
-          </div>
-          <div class="legend-grid" style="width:100%;">
-            <div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:4px;">
-                <div style="width:10px;height:10px;border-radius:50%;background:#9cf973;"></div>
-                <span style="font-size:12px;color:var(--color-text-muted);">Aktif</span>
-              </div>
-              <strong style="font-size:18px;color:var(--color-text-main);">9</strong>
-            </div>
-            <div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:4px;">
-                <div style="width:10px;height:10px;border-radius:50%;background:#feb235;"></div>
-                <span style="font-size:12px;color:var(--color-text-muted);">Trial</span>
-              </div>
-              <strong style="font-size:18px;color:var(--color-text-main);">3</strong>
-            </div>
-            <div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:4px;">
-                <div style="width:10px;height:10px;border-radius:50%;background:#ba1a1a;"></div>
-                <span style="font-size:12px;color:var(--color-text-muted);">Expired</span>
-              </div>
-              <strong style="font-size:18px;color:var(--color-text-main);">2</strong>
-            </div>
-          </div>
+        <div class="stat-label-ref">TOTAL LAHAN TERDAFTAR</div>
+        <div class="stat-value-ref">47 <span style="font-size:20px;">Ha</span></div>
+        <div class="stat-trend" style="color:var(--color-medium-emerald);">
+          <span class="material-symbols-outlined" style="font-size:14px;">arrow_upward</span> +5 Ha dari periode lalu
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="dashboard-stat-card">
+        <div class="stat-icon-box" style="background:var(--color-pale-yellow);">
+          <span class="material-symbols-outlined" style="color:var(--color-dark-amber);font-variation-settings:'FILL' 1;">description</span>
+        </div>
+        <div class="stat-label-ref">LAPORAN BULAN INI</div>
+        <div class="stat-value-ref">12</div>
+        <div class="stat-trend" style="color:var(--color-medium-emerald);">
+          <span class="material-symbols-outlined" style="font-size:14px;">arrow_upward</span> +3 laporan vs Q4
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="dashboard-stat-card">
+        <div class="stat-icon-box" style="background:#fefce8;">
+          <span class="material-symbols-outlined" style="color:#ca8a04;font-variation-settings:'FILL' 1;">warning</span>
+        </div>
+        <div class="stat-label-ref">KLIEN TRIAL/PENDING</div>
+        <div class="stat-value-ref">3</div>
+        <div class="stat-trend" style="color:#ca8a04;">
+          <span class="material-symbols-outlined" style="font-size:14px;">arrow_downward</span> perlu follow up
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="dashboard-stat-card">
+        <div class="stat-icon-box" style="background:var(--color-error-container);">
+          <span class="material-symbols-outlined" style="color:var(--color-error);font-variation-settings:'FILL' 1;">block</span>
+        </div>
+        <div class="stat-label-ref">KLIEN EXPIRED</div>
+        <div class="stat-value-ref">2</div>
+        <div class="stat-trend" style="color:var(--color-error);">
+          <span class="material-symbols-outlined" style="font-size:14px;">error</span> akun dibekukan
         </div>
       </div>
 
     </div>
 
-    <!-- Laporan Terbaru -->
-    <div class="card" style="margin-bottom: var(--space-lg);">
-      <div class="card-header">
-        <span class="card-title">Laporan Terbaru Dibuat Klien</span>
-        <button class="btn btn-ghost btn-sm" onclick="window.location.href='admin-reports.html'">Lihat Semua</button>
-      </div>
-      <div class="table-container">
-        <table class="data-table" style="min-width:800px;" aria-label="Laporan Terbaru">
+    <!-- Middle Section: 2 Columns (My Farms & Recent Alerts equivalent) -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
+      
+      <!-- DAFTAR KLIEN TERBARU -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title">KLIEN TERBARU</div>
+          <button class="btn btn-ghost btn-sm" style="border-radius:8px;background:var(--color-surface-container-low);" onclick="window.location.href='manager-clients.html'">View All</button>
+        </div>
+        <table class="clean-table">
           <thead>
             <tr>
-              <th>Nama Laporan</th>
-              <th>Klien</th>
-              <th>Parameter</th>
-              <th>Periode</th>
-              <th>Dibuat</th>
-              <th style="text-align:right;">Aksi</th>
+              <th>Nama Klien</th>
+              <th>Area Lahan</th>
+              <th>Last Update</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Analisis Kesuburan Tanah Q3</td>
-              <td style="color:var(--color-text-muted);">SMART Agribusiness</td>
-              <td style="color:var(--color-text-muted);">NDVI, Kelembapan</td>
-              <td style="color:var(--color-text-muted);">Jul – Sep 2023</td>
-              <td style="color:var(--color-text-muted);">Hari ini, 09:30</td>
-              <td style="text-align:right;">
-                <button class="action-btn view"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span> Lihat</button>
-              </td>
+              <td><div style="font-weight:600;">SMART Agribusiness</div><div style="color:var(--color-text-muted);font-size:11px;">Kelapa Sawit</div></td>
+              <td>150 Ha</td>
+              <td>Jan 2026</td>
+              <td><span class="badge badge-active" style="background:#dcfce7;color:#166534;font-weight:600;">Active</span></td>
             </tr>
             <tr>
-              <td>Pemetaan Hama Sektor A</td>
-              <td style="color:var(--color-text-muted);">Pupuk Kujang</td>
-              <td style="color:var(--color-text-muted);">Infrared Termal</td>
-              <td style="color:var(--color-text-muted);">Agustus 2023</td>
-              <td style="color:var(--color-text-muted);">Kemarin, 14:15</td>
-              <td style="text-align:right;">
-                <button class="action-btn view"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span> Lihat</button>
-              </td>
+              <td><div style="font-weight:600;">Pupuk Kujang</div><div style="color:var(--color-text-muted);font-size:11px;">Pertanian Pangan</div></td>
+              <td>85 Ha</td>
+              <td>Jan 2026</td>
+              <td><span class="badge badge-active" style="background:#dcfce7;color:#166534;font-weight:600;">Active</span></td>
             </tr>
             <tr>
-              <td>Estimasi Hasil Panen Padi</td>
-              <td style="color:var(--color-text-muted);">PTPN IV</td>
-              <td style="color:var(--color-text-muted);">Biomassa, Cuaca</td>
-              <td style="color:var(--color-text-muted);">Musim Tanam 2</td>
-              <td style="color:var(--color-text-muted);">3 Hari Lalu</td>
-              <td style="text-align:right;">
-                <button class="action-btn view"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span> Lihat</button>
-              </td>
+              <td><div style="font-weight:600;">Kadatuan Farm</div><div style="color:var(--color-text-muted);font-size:11px;">Kopi Arabica</div></td>
+              <td>43 Ha</td>
+              <td>—</td>
+              <td><span class="badge badge-trial" style="background:#f1f5f9;color:#475569;font-weight:600;">Pending</span></td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <!-- RECENT ALERTS -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title">RECENT ALERTS & ANOMALI</div>
+          <button class="btn btn-ghost btn-sm" style="border-radius:8px;background:var(--color-surface-container-low);" onclick="window.location.href='manager-indices.html'">View All</button>
+        </div>
+        <div>
+          <!-- Alert 1 -->
+          <div class="alert-item">
+            <div class="alert-icon" style="background:#fee2e2;"><span class="material-symbols-outlined" style="color:#b91c1c;font-size:20px;font-variation-settings:'FILL' 1;">warning</span></div>
+            <div>
+              <div style="font-weight:600;font-size:13px;color:#b91c1c;margin-bottom:4px;">Anomali SOC Terdeteksi</div>
+              <div style="font-size:12px;color:var(--color-text-muted);">0.33 Ha area kritis di SMART Agribusiness</div>
+              <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">Jan – Mar 2026</div>
+            </div>
+          </div>
+          <!-- Alert 2 -->
+          <div class="alert-item">
+            <div class="alert-icon" style="background:#f3f4f6;"><span class="material-symbols-outlined" style="color:#0369a1;font-size:20px;font-variation-settings:'FILL' 1;">bar_chart</span></div>
+            <div>
+              <div style="font-weight:600;font-size:13px;color:#92400e;margin-bottom:4px;">NDVI di bawah rata-rata</div>
+              <div style="font-size:12px;color:var(--color-text-muted);">Lahan Kadatuan Puntang < 0.4</div>
+              <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">Jan – Mar 2026</div>
+            </div>
+          </div>
+          <!-- Alert 3 -->
+          <div class="alert-item">
+            <div class="alert-icon" style="background:#dcfce7;"><span class="material-symbols-outlined" style="color:#15803d;font-size:20px;font-variation-settings:'FILL' 1;">check_box</span></div>
+            <div>
+              <div style="font-weight:600;font-size:13px;color:#15803d;margin-bottom:4px;">Data Laporan Q1 Tersedia</div>
+              <div style="font-size:12px;color:var(--color-text-muted);">Data terbaru siap diunduh oleh klien</div>
+              <div style="font-size:11px;color:var(--color-text-muted);margin-top:6px;">15 Jan 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Section: Laporan Terbaru (Recent Reports equivalent) -->
+    <div class="panel-card" style="margin-bottom:32px;">
+      <div class="panel-header">
+        <div class="panel-title">RECENT REPORTS</div>
+        <button class="btn btn-ghost btn-sm" style="border-radius:8px;background:var(--color-surface-container-low);" onclick="window.location.href='manager-reports.html'">View All</button>
+      </div>
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Report Name</th>
+            <th>Client Farm</th>
+            <th>Parameter</th>
+            <th>Period</th>
+            <th>Generated</th>
+            <th style="text-align:right;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div style="font-weight:600;">Carbon Credit Report</div></td>
+            <td>SMART Agribusiness</td>
+            <td><span class="badge" style="background:#ecfdf5;color:#059669;">SOC</span></td>
+            <td>Q1 2025 – Q1 2026</td>
+            <td>Jun 2026</td>
+            <td style="text-align:right;"><button class="btn btn-ghost btn-sm" style="border:1px solid var(--color-border-muted);border-radius:6px;">View</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">NDVI Analysis Report</div></td>
+            <td>Kadatuan Farm</td>
+            <td><span class="badge" style="background:#f0f9ff;color:#0369a1;">NDVI</span></td>
+            <td>Q1 2026</td>
+            <td>Mar 2026</td>
+            <td style="text-align:right;"><button class="btn btn-ghost btn-sm" style="border:1px solid var(--color-border-muted);border-radius:6px;">View</button></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600;">NPK Soil Report</div></td>
+            <td>Pupuk Kujang</td>
+            <td><span class="badge" style="background:#f5f3ff;color:#6d28d9;">SoilNPK</span></td>
+            <td>Q4 2025</td>
+            <td>Dec 2025</td>
+            <td style="text-align:right;"><button class="btn btn-ghost btn-sm" style="border:1px solid var(--color-border-muted);border-radius:6px;">View</button></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
   </main>
 </div>
-  <script>renderSidebar('manager','manager-dashboard.html');</script>
+<script>renderSidebar('manager','manager-dashboard.html');</script>
 </body>
 </html>
-
-
-
-
