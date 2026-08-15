@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
   <meta name="description" content="Masuk ke platform Agrivision Precision Agriculture.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/design-system.css">
   <style>
     body {
@@ -110,7 +113,7 @@
     .login-brand-sub {
       font-size: 11px;
       font-weight: 600;
-      color: rgba(156, 249, 115, 0.8);
+      color: rgba(188, 188, 188, 0.8);
       letter-spacing: 0.15em;
       text-transform: uppercase;
     }
@@ -267,153 +270,176 @@
       transition: color var(--transition);
     }
 
-    .forgot-link a:hover { color: var(--color-primary-container); }
+    .forgot-link a:hover {
+      color: var(--color-primary-container);
+    }
 
     @media (max-width: 700px) {
-      .login-container { grid-template-columns: 1fr; }
-      .login-left { display: none; }
-      .login-right { padding: 40px 28px; }
+      .login-container {
+        grid-template-columns: 1fr;
+      }
+
+      .login-left {
+        display: none;
+      }
+
+      .login-right {
+        padding: 40px 28px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="login-container">
+  <div class="login-container">
 
-  <!-- Left Panel: Branding -->
-  <div class="login-left">
-    <div class="login-brand">
-      <svg viewBox="0 0 581 581" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
-        <g id="Daun">
-          <path d="M198.01,399.87c24.92,22.53,57.44,33.02,87,30.71,2.56-26.73-9.04-56.13-33.96-78.66-24.92-22.53-57.44-33.02-87-30.71-2.56,26.73,9.04,56.13,33.96,78.66Z" fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10"/>
-          <path d="M326.35,351.91c-24.92,22.53-36.52,51.94-33.96,78.66,29.56,2.31,62.08-8.17,87-30.71,24.92-22.53,36.52-51.94,33.96-78.66-29.56-2.31-62.08,8.17-87,30.71Z" fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10"/>
-        </g>
-        <path d="M361.48,495.36c15.57,11.34,23.36,17.02,22.93,22.01-1.44,16.91-86.86,34.25-165.88,14.87-34.1-8.36-56.79-21.01-65.36-26.16-9.95-5.98-35.67-22.46-61.33-53.23-9.79-11.74-26.38-32.07-37.93-63.15-8.41-22.65-15.72-42.34-7.95-63.1,5.38-14.35,15.91-23.72,28.43-34.85,13.31-11.84,26.16-19.31,35.22-23.85-.53,18,1.33,32.9,3.3,43.59,2.4,13.03,7.56,39.54,25.68,67.39,8.03,12.34,15.92,20.8,20.08,25.22,15.92,16.92,30.86,26.74,35.47,29.68,4.62,2.95,19.88,12.37,42.19,19.72,7.14,2.36,8.52,2.55,43.52,10.89,35.34,8.42,43.01,10.49,54.11,15.37,12.84,5.65,21.48,11.2,27.52,15.59Z" fill="#fdb134" stroke="#fdb134" stroke-width="3" stroke-miterlimit="10" opacity=".8"/>
-        <path d="M120.26,217.45c7.4-17.78,25.56-54.12,65.12-81.63,7.21-5.02,72.04-48.53,152.88-26.42,20.32,5.56,62.48,20.95,94.58,62.9,27.78,36.31,33.7,73.76,35.3,90.1,4.19-15.13,13.94-58.11-4.62-106.85-16.23-42.64-45.13-66.04-56.18-74.75-46.28-36.5-96.36-39.44-116.81-40.36-52.75-2.35-91.7,15.09-110.66,23.85-26.66,12.31-73.57,39.46-109.15,93.55-40.67,61.84-43.03,123.17-42.74,146.55,2.79-10.55,10.47-33.87,31.73-54.83,23.5-23.16,49.93-29.96,60.54-32.1Z" fill="#9cf973" stroke="#9cf973" stroke-width="3" stroke-miterlimit="10" opacity=".6"/>
-        <path d="M508.23,271.56c-16.94,8.67-30.02,18.45-39.44,26.6-1.2,15.13-5.09,39.53-18.68,66.07-4.82,9.4-18.65,34.3-46.44,56.84-21.65,17.56-42.95,26.53-56.87,31.18,6.7.63,26.44,3.37,44.03,19.26,14.78,13.35,20.19,28.91,22.11,35.66,41.93-26.96,68.63-57.07,84.28-77.85,10.77-14.29,30-40.69,43.11-80.71,12.6-38.47,13.75-72.09,12.84-93.55-12.18,2.86-27.87,7.77-44.94,16.51Z" fill="#fdb134" stroke="#fdb134" stroke-width="3" stroke-miterlimit="10" opacity=".8"/>
-      </svg>
-      <div>
-        <div class="login-brand-text">Agrivision</div>
-        <div class="login-brand-sub">Precision Agriculture</div>
+    <!-- Left Panel: Branding -->
+    <div class="login-left">
+      <div class="login-brand" style="align-items:center;">
+        <svg viewBox="0 0 581 581" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+          <g id="Daun">
+            <path d="M198.01,399.87c24.92,22.53,57.44,33.02,87,30.71,2.56-26.73-9.04-56.13-33.96-78.66-24.92-22.53-57.44-33.02-87-30.71-2.56,26.73,9.04,56.13,33.96,78.66Z" fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10" />
+            <path d="M326.35,351.91c-24.92,22.53-36.52,51.94-33.96,78.66,29.56,2.31,62.08-8.17,87-30.71,24.92-22.53,36.52-51.94,33.96-78.66-29.56-2.31-62.08,8.17-87,30.71Z" fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10" />
+          </g>
+          <path d="M361.48,495.36c15.57,11.34,23.36,17.02,22.93,22.01-1.44,16.91-86.86,34.25-165.88,14.87-34.1-8.36-56.79-21.01-65.36-26.16-9.95-5.98-35.67-22.46-61.33-53.23-9.79-11.74-26.38-32.07-37.93-63.15-8.41-22.65-15.72-42.34-7.95-63.1,5.38-14.35,15.91-23.72,28.43-34.85,13.31-11.84,26.16-19.31,35.22-23.85-.53,18,1.33,32.9,3.3,43.59,2.4,13.03,7.56,39.54,25.68,67.39,8.03,12.34,15.92,20.8,20.08,25.22,15.92,16.92,30.86,26.74,35.47,29.68,4.62,2.95,19.88,12.37,42.19,19.72,7.14,2.36,8.52,2.55,43.52,10.89,35.34,8.42,43.01,10.49,54.11,15.37,12.84,5.65,21.48,11.2,27.52,15.59Z" fill="#fdb134" stroke="#fdb134" stroke-width="3" stroke-miterlimit="10" opacity=".8" />
+          <path d="M120.26,217.45c7.4-17.78,25.56-54.12,65.12-81.63,7.21-5.02,72.04-48.53,152.88-26.42,20.32,5.56,62.48,20.95,94.58,62.9,27.78,36.31,33.7,73.76,35.3,90.1,4.19-15.13,13.94-58.11-4.62-106.85-16.23-42.64-45.13-66.04-56.18-74.75-46.28-36.5-96.36-39.44-116.81-40.36-52.75-2.35-91.7,15.09-110.66,23.85-26.66,12.31-73.57,39.46-109.15,93.55-40.67,61.84-43.03,123.17-42.74,146.55,2.79-10.55,10.47-33.87,31.73-54.83,23.5-23.16,49.93-29.96,60.54-32.1Z" fill="#9cf973" stroke="#9cf973" stroke-width="3" stroke-miterlimit="10" opacity=".6" />
+          <path d="M508.23,271.56c-16.94,8.67-30.02,18.45-39.44,26.6-1.2,15.13-5.09,39.53-18.68,66.07-4.82,9.4-18.65,34.3-46.44,56.84-21.65,17.56-42.95,26.53-56.87,31.18,6.7.63,26.44,3.37,44.03,19.26,14.78,13.35,20.19,28.91,22.11,35.66,41.93-26.96,68.63-57.07,84.28-77.85,10.77-14.29,30-40.69,43.11-80.71,12.6-38.47,13.75-72.09,12.84-93.55-12.18,2.86-27.87,7.77-44.94,16.51Z" fill="#fdb134" stroke="#fdb134" stroke-width="3" stroke-miterlimit="10" opacity=".8" />
+        </svg>
+        <div>
+          <div class="login-brand-text"><span style="color:#ffffff;">Agri</span><span style="color:#fdb134;">vision</span></div>
+          <div class="login-brand-sub">See . Regenerate . Prosper</div>
+        </div>
+      </div>
+
+      <div class="login-tagline">
+        <h2>Monitor Lahan,<br>Maksimalkan <span>Hasil.</span></h2>
+        <p>Platform manajemen lahan pertanian presisi berbasis satelit dengan analisis NDVI, karbon kredit, dan laporan
+          otomatis.</p>
+      </div>
+
+      <div class="login-features">
+        <div class="login-feature-item">
+          <span class="material-symbols-outlined">satellite_alt</span>
+          Monitoring lahan via satelit
+        </div>
+        <div class="login-feature-item">
+          <span class="material-symbols-outlined">eco</span>
+          Portofolio karbon terintegrasi
+        </div>
+        <div class="login-feature-item">
+          <span class="material-symbols-outlined">analytics</span>
+          Laporan analitik otomatis
+        </div>
+        <div class="login-feature-item">
+          <span class="material-symbols-outlined">shield</span>
+          Data aman & terenkripsi
+        </div>
       </div>
     </div>
 
-    <div class="login-tagline">
-      <h2>Monitor Lahan,<br>Maksimalkan <span>Hasil.</span></h2>
-      <p>Platform manajemen lahan pertanian presisi berbasis satelit dengan analisis NDVI, karbon kredit, dan laporan otomatis.</p>
-    </div>
+    <!-- Right Panel: Login Form -->
+    <div class="login-right">
+      <div class="login-form-header">
+        <h1 class="login-form-title">Selamat Datang</h1>
+        <p class="login-form-subtitle">Masuk ke akun Agrivision Anda</p>
+      </div>
 
-    <div class="login-features">
-      <div class="login-feature-item">
-        <span class="material-symbols-outlined">satellite_alt</span>
-        Monitoring lahan via satelit
+      <!-- Role Selector -->
+      <div style="margin-bottom:20px;">
+        <label class="form-label">Masuk sebagai</label>
+        <div class="login-role-selector" id="role-selector">
+          <div class="role-option" onclick="selectRole('board', this)" id="role-board">
+            <span class="material-symbols-outlined">grass</span>
+            Board / Client
+          </div>
+          <div class="role-option selected" onclick="selectRole('admin', this)" id="role-admin">
+            <span class="material-symbols-outlined">manage_accounts</span>
+            Manager
+          </div>
+          <div class="role-option" onclick="selectRole('superadmin', this)" id="role-superadmin">
+            <span class="material-symbols-outlined">shield_person</span>
+            Super Admin
+          </div>
+        </div>
       </div>
-      <div class="login-feature-item">
-        <span class="material-symbols-outlined">eco</span>
-        Portofolio karbon terintegrasi
-      </div>
-      <div class="login-feature-item">
-        <span class="material-symbols-outlined">analytics</span>
-        Laporan analitik otomatis
-      </div>
-      <div class="login-feature-item">
-        <span class="material-symbols-outlined">shield</span>
-        Data aman & terenkripsi
+
+      <!-- Form -->
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <div class="input-icon-wrap">
+            <span class="material-symbols-outlined">mail</span>
+            <input type="email" id="email" class="form-input" placeholder="email@agrivision.id" required
+              autocomplete="email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-icon-wrap">
+            <span class="material-symbols-outlined">lock</span>
+            <input type="password" id="password" class="form-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required
+              autocomplete="current-password" style="padding-right:44px;">
+          </div>
+        </div>
+
+        <div class="forgot-link">
+          <a href="#">Lupa Password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary login-btn" id="btn-login">
+          <span class="material-symbols-outlined" style="font-size:18px;">login</span>
+          Masuk ke Dashboard
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:24px;font-size:13px;color:var(--color-text-muted);">
+        Butuh bantuan? <a href="mailto:support@agrivision.id"
+          style="color:var(--color-primary-container);font-weight:600;">Hubungi Support</a>
       </div>
     </div>
   </div>
 
-  <!-- Right Panel: Login Form -->
-  <div class="login-right">
-    <div class="login-form-header">
-      <h1 class="login-form-title">Selamat Datang ðŸ‘‹</h1>
-      <p class="login-form-subtitle">Masuk ke akun Agrivision Anda</p>
-    </div>
+  <script>
+    let selectedRole = 'admin';
 
-    <!-- Role Selector -->
-    <div style="margin-bottom:20px;">
-      <label class="form-label">Masuk sebagai</label>
-      <div class="login-role-selector" id="role-selector">
-        <div class="role-option" onclick="selectRole('board', this)" id="role-board">
-          <span class="material-symbols-outlined">grass</span>
-          Board / Client
-        </div>
-        <div class="role-option selected" onclick="selectRole('admin', this)" id="role-admin">
-          <span class="material-symbols-outlined">manage_accounts</span>
-          Admin
-        </div>
-        <div class="role-option" onclick="selectRole('superadmin', this)" id="role-superadmin">
-          <span class="material-symbols-outlined">shield_person</span>
-          Super Admin
-        </div>
-      </div>
-    </div>
+    function selectRole(role, el) {
+      selectedRole = role;
+      document.querySelectorAll('.role-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+    }
 
-    <!-- Form -->
-    <form id="login-form" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label class="form-label" for="email">Email</label>
-        <div class="input-icon-wrap">
-          <span class="material-symbols-outlined">mail</span>
-          <input type="email" id="email" class="form-input" placeholder="email@agrivision.id" required autocomplete="email">
-        </div>
-      </div>
+    function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-login');
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;animation:spin 1s linear infinite;">autorenew</span> Memproses...';
+      btn.disabled = true;
 
-      <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <div class="input-icon-wrap">
-          <span class="material-symbols-outlined">lock</span>
-          <input type="password" id="password" class="form-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required autocomplete="current-password" style="padding-right:44px;">
-        </div>
-      </div>
+      setTimeout(() => {
+        if (selectedRole === 'board') {
+          window.location.href = 'board-dashboard.html';
+        } else if (selectedRole === 'admin') {
+          window.location.href = 'manager-dashboard.html';
+        } else {
+          window.location.href = 'superadmin-dashboard.html';
+        }
+      }, 1200);
+    }
+  </script>
 
-      <div class="forgot-link">
-        <a href="#">Lupa Password?</a>
-      </div>
-
-      <button type="submit" class="btn btn-primary login-btn" id="btn-login">
-        <span class="material-symbols-outlined" style="font-size:18px;">login</span>
-        Masuk ke Dashboard
-      </button>
-    </form>
-
-    <div style="text-align:center;margin-top:24px;font-size:13px;color:var(--color-text-muted);">
-      Butuh bantuan? <a href="mailto:support@agrivision.id" style="color:var(--color-primary-container);font-weight:600;">Hubungi Support</a>
-    </div>
-  </div>
-</div>
-
-<script>
-  let selectedRole = 'admin';
-
-  function selectRole(role, el) {
-    selectedRole = role;
-    document.querySelectorAll('.role-option').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-  }
-
-  function handleLogin(e) {
-    e.preventDefault();
-    const btn = document.getElementById('btn-login');
-    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;animation:spin 1s linear infinite;">autorenew</span> Memproses...';
-    btn.disabled = true;
-
-    setTimeout(() => {
-      if (selectedRole === 'board') {
-        window.location.href = 'board-dashboard.html';
-      } else if (selectedRole === 'admin') {
-        window.location.href = 'admin-dashboard.html';
-      } else {
-        window.location.href = 'superadmin-dashboard.html';
+  <style>
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
       }
-    }, 1200);
-  }
-</script>
 
-<style>
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-</style>
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 
 </body>
-</html>
 
+</html>

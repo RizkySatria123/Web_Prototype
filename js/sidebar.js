@@ -1,11 +1,11 @@
-﻿/**
+/**
  * AGRIVISION â€” Shared Sidebar Renderer
  * Satu sumber sidebar untuk setiap role.
  * Panggil renderSidebar('board'|'manager'|'superadmin', 'file.html') dari setiap halaman.
  */
 
 const LOGO_SVG = `
-<svg viewBox="0 0 581 581" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+<svg viewBox="0 0 581 581" xmlns="http://www.w3.org/2000/svg" width="38" height="38">
   <g id="Daun">
     <path fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10" d="M198.01,399.87c24.92,22.53,57.44,33.02,87,30.71,2.56-26.73-9.04-56.13-33.96-78.66-24.92-22.53-57.44-33.02-87-30.71-2.56,26.73,9.04,56.13,33.96,78.66Z"/>
     <path fill="#7ed957" stroke="#c8ddad" stroke-width="2" stroke-miterlimit="10" d="M326.35,351.91c-24.92,22.53-36.52,51.94-33.96,78.66,29.56,2.31,62.08-8.17,87-30.71,24.92-22.53,36.52-51.94,33.96-78.66-29.56-2.31-62.08,8.17-87,30.71Z"/>
@@ -22,36 +22,27 @@ const LOGO_SVG = `
  */
 const SIDEBAR_MENUS = {
 
-  // â”€â”€ BOARD (Investor / Klien) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── BOARD (Investor / Klien) ────────────────────────────────
   board: {
-    roleLabel: 'Investor Â· Board',
+    roleLabel: 'Board',
     userAvatar: 'FR',
     userName: 'Fitrah Ramadhan',
-    userRole: 'Investor Â· Board',
+    userRole: 'Investor · Board',
     avatarBg: '',
     sections: [
       { label: 'Utama', items: [
-        { href: 'board-dashboard.html',     icon: 'dashboard',    text: 'Dashboard' },
-        { href: 'board-farms.html',         icon: 'grass',        text: 'Lahan Project' },
-        { href: 'board-notifications.html', icon: 'notifications',text: 'Notifikasi', badge: '3' },
-      ]},
-      { label: 'Data & Estimasi', items: [
-        { href: 'board-carbon.html',   icon: 'eco',         text: 'Portofolio Karbon' },
-        { href: 'board-reports.html',  icon: 'description', text: 'Laporan' },
-      ]},
-      { label: 'Akun', items: [
-        { href: 'board-profile.html',  icon: 'person',   text: 'Profil' },
-        { href: 'board-settings.html', icon: 'settings', text: 'Pengaturan' },
-      ]},
+        { href: 'board-dashboard.html', icon: 'dashboard',   text: 'Dashboard' },
+        { href: 'board-reports.html',   icon: 'description', text: 'Laporan' }
+      ]}
     ]
   },
 
-  // â”€â”€ MANAGER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── MANAGER ──────────────────────────────────────────────────
   manager: {
-    roleLabel: 'Manager Panel',
+    roleLabel: 'Manager',
     userAvatar: 'AD',
     userName: 'Ahmad Dani',
-    userRole: 'Manager Â· Agrivision',
+    userRole: 'Manager · Agrivision',
     avatarBg: 'var(--color-dark-amber)',
     sections: [
       { label: 'Utama', items: [
@@ -71,7 +62,7 @@ const SIDEBAR_MENUS = {
     ]
   },
 
-  // â”€â”€ SUPER ADMIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── SUPER ADMIN ───────────────────────────────────────────────
   superadmin: {
     roleLabel: 'Super Admin',
     userAvatar: 'SA',
@@ -126,8 +117,9 @@ function renderSidebar(role, currentPage) {
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="sidebar-logo">${LOGO_SVG}</div>
-      <div>
-        <div class="sidebar-brand-name">Agrivision</div>
+      <div style="display:flex;flex-direction:column;justify-content:center;padding-top:2px;">
+        <div class="sidebar-brand-name"><span style="color:#053b26;">Agri</span><span style="color:#fdb134;">vision</span></div>
+        <div style="font-size:9px;font-weight:600;color:var(--color-text-muted);letter-spacing:0.06em;text-transform:uppercase;margin:2px 0 4px;">See · Regenerate · Prosper</div>
         <div class="sidebar-brand-role">${cfg.roleLabel}</div>
       </div>
     </div>
