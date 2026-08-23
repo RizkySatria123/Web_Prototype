@@ -37,7 +37,7 @@ const SIDEBAR_MENUS = {
     ]
   },
 
-  // ── MANAGER ──────────────────────────────────────────────────
+  // ── MANAGER ────────────────────────────────────────────
   manager: {
     roleLabel: 'Manager',
     userAvatar: 'AD',
@@ -45,22 +45,16 @@ const SIDEBAR_MENUS = {
     userRole: 'Manager · Agrivision',
     avatarBg: 'var(--color-dark-amber)',
     sections: [
-      { label: 'Utama', items: [
-        { href: 'manager-dashboard.html', icon: 'dashboard', text: 'Dashboard' },
-        { href: 'manager-clients.html',   icon: 'groups',    text: 'Klien (Perusahaan)' },
-      ]},
-      { label: 'Lahan & Observasi', items: [
-        { href: 'manager-indices.html',      icon: 'data_thresholding', text: 'Index Observasi' },
-        { href: 'manager-traceability.html', icon: 'account_tree',      text: 'Rantai Pasok' },
-        { href: 'manager-reports.html',      icon: 'summarize',         text: 'Laporan & Analitik' },
-      ]},
-      { label: 'Sistem', items: [
-        { href: 'manager-monitoring.html', icon: 'monitor_heart', text: 'Pantau Sistem' },
-        { href: 'manager-profile.html',    icon: 'person',        text: 'Profil' },
-        { href: 'manager-settings.html',   icon: 'settings',      text: 'Pengaturan' },
+      { label: 'Menu Utama', items: [
+        { href: 'manager-dashboard.html', icon: 'dashboard',         text: 'Dashboard' },
+        { href: 'manager-clients.html',   icon: 'grass',             text: 'Lahan / Proyek' },
+        { href: 'manager-indices.html',   icon: 'data_thresholding', text: 'Index Observasi' },
+        { href: 'manager-reports.html',   icon: 'summarize',         text: 'Laporan & Analitik' },
+        { href: 'manager-profile.html',   icon: 'person',            text: 'Profil' },
       ]},
     ]
   },
+
 
   // ── SUPER ADMIN ───────────────────────────────────────────────
   superadmin: {
@@ -96,9 +90,13 @@ function renderSidebar(role, currentPage) {
   const cfg = SIDEBAR_MENUS[role];
   if (!cfg) return;
 
+  const showSectionLabels = cfg.sections.length > 1;
   let navHTML = '';
   cfg.sections.forEach(section => {
-    navHTML += `<div class="sidebar-section-label">${section.label}</div>`;
+
+    if (showSectionLabels) {
+      navHTML += `<div class="sidebar-section-label">${section.label}</div>`;
+    }
     section.items.forEach(item => {
       const isActive = item.href === currentPage;
       const badgeHTML = item.badge
@@ -110,6 +108,7 @@ function renderSidebar(role, currentPage) {
         </a>`;
     });
   });
+
 
   const avatarStyle = cfg.avatarBg ? `style="background:${cfg.avatarBg};"` : '';
 

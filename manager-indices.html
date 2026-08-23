@@ -1,23 +1,56 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agrivision Manager — Indeks & Data</title>
+  <title>Agrivision Manager — Index Observasi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/design-system.css">
   <style>
-    .index-selector { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: var(--space-lg); }
-    .index-btn { padding: 8px 16px; border: 1px solid var(--color-border-muted); border-radius: var(--radius-pill); font-size: 13px; font-weight: 700; color: var(--color-text-muted); background: white; cursor: pointer; transition: all var(--transition); }
-    .index-btn:hover { border-color: var(--color-primary-container); color: var(--color-primary-container); }
-    .index-btn.active { background: var(--color-primary-container); color: white; border-color: transparent; }
-    .heatmap-row { display: flex; gap: 3px; align-items: center; margin-bottom: 3px; }
-    .heatmap-cell { width: 30px; height: 30px; border-radius: 4px; position: relative; cursor: pointer; transition: transform 150ms; }
-    .heatmap-cell:hover { transform: scale(1.3); z-index: 10; }
-    .heatmap-label { font-size: 11px; color: var(--color-text-muted); width: 40px; text-align: right; flex-shrink: 0; }
-    .data-filter-bar { display: flex; gap: 12px; align-items: center; margin-bottom: var(--space-lg); flex-wrap: wrap; }
-    .gradient-bar { height: 12px; background: linear-gradient(to right, #dc2626, #fbbf24, #4ade80, #16a34a); border-radius: 6px; margin-top: 8px; position: relative; }
-    .gradient-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--color-text-muted); margin-top: 3px; }
+    /* ── Tab Selector ── */
+    .index-tab-bar { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:24px; }
+    .index-tab {
+      padding:8px 18px; border:1.5px solid #e8ebe9; border-radius:999px;
+      font-size:13px; font-weight:600; color:#6b7280; background:#fff;
+      cursor:pointer; transition:all 0.15s; font-family:'Poppins',sans-serif;
+    }
+    .index-tab:hover { border-color:#053b26; color:#053b26; }
+    .index-tab.active { background:#053b26; color:#fff; border-color:#053b26; }
+
+    /* ── Heatmap Grid ── */
+    .heatmap-wrap { overflow-x:auto; }
+    .heatmap-grid { display:inline-flex; flex-direction:column; gap:4px; }
+    .heatmap-row  { display:flex; gap:4px; align-items:center; }
+    .heatmap-label { font-size:11px; font-weight:600; color:#6b7280; width:52px; text-align:right; flex-shrink:0; padding-right:6px; }
+    .heatmap-cell {
+      width:38px; height:38px; border-radius:6px; cursor:pointer;
+      transition:transform 0.12s, box-shadow 0.12s;
+      position:relative; flex-shrink:0;
+    }
+    .heatmap-cell:hover { transform:scale(1.2); z-index:10; box-shadow:0 4px 14px rgba(0,0,0,0.15); }
+    .heatmap-cell.selected { outline:2.5px solid #1a3c2e; outline-offset:2px; transform:scale(1.15); z-index:11; }
+    .col-label { width:38px; text-align:center; font-size:10px; color:#9ca3af; font-weight:600; }
+
+    /* ── Detail Panel ── */
+    .detail-panel {
+      background:#fff; border:1px solid #e8ebe9; border-radius:14px;
+      padding:20px; min-height:320px;
+    }
+    .detail-panel-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; height:280px; color:#9ca3af; gap:8px; }
+
+    /* ── Line Chart (pure CSS SVG placeholder) ── */
+    .chart-wrap { background:#fff; border:1px solid #e8ebe9; border-radius:14px; padding:20px; margin-top:20px; }
+    .chart-header { font-size:14px; font-weight:700; color:#1a3c2e; margin-bottom:16px; }
+    .svg-chart { width:100%; }
+
+    /* ── Anomali List ── */
+    .anomali-row { display:flex; gap:12px; align-items:center; padding:10px 0; border-bottom:1px solid #f3f4f6; }
+    .anomali-row:last-child { border-bottom:none; }
+
+    /* ── Metric Mini Cards ── */
+    .mini-metric { text-align:center; background:#f9fafb; border-radius:8px; padding:10px 6px; }
+    .mini-metric-val { font-size:18px; font-weight:700; color:#1a3c2e; }
+    .mini-metric-lbl { font-size:10px; color:#9ca3af; margin-top:2px; }
   </style>
   <script src="js/sidebar.js"></script>
 </head>
@@ -26,299 +59,535 @@
   <div id="sidebar-placeholder"></div>
 
   <header class="topnav">
-    <div></div>
+    <div class="search-input-wrap">
+      <span class="material-symbols-outlined" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;color:#9ca3af;">search</span>
+      <input type="text" class="search-input" placeholder="Cari data..." style="padding-left:40px;width:260px;">
+    </div>
     <div class="topnav-actions">
-      <button class="topnav-icon-btn"><span class="material-symbols-outlined">notifications</span></button>
-      <div class="topnav-avatar" style="background:var(--color-dark-amber);">AD</div>
+      <button class="topnav-icon-btn"><span class="material-symbols-outlined" style="color:#374151;font-size:22px;">notifications</span></button>
+      <div class="topnav-avatar" style="background:var(--color-dark-amber);color:white;font-weight:700;width:34px;height:34px;font-size:13px;">AD</div>
     </div>
   </header>
 
-  <main class="main-content">
-    <div class="page-header">
+  <main class="main-content" style="background:#f4f5f4;">
+    <div class="page-header" style="margin-bottom:20px;">
       <div>
-        <h1 class="page-title">Index Observasi</h1>
-        <p class="page-subtitle">Lihat dan analisis semua indeks dari seluruh lahan klien — NDVI, SOC, Biomassa, NPK, dan lebih.</p>
+        <h1 class="page-title" style="font-size:24px;">Index Observasi</h1>
+        <p class="page-subtitle" style="font-size:13px;margin-top:4px;">Pantau setiap indikator agrikultur per area lahan secara detail.</p>
       </div>
       <div style="display:flex;gap:8px;">
-        <button class="btn btn-ghost">
-          <span class="material-symbols-outlined" style="font-size:17px;">upload</span>
-          Upload Data
+        <select class="form-input form-select" style="width:200px;font-size:13px;" id="sel-farm">
+          <option value="all">Semua Proyek</option>
+          <option value="kp">Kadatuan Farm</option>
+          <option value="sm">SMART Agribusiness</option>
+          <option value="kc">Kadatuan Cikembang</option>
+          <option value="pk">Pupuk Kujang</option>
+        </select>
+        <select class="form-input form-select" style="width:170px;font-size:13px;">
+          <option>Q1 2026 (Jan–Mar)</option>
+          <option>Q4 2025 (Okt–Des)</option>
+          <option>Q3 2025 (Jul–Sep)</option>
+        </select>
+        <button class="btn btn-primary" style="font-size:13px;">
+          <span class="material-symbols-outlined" style="font-size:16px;">download</span> Export CSV
         </button>
-        <button class="btn btn-primary">
-          <span class="material-symbols-outlined" style="font-size:17px;">download</span>
-          Export CSV
-        </button>
       </div>
     </div>
 
-    <!-- Index Selector Tabs -->
-    <div class="index-selector">
-      <button class="index-btn active" onclick="setIndex('ndvi', this)">NDVI</button>
-      <button class="index-btn" onclick="setIndex('soc', this)">SOC</button>
-      <button class="index-btn" onclick="setIndex('biomass', this)">Biomassa</button>
-      <button class="index-btn" onclick="setIndex('npk', this)">NPK Tanah</button>
-      <button class="index-btn" onclick="setIndex('ndre', this)">NDRE</button>
-      <button class="index-btn" onclick="setIndex('yield', this)">Produktivitas</button>
+    <!-- ── Tab Selector ── -->
+    <div class="index-tab-bar">
+      <button class="index-tab active" onclick="switchTab('health', this)">🌿 Kesehatan Tanaman</button>
+      <button class="index-tab" onclick="switchTab('soc', this)">🌍 SOC (Karbon Tanah)</button>
+      <button class="index-tab" onclick="switchTab('biomassa', this)">🌲 Biomassa</button>
+      <button class="index-tab" onclick="switchTab('nutrisi', this)">🧪 Nutrisi Tanah</button>
+      <button class="index-tab" onclick="switchTab('produktivitas', this)">📦 Produktivitas</button>
     </div>
 
-    <!-- Filters -->
-    <div class="data-filter-bar">
-      <select class="form-input form-select" style="width:200px;">
-        <option>Semua Klien</option>
-        <option>Kadatuan Puntang Farm</option>
-        <option>SMART Agribusiness</option>
-        <option>Pupuk Kujang</option>
-      </select>
-      <select class="form-input form-select" style="width:180px;">
-        <option>Q1 2026 (Jan–Mar)</option>
-        <option>Q4 2025 (Okt–Des)</option>
-        <option>Q3 2025 (Jul–Sep)</option>
-        <option>Q2 2025 (Apr–Jun)</option>
-      </select>
-      <div class="search-input-wrap" style="flex:1;min-width:200px;">
-        <span class="material-symbols-outlined">search</span>
-        <input type="text" class="search-input" style="width:100%;" placeholder="Cari nama lahan...">
-      </div>
+    <!-- ── Indicator Description Banner ── -->
+    <div id="indicator-desc" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 18px;margin-bottom:20px;font-size:13px;color:#166534;line-height:1.6;">
+      <strong>Kesehatan Tanaman</strong> dianalisis melalui <strong>Normalized Difference Vegetation Index (NDVI)</strong>, yaitu indeks yang mengukur kepadatan klorofil dan vitalitas vegetasi berdasarkan pantulan cahaya merah dan inframerah dari citra satelit. Semakin tinggi nilai NDVI (mendekati 1.0), semakin sehat dan lebat tutupan tanaman di area tersebut.
     </div>
 
-    <!-- Grid: Heatmap + Stats -->
-    <div style="display:grid;grid-template-columns:1fr 320px;gap:var(--gutter);margin-bottom:var(--space-lg);">
-      <!-- Heatmap Grid -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Heatmap NDVI — Semua Farm · Q1 2026</span>
-          <span style="font-size:12px;color:var(--color-text-muted);">Klik cell untuk detail</span>
+    <!-- ── Main Grid: Heatmap + Detail Panel ── -->
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;margin-bottom:20px;">
+
+      <!-- HEATMAP CARD -->
+      <div style="background:#fff;border:1px solid #e8ebe9;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div>
+            <div style="font-size:15px;font-weight:700;color:#1a3c2e;" id="heatmap-title">Peta Kesehatan Tanaman — Semua Proyek · Q1 2026</div>
+            <div style="font-size:12px;color:#6b7280;margin-top:2px;" id="heatmap-subtitle">Klik area untuk melihat detail kondisi di area tersebut</div>
+          </div>
         </div>
-        <div class="card-body">
-          <!-- Column Labels -->
-          <div style="display:flex;gap:3px;margin-bottom:4px;margin-left:44px;">
-            <div style="width:30px;text-align:center;font-size:10px;color:var(--color-text-muted);">B1</div>
-            <div style="width:30px;text-align:center;font-size:10px;color:var(--color-text-muted);">B2</div>
-            <div style="width:30px;text-align:center;font-size:10px;color:var(--color-text-muted);">B3</div>
-            <div style="width:30px;text-align:center;font-size:10px;color:var(--color-text-muted);">B4</div>
-            <div style="width:30px;text-align:center;font-size:10px;color:var(--color-text-muted);">B5</div>
-            <div style="width:30px;text-align:center;font-size:10px;color:var(--color-text-muted);">B6</div>
-            <div style="width:30px;text-align:center;font-size:10px;color:var(--color-text-muted);">B7</div>
-          </div>
-          <!-- Row 1: Farm 1 -->
-          <div class="heatmap-row">
-            <div class="heatmap-label">KP</div>
-            <div class="heatmap-cell" style="background:#16a34a;" title="KP B1 · NDVI 0.86"></div>
-            <div class="heatmap-cell" style="background:#22c55e;" title="KP B2 · NDVI 0.78"></div>
-            <div class="heatmap-cell" style="background:#86efac;" title="KP B3 · NDVI 0.64"></div>
-            <div class="heatmap-cell" style="background:#fde68a;" title="KP B4 · NDVI 0.45 — Anomali"></div>
-            <div class="heatmap-cell" style="background:#16a34a;" title="KP B5 · NDVI 0.81"></div>
-            <div class="heatmap-cell" style="background:#22c55e;" title="KP B6 · NDVI 0.77"></div>
-            <div class="heatmap-cell" style="background:#4ade80;" title="KP B7 · NDVI 0.71"></div>
-          </div>
-          <!-- Row 2: Farm 2 -->
-          <div class="heatmap-row">
-            <div class="heatmap-label">SM</div>
-            <div class="heatmap-cell" style="background:#15803d;" title="SM B1 · NDVI 0.91"></div>
-            <div class="heatmap-cell" style="background:#16a34a;" title="SM B2 · NDVI 0.85"></div>
-            <div class="heatmap-cell" style="background:#22c55e;" title="SM B3 · NDVI 0.79"></div>
-            <div class="heatmap-cell" style="background:#4ade80;" title="SM B4 · NDVI 0.72"></div>
-            <div class="heatmap-cell" style="background:#86efac;" title="SM B5 · NDVI 0.63"></div>
-            <div class="heatmap-cell" style="background:#f97316;" title="SM B6 · NDVI 0.38 — Kritis"></div>
-            <div class="heatmap-cell" style="background:#16a34a;" title="SM B7 · NDVI 0.84"></div>
-          </div>
-          <!-- Row 3: Farm 3 -->
-          <div class="heatmap-row">
-            <div class="heatmap-label">KC</div>
-            <div class="heatmap-cell" style="background:#86efac;" title="KC B1 · NDVI 0.62"></div>
-            <div class="heatmap-cell" style="background:#fbbf24;" title="KC B2 · NDVI 0.41 — Anomali"></div>
-            <div class="heatmap-cell" style="background:#fde68a;" title="KC B3 · NDVI 0.48"></div>
-            <div class="heatmap-cell" style="background:#86efac;" title="KC B4 · NDVI 0.61"></div>
-            <div class="heatmap-cell" style="background:#22c55e;" title="KC B5 · NDVI 0.74"></div>
-            <div class="heatmap-cell" style="background:#dc2626;" title="KC B6 · NDVI 0.22 — Kritis!"></div>
-            <div class="heatmap-cell" style="background:#fbbf24;" title="KC B7 · NDVI 0.42"></div>
-          </div>
-          <!-- Row 4: Farm 4 -->
-          <div class="heatmap-row">
-            <div class="heatmap-label">PK</div>
-            <div class="heatmap-cell" style="background:#4ade80;" title="PK B1 · NDVI 0.71"></div>
-            <div class="heatmap-cell" style="background:#86efac;" title="PK B2 · NDVI 0.65"></div>
-            <div class="heatmap-cell" style="background:#4ade80;" title="PK B3 · NDVI 0.70"></div>
-            <div class="heatmap-cell" style="background:#22c55e;" title="PK B4 · NDVI 0.76"></div>
-            <div class="heatmap-cell" style="background:#86efac;" title="PK B5 · NDVI 0.67"></div>
-            <div class="heatmap-cell" style="background:#4ade80;" title="PK B6 · NDVI 0.73"></div>
-            <div class="heatmap-cell" style="background:#22c55e;" title="PK B7 · NDVI 0.78"></div>
-          </div>
 
-          <!-- Legend -->
-          <div style="margin-top:16px;">
-            <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Legenda NDVI</div>
-            <div class="gradient-bar"></div>
-            <div class="gradient-label"><span>0.0 (Kritis)</span><span>0.4 (Rendah)</span><span>0.6 (Sedang)</span><span>0.9 (Excellent)</span></div>
+        <!-- Column Headers -->
+        <div class="heatmap-wrap">
+          <div class="heatmap-grid" id="heatmap-grid">
+            <!-- Rendered by JS -->
           </div>
+        </div>
+
+        <!-- Legend -->
+        <div style="margin-top:20px;">
+          <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;" id="legend-title">LEGENDA KESEHATAN TANAMAN (NDVI)</div>
+          <div style="height:12px;background:linear-gradient(to right,#dc2626,#fbbf24,#4ade80,#16a34a);border-radius:6px;"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:#9ca3af;margin-top:3px;" id="legend-labels">
+            <span>0.0 (Kritis)</span><span>0.4 (Rendah)</span><span>0.6 (Sedang)</span><span>0.9 (Baik Sekali)</span>
+          </div>
+        </div>
+
+        <!-- Overall Stats Row -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;">
+          <div class="mini-metric"><div class="mini-metric-val" id="s-mean">0.68</div><div class="mini-metric-lbl">Rata-rata</div></div>
+          <div class="mini-metric"><div class="mini-metric-val" style="color:#dc2626;" id="s-min">0.22</div><div class="mini-metric-lbl">Terendah</div></div>
+          <div class="mini-metric"><div class="mini-metric-val" style="color:#16a34a;" id="s-max">0.91</div><div class="mini-metric-lbl">Tertinggi</div></div>
+          <div class="mini-metric"><div class="mini-metric-val" style="color:#d97706;" id="s-alert">3</div><div class="mini-metric-lbl">Area Anomali</div></div>
         </div>
       </div>
 
-      <!-- Right Stats Panel -->
-      <div style="display:flex;flex-direction:column;gap:var(--gutter);">
-        <div class="card">
-          <div class="card-header"><span class="card-title" id="stat-title">Statistik NDVI</span></div>
-          <div class="card-body">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-              <div style="background:var(--color-surface-container-low);border-radius:8px;padding:12px;text-align:center;">
-                <div style="font-size:11px;color:var(--color-text-muted);">Mean</div>
-                <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--color-text-main);" id="stat-mean">0.68</div>
-              </div>
-              <div style="background:var(--color-surface-container-low);border-radius:8px;padding:12px;text-align:center;">
-                <div style="font-size:11px;color:var(--color-text-muted);">Min</div>
-                <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--color-error);" id="stat-min">0.22</div>
-              </div>
-              <div style="background:var(--color-surface-container-low);border-radius:8px;padding:12px;text-align:center;">
-                <div style="font-size:11px;color:var(--color-text-muted);">Max</div>
-                <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--color-bright-emerald);" id="stat-max">0.91</div>
-              </div>
-              <div style="background:var(--color-surface-container-low);border-radius:8px;padding:12px;text-align:center;">
-                <div style="font-size:11px;color:var(--color-text-muted);">Std Dev</div>
-                <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--color-text-main);" id="stat-std">0.18</div>
-              </div>
-            </div>
-            <div class="divider"></div>
-            <div style="font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Distribusi Nilai</div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Excellent (>0.75)</span><span style="font-weight:700;color:var(--color-bright-emerald);">11 cell</span></div>
-                <div style="height:6px;background:var(--color-surface-container-low);border-radius:3px;"><div style="height:100%;width:39%;background:var(--color-bright-emerald);border-radius:3px;"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Baik (0.6–0.75)</span><span style="font-weight:700;color:#22c55e;">10 cell</span></div>
-                <div style="height:6px;background:var(--color-surface-container-low);border-radius:3px;"><div style="height:100%;width:36%;background:#22c55e;border-radius:3px;"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Rendah (0.4–0.6)</span><span style="font-weight:700;color:#fbbf24;">4 cell</span></div>
-                <div style="height:6px;background:var(--color-surface-container-low);border-radius:3px;"><div style="height:100%;width:14%;background:#fbbf24;border-radius:3px;"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Kritis (<0.4)</span><span style="font-weight:700;color:var(--color-error);">3 cell</span></div>
-                <div style="height:6px;background:var(--color-surface-container-low);border-radius:3px;"><div style="height:100%;width:11%;background:var(--color-error);border-radius:3px;"></div></div>
-              </div>
-            </div>
-          </div>
+      <!-- DETAIL PANEL -->
+      <div class="detail-panel" id="detail-panel">
+        <div class="detail-panel-empty" id="detail-empty">
+          <span class="material-symbols-outlined" style="font-size:40px;color:#d1d5db;">touch_app</span>
+          <div style="font-size:13px;font-weight:600;">Klik area pada peta</div>
+          <div style="font-size:12px;text-align:center;max-width:160px;">untuk melihat kondisi detail di area tersebut</div>
         </div>
-
-        <div class="card">
-          <div class="card-header"><span class="card-title">Anomali Aktif</span><span class="badge badge-expired">3 Kritis</span></div>
-          <div class="card-body">
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div style="background:rgba(186,26,26,0.06);border-left:3px solid var(--color-error);border-radius:4px;padding:10px 12px;">
-                <div style="font-size:13px;font-weight:700;">KC B6 · NDVI 0.22</div>
-                <div style="font-size:11px;color:var(--color-text-muted);margin-top:2px;">Kadatuan Cikembang · Kritis</div>
-              </div>
-              <div style="background:rgba(249,115,22,0.06);border-left:3px solid #f97316;border-radius:4px;padding:10px 12px;">
-                <div style="font-size:13px;font-weight:700;">SM B6 · NDVI 0.38</div>
-                <div style="font-size:11px;color:var(--color-text-muted);margin-top:2px;">SMART Agribusiness · Kritis</div>
-              </div>
-              <div style="background:rgba(251,191,36,0.06);border-left:3px solid #fbbf24;border-radius:4px;padding:10px 12px;">
-                <div style="font-size:13px;font-weight:700;">KC B2 · NDVI 0.41</div>
-                <div style="font-size:11px;color:var(--color-text-muted);margin-top:2px;">Kadatuan Cikembang · Warning</div>
-              </div>
-            </div>
+        <div id="detail-content" style="display:none;">
+          <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;" id="d-area-label">Area Detail</div>
+          <div style="font-size:16px;font-weight:700;color:#1a3c2e;margin-bottom:4px;" id="d-title">—</div>
+          <div style="font-size:12px;color:#6b7280;margin-bottom:16px;" id="d-subtitle">—</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+            <div class="mini-metric"><div class="mini-metric-val" id="d-v1">—</div><div class="mini-metric-lbl" id="d-l1">Nilai</div></div>
+            <div class="mini-metric"><div class="mini-metric-val" id="d-v2">—</div><div class="mini-metric-lbl" id="d-l2">Status</div></div>
+            <div class="mini-metric"><div class="mini-metric-val" id="d-v3">—</div><div class="mini-metric-lbl" id="d-l3">SOC</div></div>
+            <div class="mini-metric"><div class="mini-metric-val" id="d-v4">—</div><div class="mini-metric-lbl" id="d-l4">Biomassa</div></div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Kondisi Lapangan</div>
+            <div id="d-notes" style="font-size:12px;color:#374151;line-height:1.6;background:#f9fafb;border-radius:8px;padding:10px 12px;">—</div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Rekomendasi</div>
+            <div id="d-rec" style="font-size:12px;color:#059669;line-height:1.6;background:#f0fdf4;border-radius:8px;padding:10px 12px;border-left:3px solid #059669;">—</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Data Table -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Tabel Data Per Lahan</span>
+    <!-- ── Line Chart: Trend Waktu ── -->
+    <div class="chart-wrap" style="margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <div class="chart-header" style="margin-bottom:2px;" id="chart-title">Tren Kesehatan Tanaman Sepanjang Waktu Pengamatan</div>
+          <div style="font-size:12px;color:#9ca3af;" id="chart-sub">Perubahan nilai NDVI rata-rata per proyek · Jan 2025 – Mar 2026</div>
+        </div>
+        <div style="display:flex;gap:16px;font-size:12px;">
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:16px;height:3px;background:#059669;border-radius:2px;"></div> Kadatuan</div>
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:16px;height:3px;background:#0ea5e9;border-radius:2px;"></div> SMART</div>
+          <div style="display:flex;align-items:center;gap:5px;"><div style="width:16px;height:3px;background:#d97706;border-radius:2px;"></div> Puntang</div>
+        </div>
       </div>
-      <div class="table-container">
-        <table class="data-table" aria-label="Data Indeks Per Lahan">
+      <!-- SVG Line Chart -->
+      <svg viewBox="0 0 800 200" class="svg-chart" style="font-family:'Poppins',sans-serif;">
+        <!-- Grid lines -->
+        <line x1="60" y1="10" x2="780" y2="10" stroke="#f3f4f6" stroke-width="1"/>
+        <line x1="60" y1="55" x2="780" y2="55" stroke="#f3f4f6" stroke-width="1"/>
+        <line x1="60" y1="100" x2="780" y2="100" stroke="#f3f4f6" stroke-width="1"/>
+        <line x1="60" y1="145" x2="780" y2="145" stroke="#f3f4f6" stroke-width="1"/>
+        <line x1="60" y1="190" x2="780" y2="190" stroke="#e8ebe9" stroke-width="1"/>
+        <!-- Y-axis labels -->
+        <text x="50" y="14" text-anchor="end" font-size="10" fill="#9ca3af">1.0</text>
+        <text x="50" y="59" text-anchor="end" font-size="10" fill="#9ca3af">0.75</text>
+        <text x="50" y="104" text-anchor="end" font-size="10" fill="#9ca3af">0.50</text>
+        <text x="50" y="149" text-anchor="end" font-size="10" fill="#9ca3af">0.25</text>
+        <text x="50" y="194" text-anchor="end" font-size="10" fill="#9ca3af">0.0</text>
+        <!-- X-axis labels -->
+        <text x="80"  y="205" text-anchor="middle" font-size="10" fill="#9ca3af">Jan'25</text>
+        <text x="168" y="205" text-anchor="middle" font-size="10" fill="#9ca3af">Apr'25</text>
+        <text x="256" y="205" text-anchor="middle" font-size="10" fill="#9ca3af">Jul'25</text>
+        <text x="344" y="205" text-anchor="middle" font-size="10" fill="#9ca3af">Okt'25</text>
+        <text x="432" y="205" text-anchor="middle" font-size="10" fill="#9ca3af">Jan'26</text>
+        <text x="520" y="205" text-anchor="middle" font-size="10" fill="#9ca3af">Feb'26</text>
+        <text x="608" y="205" text-anchor="middle" font-size="10" fill="#9ca3af">Mar'26</text>
+        <!-- Line 1: Kadatuan (green) - NDVI: 0.62,0.65,0.71,0.74,0.76,0.79,0.81 -->
+        <polyline points="80,68 168,57 256,40 344,30 432,24 520,17 608,14"
+          fill="none" stroke="#059669" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="80"  cy="68" r="4" fill="#059669"/>
+        <circle cx="168" cy="57" r="4" fill="#059669"/>
+        <circle cx="256" cy="40" r="4" fill="#059669"/>
+        <circle cx="344" cy="30" r="4" fill="#059669"/>
+        <circle cx="432" cy="24" r="4" fill="#059669"/>
+        <circle cx="520" cy="17" r="4" fill="#059669"/>
+        <circle cx="608" cy="14" r="4" fill="#059669"/>
+        <!-- Line 2: SMART (blue) - NDVI: 0.70,0.72,0.75,0.77,0.80,0.82,0.84 -->
+        <polyline points="80,46 168,38 256,27 344,20 432,11 520,7 608,3"
+          fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="80"  cy="46" r="4" fill="#0ea5e9"/>
+        <circle cx="168" cy="38" r="4" fill="#0ea5e9"/>
+        <circle cx="256" cy="27" r="4" fill="#0ea5e9"/>
+        <circle cx="344" cy="20" r="4" fill="#0ea5e9"/>
+        <circle cx="432" cy="11" r="4" fill="#0ea5e9"/>
+        <circle cx="520" cy="7"  r="4" fill="#0ea5e9"/>
+        <circle cx="608" cy="3"  r="4" fill="#0ea5e9"/>
+        <!-- Line 3: Puntang (amber) - NDVI: 0.48,0.45,0.43,0.41,0.44,0.46,0.48 -->
+        <polyline points="80,117 168,128 256,135 344,143 432,131 520,122 608,117"
+          fill="none" stroke="#d97706" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="80"  cy="117" r="4" fill="#d97706"/>
+        <circle cx="168" cy="128" r="4" fill="#d97706"/>
+        <circle cx="256" cy="135" r="4" fill="#d97706"/>
+        <circle cx="344" cy="143" r="4" fill="#d97706"/>
+        <circle cx="432" cy="131" r="4" fill="#d97706"/>
+        <circle cx="520" cy="122" r="4" fill="#d97706"/>
+        <circle cx="608" cy="117" r="4" fill="#d97706"/>
+      </svg>
+    </div>
+
+    <!-- ── Anomali & Alert ── -->
+    <div style="background:#fff;border:1px solid #e8ebe9;border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+      <div style="font-size:14px;font-weight:700;color:#1a3c2e;margin-bottom:16px;" id="anomali-title">Area dengan Anomali — Kesehatan Tanaman</div>
+      <div id="anomali-list"></div>
+    </div>
+
+    <!-- ── Data Table ── -->
+    <div style="background:#fff;border:1px solid #e8ebe9;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #f3f4f6;">
+        <div style="font-size:14px;font-weight:700;color:#1a3c2e;" id="table-title">Data per Area — Kesehatan Tanaman</div>
+        <div class="search-input-wrap" style="width:200px;">
+          <span class="material-symbols-outlined">search</span>
+          <input type="text" class="search-input" placeholder="Cari area...">
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="data-table">
           <thead>
             <tr>
-              <th>Farm</th>
-              <th>Klien</th>
-              <th>Periode</th>
-              <th>NDVI Mean</th>
-              <th>SOC (Ton C/Ha)</th>
-              <th>Biomassa</th>
+              <th>Proyek / Lahan</th>
               <th>Area (Ha)</th>
+              <th>Periode</th>
+              <th id="th-col1">Kesehatan (NDVI)</th>
+              <th id="th-col2">SOC (Ton C/Ha)</th>
+              <th id="th-col3">Biomassa (Ton/Ha)</th>
               <th>Status</th>
               <th style="text-align:right;">Aksi</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td><div style="font-weight:700;">Kadatuan, Puntang</div><div style="font-size:12px;color:var(--color-text-muted);">Arabica · Organic</div></td>
-              <td style="color:var(--color-text-muted);">Kadatuan Puntang Farm</td>
-              <td style="color:var(--color-text-muted);">Q1 2026</td>
-              <td><span style="font-weight:700;color:var(--color-dark-emerald);">0.76</span></td>
-              <td style="font-weight:700;">7.45</td>
-              <td style="color:var(--color-text-muted);">311.4 Ton/Ha</td>
-              <td>25</td>
-              <td><span class="badge badge-active">Normal</span></td>
-              <td style="text-align:right;"><button class="action-btn view">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:700;">SMART Block A</div><div style="font-size:12px;color:var(--color-text-muted);">Oil Palm</div></td>
-              <td style="color:var(--color-text-muted);">SMART Agribusiness</td>
-              <td style="color:var(--color-text-muted);">Q1 2026</td>
-              <td><span style="font-weight:700;color:var(--color-dark-emerald);">0.82</span></td>
-              <td style="font-weight:700;">8.12</td>
-              <td style="color:var(--color-text-muted);">443.6 Ton/Ha</td>
-              <td>340</td>
-              <td><span class="badge badge-active">Normal</span></td>
-              <td style="text-align:right;"><button class="action-btn view">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:700;">Kadatuan, Cikembang</div><div style="font-size:12px;color:var(--color-text-muted);">Robusta</div></td>
-              <td style="color:var(--color-text-muted);">Kadatuan Cikembang</td>
-              <td style="color:var(--color-text-muted);">Q1 2026</td>
-              <td><span style="font-weight:700;color:var(--color-error);">0.43</span></td>
-              <td style="font-weight:700;color:var(--color-error);">2.81</td>
-              <td style="color:var(--color-text-muted);">98.2 Ton/Ha</td>
-              <td>18</td>
-              <td><span class="badge badge-expired">Anomali</span></td>
-              <td style="text-align:right;"><button class="action-btn view">Detail</button></td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:700;">Kujang Block 1</div><div style="font-size:12px;color:var(--color-text-muted);">Sugarcane</div></td>
-              <td style="color:var(--color-text-muted);">Pupuk Kujang</td>
-              <td style="color:var(--color-text-muted);">Q1 2026</td>
-              <td><span style="font-weight:700;color:var(--color-dark-emerald);">0.70</span></td>
-              <td style="font-weight:700;">5.44</td>
-              <td style="color:var(--color-text-muted);">188.6 Ton/Ha</td>
-              <td>120</td>
-              <td><span class="badge badge-active">Normal</span></td>
-              <td style="text-align:right;"><button class="action-btn view">Detail</button></td>
-            </tr>
-          </tbody>
+          <tbody id="data-tbody"></tbody>
         </table>
       </div>
     </div>
+
   </main>
 </div>
 
 <script>
-const indexStats = {
-  ndvi: { title:'Statistik NDVI', mean:'0.68', min:'0.22', max:'0.91', std:'0.18' },
-  soc: { title:'Statistik SOC (Ton C/Ha)', mean:'5.96', min:'2.81', max:'8.12', std:'2.11' },
-  biomass: { title:'Statistik Biomassa (Ton/Ha)', mean:'260.5', min:'98.2', max:'443.6', std:'142.3' },
-  npk: { title:'Statistik Nitrogen (kg/Ha)', mean:'84.6', min:'32.4', max:'146.8', std:'38.7' },
-  ndre: { title:'Statistik NDRE', mean:'0.42', min:'0.18', max:'0.68', std:'0.12' },
-  yield: { title:'Statistik Produktivitas (kg/Ha)', mean:'1840', min:'640', max:'3200', std:'820' }
+/* ═══════════════════════════════════════════════════
+   DATA PER TAB
+═══════════════════════════════════════════════════ */
+const TABS = {
+  health: {
+    tabLabel: 'Kesehatan Tanaman',
+    heatmapTitle: 'Peta Kesehatan Tanaman — Semua Proyek · Q1 2026',
+    desc: `<strong>Kesehatan Tanaman</strong> dianalisis melalui <strong>Normalized Difference Vegetation Index (NDVI)</strong>, yaitu indeks yang mengukur kepadatan klorofil dan vitalitas vegetasi berdasarkan pantulan cahaya merah dan inframerah dari citra satelit. Semakin tinggi nilai NDVI (mendekati 1.0), semakin sehat dan lebat tutupan tanaman di area tersebut.`,
+    legendTitle: 'LEGENDA KESEHATAN TANAMAN (NDVI)',
+    legendLabels: ['0.0 (Kritis)', '0.4 (Rendah)', '0.6 (Sedang)', '0.9 (Baik Sekali)'],
+    chartTitle: 'Tren Kesehatan Tanaman Sepanjang Waktu Pengamatan',
+    chartSub: 'Perubahan nilai NDVI rata-rata per proyek · Jan 2025 – Mar 2026',
+    stats: { mean:'0.68', min:'0.22', max:'0.91', alert:3 },
+    d1: { label:'Nilai NDVI', key:'ndvi' }, d2: { label:'Status', key:'status' },
+    d3: { label:'SOC (Ton C/Ha)', key:'soc' }, d4: { label:'Biomassa (Ton/Ha)', key:'biomass' },
+    th1: 'Kesehatan (NDVI)', th2: 'SOC (Ton C/Ha)', th3: 'Biomassa (Ton/Ha)',
+    colorScale: v => v > 0.75 ? '#15803d' : v > 0.6 ? '#22c55e' : v > 0.5 ? '#86efac' : v > 0.4 ? '#fde68a' : v > 0.3 ? '#fbbf24' : v > 0.2 ? '#f97316' : '#dc2626',
+    areas: [
+      { code:'KP', name:'Kadatuan Farm', blocks:[
+        { id:'KP-A', ha:'1.0 Ha', ndvi:0.86, soc:7.2, biomass:320, status:'Baik Sekali', note:'Tutupan kopi arabica sangat rapat dan sehat. Klorofil tinggi.', rec:'Pertahankan kondisi. Jadwalkan panen dalam 3–4 minggu.' },
+        { id:'KP-B', ha:'0.8 Ha', ndvi:0.78, soc:6.8, biomass:295, status:'Baik', note:'Kondisi baik, sedikit penurunan dari bulan lalu.', rec:'Monitor kelembaban tanah. Pertimbangkan pemupukan NPK ringan.' },
+        { id:'KP-C', ha:'1.2 Ha', ndvi:0.64, soc:5.9, biomass:241, status:'Sedang', note:'Tutupan cukup namun ada tanda stres air di bagian barat.', rec:'Tingkatkan irigasi di blok barat. Cek drainase.' },
+        { id:'KP-D', ha:'0.9 Ha', ndvi:0.45, soc:4.1, biomass:148, status:'Rendah ⚠️', note:'Indikasi kekurangan nitrogen. Daun mulai menguning.', rec:'Aplikasi pupuk urea 150 kg/Ha segera. Cek pH tanah.' },
+        { id:'KP-E', ha:'1.1 Ha', ndvi:0.81, soc:7.0, biomass:310, status:'Baik', note:'Pertumbuhan normal pasca pruning.', rec:'Lanjutkan jadwal pemeliharaan rutin.' },
+        { id:'KP-F', ha:'0.7 Ha', ndvi:0.77, soc:6.6, biomass:288, status:'Baik', note:'Kondisi stabil.', rec:'Pantau perkembangan buah.' },
+        { id:'KP-G', ha:'1.0 Ha', ndvi:0.71, soc:6.2, biomass:265, status:'Sedang', note:'Sedikit di bawah rata-rata. Perlu perhatian.', rec:'Cek kandungan organik tanah.' }
+      ]},
+      { code:'SM', name:'SMART Agribusiness', blocks:[
+        { id:'SM-A', ha:'2.5 Ha', ndvi:0.91, soc:8.1, biomass:443, status:'Baik Sekali', note:'Kelapa sawit tumbuh optimal. Tandan buah segar berkembang baik.', rec:'Jadwalkan panen TBS dalam 2 minggu.' },
+        { id:'SM-B', ha:'2.0 Ha', ndvi:0.85, soc:7.8, biomass:412, status:'Baik Sekali', note:'Kondisi sangat baik.', rec:'Pertahankan program pemupukan.' },
+        { id:'SM-C', ha:'1.8 Ha', ndvi:0.79, soc:7.2, biomass:361, status:'Baik', note:'Produktif dan sehat.', rec:'Monitor serangan hama ulat api.' },
+        { id:'SM-D', ha:'2.2 Ha', ndvi:0.72, soc:6.5, biomass:305, status:'Sedang', note:'Perlu perhatian di sudut timur laut.', rec:'Cek drainase dan sanitasi lahan.' },
+        { id:'SM-E', ha:'1.5 Ha', ndvi:0.63, soc:5.8, biomass:242, status:'Sedang', note:'Zona transisi, masih produktif.', rec:'Tambah mulsa organik.' },
+        { id:'SM-F', ha:'1.9 Ha', ndvi:0.38, soc:3.2, biomass:96,  status:'Kritis 🔴', note:'Serangan kumbang tanduk terdeteksi. Pohon mati bertambah.', rec:'SEGERA: Aplikasi insektisida sistemik + pruning pohon mati.' },
+        { id:'SM-G', ha:'2.1 Ha', ndvi:0.84, soc:7.6, biomass:398, status:'Baik Sekali', note:'Zona terbaik di farm. Dijadikan area percontohan.', rec:'Dokumentasikan praktik terbaik untuk diterapkan di blok lain.' }
+      ]},
+      { code:'KC', name:'Kadatuan Cikembang', blocks:[
+        { id:'KC-A', ha:'0.8 Ha', ndvi:0.62, soc:5.5, biomass:225, status:'Sedang', note:'Mulai pulih pasca kemarau panjang.', rec:'Lanjutkan rehabilitasi lahan.' },
+        { id:'KC-B', ha:'0.6 Ha', ndvi:0.41, soc:3.8, biomass:132, status:'Rendah ⚠️', note:'Tanah kompak, kurang aerasi.', rec:'Penggemburan tanah dan penambahan bahan organik.' },
+        { id:'KC-C', ha:'0.9 Ha', ndvi:0.48, soc:4.2, biomass:156, status:'Rendah ⚠️', note:'Kekurangan air.', rec:'Pasang sistem irigasi tetes.' },
+        { id:'KC-D', ha:'0.7 Ha', ndvi:0.61, soc:5.4, biomass:219, status:'Sedang', note:'Kondisi membaik dibanding Q4 2025.', rec:'Pertahankan pemupukan organik.' },
+        { id:'KC-E', ha:'0.8 Ha', ndvi:0.74, soc:6.4, biomass:278, status:'Baik', note:'Zona terbaik di lahan ini.', rec:'Jadikan sebagai area percontohan rehabilitasi.' },
+        { id:'KC-F', ha:'0.5 Ha', ndvi:0.22, soc:1.8, biomass:42,  status:'Kritis 🔴', note:'Tanaman mati banyak. Erosi parah di lereng.', rec:'PRIORITAS: Penanaman penutup tanah + terasering segera.' },
+        { id:'KC-G', ha:'0.6 Ha', ndvi:0.42, soc:3.6, biomass:128, status:'Rendah ⚠️', note:'Perlu intervensi nutrisi.', rec:'Uji tanah lengkap dan aplikasi pupuk sesuai hasil uji.' }
+      ]},
+      { code:'PK', name:'Pupuk Kujang', blocks:[
+        { id:'PK-A', ha:'3.5 Ha', ndvi:0.71, soc:6.1, biomass:262, status:'Sedang', note:'Tebu tumbuh normal. Fase pemanjangan batang.', rec:'Monitor populasi hama penggerek batang.' },
+        { id:'PK-B', ha:'3.0 Ha', ndvi:0.65, soc:5.7, biomass:238, status:'Sedang', note:'Kondisi cukup baik.', rec:'Optimalkan jadwal pemupukan.' },
+        { id:'PK-C', ha:'3.2 Ha', ndvi:0.70, soc:6.0, biomass:258, status:'Sedang', note:'Pertumbuhan seragam.', rec:'Pertahankan jadwal irigasi.' },
+        { id:'PK-D', ha:'2.8 Ha', ndvi:0.76, soc:6.5, biomass:285, status:'Baik', note:'Produksi gula diperkirakan meningkat 12%.', rec:'Siapkan jadwal panen dan pengangkutan.' },
+        { id:'PK-E', ha:'3.1 Ha', ndvi:0.67, soc:5.9, biomass:245, status:'Sedang', note:'Normal untuk fase ini.', rec:'Cek kadar sukrosa secara berkala.' },
+        { id:'PK-F', ha:'3.3 Ha', ndvi:0.73, soc:6.3, biomass:271, status:'Baik', note:'Tutupan merata.', rec:'Pemeliharaan rutin mencukupi.' },
+        { id:'PK-G', ha:'2.9 Ha', ndvi:0.78, soc:6.7, biomass:294, status:'Baik', note:'Kondisi baik mendekati panen.', rec:'Lakukan refractometer test kadar brix.' }
+      ]}
+    ]
+  },
+  soc: {
+    tabLabel: 'SOC (Karbon Tanah)',
+    heatmapTitle: 'Peta Stok Karbon Organik Tanah (SOC) · Q1 2026',
+    desc: `<strong>Soil Organic Carbon (SOC)</strong> mengukur kandungan karbon organik yang tersimpan di dalam tanah dalam satuan <strong>Ton C/Ha</strong>. SOC yang tinggi menunjukkan tanah yang subur, sehat, dan mampu menyerap lebih banyak karbon dioksida dari atmosfer. Pengukuran dilakukan melalui analisis sampel tanah di laboratorium dan estimasi berbasis citra satelit.`,
+    legendTitle: 'LEGENDA SOC (TON C/Ha)',
+    legendLabels: ['0 (Sangat Rendah)', '3 (Rendah)', '6 (Sedang)', '10+ (Tinggi)'],
+    chartTitle: 'Tren Stok Karbon Organik Tanah (SOC) Sepanjang Pengamatan',
+    chartSub: 'Perubahan SOC rata-rata per proyek · Jan 2025 – Mar 2026',
+    stats: { mean:'5.96', min:'1.8', max:'8.12', alert:2 },
+    d1: { label:'SOC (Ton C/Ha)', key:'soc' }, d2: { label:'Status', key:'status' },
+    d3: { label:'NDVI', key:'ndvi' }, d4: { label:'Biomassa (Ton/Ha)', key:'biomass' },
+    th1: 'SOC (Ton C/Ha)', th2: 'NDVI', th3: 'Biomassa (Ton/Ha)',
+    colorScale: v => v > 7 ? '#15803d' : v > 5.5 ? '#22c55e' : v > 4 ? '#86efac' : v > 3 ? '#fde68a' : v > 2 ? '#fbbf24' : '#dc2626',
+    areas: null // pakai yang sama dari health, nilai SOC diambil dari soc field
+  },
+  biomassa: {
+    tabLabel: 'Biomassa',
+    heatmapTitle: 'Peta Estimasi Biomassa Karbon · Q1 2026',
+    desc: `<strong>Biomassa</strong> adalah total massa organik tumbuhan (batang, daun, akar, buah) yang dinyatakan dalam <strong>Ton/Ha</strong>. Biomassa berkorelasi langsung dengan jumlah karbon yang tersimpan dalam jaringan tanaman hidup. Semakin tinggi biomassa, semakin besar pula potensi <em>carbon sequestration</em> yang dikontribusikan oleh lahan tersebut.`,
+    legendTitle: 'LEGENDA BIOMASSA (TON/Ha)',
+    legendLabels: ['0 (Sangat Rendah)', '100 (Rendah)', '250 (Sedang)', '450+ (Tinggi)'],
+    chartTitle: 'Tren Estimasi Biomassa Karbon Sepanjang Pengamatan',
+    chartSub: 'Perubahan biomassa rata-rata per proyek · Jan 2025 – Mar 2026',
+    stats: { mean:'260.5', min:'42', max:'443', alert:2 },
+    d1: { label:'Biomassa (Ton/Ha)', key:'biomass' }, d2: { label:'Status', key:'status' },
+    d3: { label:'NDVI', key:'ndvi' }, d4: { label:'SOC (Ton C/Ha)', key:'soc' },
+    th1: 'Biomassa (Ton/Ha)', th2: 'NDVI', th3: 'SOC (Ton C/Ha)',
+    colorScale: v => v > 380 ? '#15803d' : v > 260 ? '#22c55e' : v > 180 ? '#86efac' : v > 120 ? '#fde68a' : v > 70 ? '#fbbf24' : '#dc2626',
+    areas: null
+  },
+  nutrisi: {
+    tabLabel: 'Nutrisi Tanah',
+    heatmapTitle: 'Peta Nutrisi Tanah (NPK) · Q1 2026',
+    desc: `<strong>Nutrisi Tanah</strong> mengukur kandungan tiga unsur hara utama tanaman: <strong>Nitrogen (N)</strong>, <strong>Fosfor (P)</strong>, dan <strong>Kalium (K)</strong>, dinyatakan dalam <strong>kg/Ha</strong>. Keseimbangan NPK sangat menentukan produktivitas dan kesehatan tanaman. Data diperoleh dari uji sampel tanah di laboratorium yang dilakukan setiap kuartal.`,
+    legendTitle: 'LEGENDA NITROGEN (kg/Ha)',
+    legendLabels: ['0 (Sangat Rendah)', '40 (Rendah)', '80 (Sedang)', '140+ (Tinggi)'],
+    chartTitle: 'Tren Kandungan Nitrogen Tanah Sepanjang Pengamatan',
+    chartSub: 'Perubahan kandungan N rata-rata per proyek · Jan 2025 – Mar 2026',
+    stats: { mean:'84.6', min:'28', max:'148', alert:3 },
+    d1: { label:'Nitrogen (kg/Ha)', key:'npk_n' }, d2: { label:'Fosfor (kg/Ha)', key:'npk_p' },
+    d3: { label:'Kalium (kg/Ha)', key:'npk_k' }, d4: { label:'pH Tanah', key:'ph' },
+    th1: 'Nitrogen N (kg/Ha)', th2: 'Fosfor P (kg/Ha)', th3: 'Kalium K (kg/Ha)',
+    colorScale: v => v > 120 ? '#15803d' : v > 90 ? '#22c55e' : v > 65 ? '#86efac' : v > 45 ? '#fde68a' : v > 30 ? '#fbbf24' : '#dc2626',
+    areas: null
+  },
+  produktivitas: {
+    tabLabel: 'Produktivitas',
+    heatmapTitle: 'Peta Estimasi Produktivitas (Yield) · Q1 2026',
+    desc: `<strong>Produktivitas</strong> mengukur estimasi hasil panen per satuan luas lahan dalam <strong>kg/Ha</strong>. Data ini dihitung berdasarkan kombinasi nilai NDVI, kondisi tanah (SOC), biomassa, dan curah hujan historis menggunakan model prediksi Agrivision. Nilai ini merupakan estimasi dan dapat berbeda dengan realisasi panen aktual.`,
+    legendTitle: 'LEGENDA PRODUKTIVITAS (kg/Ha)',
+    legendLabels: ['0 (Sangat Rendah)', '600 (Rendah)', '1.500 (Sedang)', '3.000+ (Tinggi)'],
+    chartTitle: 'Tren Estimasi Produktivitas (Yield) Sepanjang Pengamatan',
+    chartSub: 'Perubahan estimasi yield rata-rata per proyek · Jan 2025 – Mar 2026',
+    stats: { mean:'1.840', min:'320', max:'3.200', alert:2 },
+    d1: { label:'Yield Est. (kg/Ha)', key:'yield' }, d2: { label:'Status', key:'status' },
+    d3: { label:'NDVI', key:'ndvi' }, d4: { label:'SOC (Ton C/Ha)', key:'soc' },
+    th1: 'Yield Est. (kg/Ha)', th2: 'NDVI', th3: 'SOC (Ton C/Ha)',
+    colorScale: v => v > 2500 ? '#15803d' : v > 1800 ? '#22c55e' : v > 1200 ? '#86efac' : v > 700 ? '#fde68a' : v > 400 ? '#fbbf24' : '#dc2626',
+    areas: null
+  }
 };
 
-function setIndex(id, btn) {
-  document.querySelectorAll('.index-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const s = indexStats[id] || indexStats.ndvi;
-  document.getElementById('stat-title').textContent = s.title;
-  document.getElementById('stat-mean').textContent = s.mean;
-  document.getElementById('stat-min').textContent = s.min;
-  document.getElementById('stat-max').textContent = s.max;
-  document.getElementById('stat-std').textContent = s.std;
+/* Enrich tabs that reuse health areas with extra properties */
+const healthAreas = TABS.health.areas;
+// Add npk and yield data to each block
+const npkExtra = [[128,42,89,6.2],[115,38,82,6.4],[98,32,74,5.9],[68,24,58,5.3],[121,40,86,6.3],[112,36,79,6.1],[105,34,76,6.0],
+  [146,48,98,6.5],[138,45,94,6.4],[131,43,90,6.3],[118,39,84,6.2],[95,31,72,5.8],[28,14,32,4.9],[135,44,92,6.4],
+  [82,28,64,5.6],[48,19,44,5.1],[58,22,52,5.4],[78,26,62,5.5],[95,31,72,5.9],[32,15,36,4.8],[52,20,48,5.0],
+  [105,34,78,6.1],[98,31,74,6.0],[102,33,76,6.0],[112,36,82,6.2],[99,32,75,6.0],[108,35,80,6.1],[110,36,81,6.2]];
+const yieldExtra = [3100,2780,2260,1420,2900,2690,2480, 3200,3050,2840,2610,2240,890,3180, 2200,1340,1580,2180,2750,320,1290, 2580,2360,2500,2840,2440,2690,2780];
+let blockIdx = 0;
+healthAreas.forEach(farm => farm.blocks.forEach(b => {
+  const n = npkExtra[blockIdx] || [80,28,65,6.0];
+  b.npk_n = n[0]; b.npk_p = n[1]; b.npk_k = n[2]; b.ph = n[3];
+  b.yield = yieldExtra[blockIdx] || 1500;
+  blockIdx++;
+}));
+[TABS.soc, TABS.biomassa, TABS.nutrisi, TABS.produktivitas].forEach(t => t.areas = healthAreas);
+
+/* ══ Active Tab State ══ */
+let activeTab = 'health';
+let selectedBlock = null;
+
+function getVal(b, tab) {
+  if (tab === 'health') return b.ndvi;
+  if (tab === 'soc') return b.soc;
+  if (tab === 'biomassa') return b.biomass;
+  if (tab === 'nutrisi') return b.npk_n;
+  if (tab === 'produktivitas') return b.yield;
+  return 0;
 }
+
+function statusBadge(status) {
+  const map = { 'Baik Sekali':'#15803d','Baik':'#22c55e','Sedang':'#d97706' };
+  const col = status.startsWith('Kritis') ? '#dc2626' : status.startsWith('Rendah') ? '#d97706' : (map[status]||'#6b7280');
+  return `<span style="display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;background:${col}20;color:${col};">${status}</span>`;
+}
+
+function renderHeatmap() {
+  const tab = TABS[activeTab];
+  const grid = document.getElementById('heatmap-grid');
+  let html = '';
+  // Col headers
+  html += `<div style="display:flex;gap:4px;margin-bottom:2px;margin-left:56px;">`;
+  tab.areas[0].blocks.forEach((b,i) => {
+    html += `<div style="width:38px;text-align:center;font-size:10px;color:#9ca3af;font-weight:600;">${String.fromCharCode(65+i)}</div>`;
+  });
+  html += `</div>`;
+  // Rows
+  tab.areas.forEach(farm => {
+    html += `<div class="heatmap-row"><div class="heatmap-label">${farm.code}</div>`;
+    farm.blocks.forEach((b, bi) => {
+      const v = getVal(b, activeTab);
+      const col = tab.colorScale(v);
+      const sel = (selectedBlock && selectedBlock.id === b.id) ? ' selected' : '';
+      html += `<div class="heatmap-cell${sel}" style="background:${col};" title="${b.id} · ${b.ha}" onclick="selectBlock('${b.id}')"></div>`;
+    });
+    html += `</div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function selectBlock(blockId) {
+  const tab = TABS[activeTab];
+  let found = null;
+  tab.areas.forEach(farm => farm.blocks.forEach(b => { if (b.id === blockId) { found = {farm, block:b}; } }));
+  if (!found) return;
+  selectedBlock = found.block;
+  renderHeatmap();
+
+  const { farm, block } = found;
+  const tab_ = tab;
+  document.getElementById('detail-empty').style.display = 'none';
+  document.getElementById('detail-content').style.display = 'block';
+  document.getElementById('d-area-label').textContent = `${farm.name} · Area ${block.id}`;
+  document.getElementById('d-title').textContent = `Area ${block.id}`;
+  document.getElementById('d-subtitle').textContent = `Luas: ${block.ha} · Status: ${block.status}`;
+  // Values
+  const d1 = tab_.d1, d2 = tab_.d2, d3 = tab_.d3, d4 = tab_.d4;
+  document.getElementById('d-v1').textContent = getFieldDisplay(block, d1.key);
+  document.getElementById('d-l1').textContent = d1.label;
+  document.getElementById('d-v2').textContent = block.status.replace(/[^a-zA-Z\s]/g,'').trim();
+  document.getElementById('d-l2').textContent = 'Status';
+  document.getElementById('d-v3').textContent = getFieldDisplay(block, d3.key);
+  document.getElementById('d-l3').textContent = d3.label;
+  document.getElementById('d-v4').textContent = getFieldDisplay(block, d4.key);
+  document.getElementById('d-l4').textContent = d4.label;
+  document.getElementById('d-notes').textContent = block.note;
+  document.getElementById('d-rec').textContent = block.rec;
+}
+
+function getFieldDisplay(b, key) {
+  const map = {ndvi:b.ndvi, soc:b.soc, biomass:b.biomass, status:b.status, npk_n:b.npk_n, npk_p:b.npk_p, npk_k:b.npk_k, ph:b.ph, yield:b.yield};
+  const v = map[key];
+  if (v === undefined) return '—';
+  if (key === 'yield') return v.toLocaleString('id');
+  if (typeof v === 'number') return v.toString();
+  return v;
+}
+
+function renderAnomalies() {
+  const tab = TABS[activeTab];
+  let rows = [];
+  tab.areas.forEach(farm => farm.blocks.forEach(b => {
+    if (b.status.startsWith('Kritis') || b.status.startsWith('Rendah')) {
+      rows.push({ farm, block: b });
+    }
+  }));
+  const el = document.getElementById('anomali-list');
+  if (!rows.length) { el.innerHTML = '<div style="font-size:13px;color:#9ca3af;padding:12px 0;">Tidak ada anomali terdeteksi.</div>'; return; }
+  el.innerHTML = rows.map(({farm, block}) => {
+    const v = getVal(block, activeTab);
+    const isKritis = block.status.startsWith('Kritis');
+    const col = isKritis ? '#dc2626' : '#d97706';
+    const bg  = isKritis ? '#fef2f2' : '#fff7ed';
+    const icon = isKritis ? 'error' : 'warning';
+    return `<div class="anomali-row">
+      <div style="width:34px;height:34px;border-radius:8px;background:${bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <span class="material-symbols-outlined" style="font-size:18px;color:${col};">${icon}</span>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:#1a3c2e;">${block.id} — ${block.note.substring(0,55)}...</div>
+        <div style="font-size:12px;color:#6b7280;">${farm.name} · Luas ${block.ha}</div>
+      </div>
+      <span style="display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;background:${bg};color:${col};">${block.status.replace(/[^a-zA-Z\s⚠️🔴]/g,'').trim()}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderTable() {
+  const tab = TABS[activeTab];
+  document.getElementById('th-col1').textContent = tab.th1;
+  document.getElementById('th-col2').textContent = tab.th2;
+  document.getElementById('th-col3').textContent = tab.th3;
+  let rows = '';
+  tab.areas.forEach(farm => farm.blocks.forEach(b => {
+    const v1 = getFieldDisplay(b, tab.d1.key);
+    const v2 = getFieldDisplay(b, tab.d3.key);
+    const v3 = getFieldDisplay(b, tab.d4.key);
+    const isKritis = b.status.startsWith('Kritis');
+    const badge = isKritis
+      ? `<span class="badge badge-expired">${b.status.replace(/[^a-zA-Z\s]/g,'').trim()}</span>`
+      : b.status.startsWith('Rendah')
+        ? `<span class="badge badge-warning">Rendah</span>`
+        : b.status.includes('Baik')
+          ? `<span class="badge badge-active">${b.status.replace(/[^a-zA-Z\s]/g,'').trim()}</span>`
+          : `<span class="badge badge-stable">${b.status}</span>`;
+    rows += `<tr onclick="selectBlock('${b.id}')" style="cursor:pointer;">
+      <td><div style="font-weight:700;">${farm.name}</div><div style="font-size:12px;color:var(--color-text-muted);">Area ${b.id}</div></td>
+      <td>${b.ha}</td>
+      <td style="color:var(--color-text-muted);">Q1 2026</td>
+      <td><strong>${v1}</strong></td>
+      <td style="color:var(--color-text-muted);">${v2}</td>
+      <td style="color:var(--color-text-muted);">${v3}</td>
+      <td>${badge}</td>
+      <td style="text-align:right;"><button class="action-btn view" onclick="event.stopPropagation();selectBlock('${b.id}')">Detail</button></td>
+    </tr>`;
+  }));
+  document.getElementById('data-tbody').innerHTML = rows;
+}
+
+function switchTab(tabKey, btn) {
+  activeTab = tabKey;
+  selectedBlock = null;
+  document.querySelectorAll('.index-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const tab = TABS[tabKey];
+  document.getElementById('heatmap-title').textContent  = tab.heatmapTitle;
+  document.getElementById('heatmap-subtitle').textContent = 'Klik area untuk melihat detail kondisi di area tersebut';
+  document.getElementById('indicator-desc').innerHTML   = tab.desc;
+  document.getElementById('legend-title').textContent   = tab.legendTitle;
+  document.getElementById('legend-labels').innerHTML    = tab.legendLabels.map(l => `<span>${l}</span>`).join('');
+  document.getElementById('chart-title').textContent    = tab.chartTitle;
+  document.getElementById('chart-sub').textContent      = tab.chartSub;
+  document.getElementById('anomali-title').textContent  = `Area dengan Anomali — ${tab.tabLabel}`;
+  document.getElementById('table-title').textContent    = `Data per Area — ${tab.tabLabel}`;
+  document.getElementById('s-mean').textContent  = tab.stats.mean;
+  document.getElementById('s-min').textContent   = tab.stats.min;
+  document.getElementById('s-max').textContent   = tab.stats.max;
+  document.getElementById('s-alert').textContent = tab.stats.alert;
+  document.getElementById('detail-empty').style.display   = 'flex';
+  document.getElementById('detail-content').style.display = 'none';
+  renderHeatmap();
+  renderAnomalies();
+  renderTable();
+}
+
+// Init
+renderHeatmap();
+renderAnomalies();
+renderTable();
 </script>
-  <script>renderSidebar('manager','manager-indices.html');</script>
+<script>renderSidebar('manager','manager-indices.html');</script>
 </body>
 </html>
-
-
-
-

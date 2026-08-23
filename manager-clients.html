@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agrivision Manager — Kelola Klien</title>
+  <title>Agrivision Manager — Lahan / Proyek</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/design-system.css">
@@ -42,36 +42,35 @@
   <main class="main-content">
     <div class="page-header">
       <div>
-        <h1 class="page-title">Klien (Perusahaan)</h1>
-        <p class="page-subtitle">Daftarkan, ubah profil, dan atur hak akses untuk setiap klien perusahaan.</p>
+        <h1 class="page-title">Lahan / Proyek</h1>
+        <p class="page-subtitle">Kelola daftar lahan dan proyek yang sedang dijalankan.</p>
       </div>
       <button class="btn btn-primary" id="btn-add-client" onclick="openModal()">
-        <span class="material-symbols-outlined" style="font-size:17px;">person_add</span>
-        + Daftarkan Klien Baru
+        <span class="material-symbols-outlined" style="font-size:17px;">add</span>
+        + Tambah Proyek Baru
       </button>
     </div>
 
-    <!-- Quick Stats -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gutter);margin-bottom:var(--space-lg);">
       <div class="stat-card">
-        <div class="stat-label">Total Klien</div>
+        <div class="stat-label">Total Proyek</div>
         <div class="stat-value">12</div>
         <div style="font-size:12px;color:var(--color-bright-emerald);font-weight:600;">+2 bulan ini</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Klien Aktif</div>
+        <div class="stat-label">Proyek Aktif</div>
         <div class="stat-value">9</div>
         <div style="font-size:12px;color:var(--color-text-muted);">75% dari total</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Langganan Aktif</div>
+        <div class="stat-label">Last Update</div>
         <div class="stat-value">9</div>
         <div style="font-size:12px;color:var(--color-text-muted);">Rata-rata 18 bln</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Total Lahan Dikelola</div>
         <div class="stat-value">847 <span class="unit">Ha</span></div>
-        <div style="font-size:12px;color:var(--color-text-muted);">12 klien aktif</div>
+        <div style="font-size:12px;color:var(--color-text-muted);">12 proyek aktif</div>
       </div>
     </div>
 
@@ -79,7 +78,7 @@
     <div style="display:flex;gap:12px;margin-bottom:var(--space-lg);flex-wrap:wrap;">
       <div class="search-input-wrap" style="flex:1;min-width:200px;">
         <span class="material-symbols-outlined">search</span>
-        <input type="text" class="search-input" style="width:100%;" placeholder="Cari nama klien atau organisasi...">
+      <input type="text" class="search-input" style="width:100%;" placeholder="Cari nama proyek atau lahan...">
       </div>
       <select class="form-input form-select" style="width:160px;">
         <option>Semua Status</option>
@@ -112,7 +111,7 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
           <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">25</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
-          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">8</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">3</div><div style="font-size:11px;color:var(--color-text-muted);">Indikator</div></div>
           <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">18<span style="font-size:12px;">bln</span></div><div style="font-size:11px;color:var(--color-text-muted);">Aktif</div></div>
         </div>
         <div style="margin-bottom:12px;">
@@ -152,7 +151,7 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
           <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">340</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
-          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">24</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">5</div><div style="font-size:11px;color:var(--color-text-muted);">Indikator</div></div>
           <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">36<span style="font-size:12px;">bln</span></div><div style="font-size:11px;color:var(--color-text-muted);">Aktif</div></div>
         </div>
         <div style="margin-bottom:12px;">
@@ -160,10 +159,9 @@
           <div>
             <span class="feature-tag">NDVI</span>
             <span class="feature-tag">SOC</span>
-            <span class="feature-tag">Biomassa</span>
-            <span class="feature-tag">Rantai Pasok</span>
             <span class="feature-tag">Carbon Portfolio</span>
             <span class="feature-tag">Laporan &amp; Analitik</span>
+            <span class="feature-tag disabled">Yield Forecast</span>
           </div>
         </div>
         <div style="display:flex;gap:8px;">
@@ -186,7 +184,7 @@
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
           <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">18</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
-          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">3</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">2</div><div style="font-size:11px;color:var(--color-text-muted);">Indikator</div></div>
           <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">—</div><div style="font-size:11px;color:var(--color-text-muted);">Aktif</div></div>
         </div>
         <div style="margin-bottom:12px;">
@@ -215,12 +213,12 @@
               <div style="font-size:12px;color:var(--color-text-muted);">digitalfarm@pupukkujang.co.id</div>
             </div>
           </div>
-          <span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Trial</span>
+          <span class="badge" style="background:rgba(251,191,36,0.15);color:#92400e;">Pilot</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;padding:12px;background:var(--color-surface-container-low);border-radius:8px;">
           <div style="text-align:center;"><div style="font-size:18px;font-weight:700;">120</div><div style="font-size:11px;color:var(--color-text-muted);">Ha</div></div>
-          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">2</div><div style="font-size:11px;color:var(--color-text-muted);">Laporan</div></div>
-          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">1<span style="font-size:12px;">bln</span></div><div style="font-size:11px;color:var(--color-text-muted);">Trial</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">2</div><div style="font-size:11px;color:var(--color-text-muted);">Indikator</div></div>
+          <div style="text-align:center;border-left:1px solid var(--color-border-muted)"><div style="font-size:18px;font-weight:700;">1<span style="font-size:12px;">bln</span></div><div style="font-size:11px;color:var(--color-text-muted);">Pilot</div></div>
         </div>
         <div style="margin-bottom:12px;">
           <div style="font-size:11px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Fitur Aktif</div>
@@ -245,15 +243,15 @@
 <div class="modal-overlay" id="modal-client">
   <div class="modal-box">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
-      <div class="modal-title">Daftarkan Klien Baru</div>
+      <div class="modal-title">Tambah Proyek Baru</div>
       <button class="topnav-icon-btn" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:16px;">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Nama Organisasi / Klien *</label>
-          <input type="text" class="form-input" placeholder="Contoh: Kadatuan Koffie">
+          <label class="form-label">Nama Proyek / Lahan *</label>
+          <input type="text" class="form-input" placeholder="Contoh: Kadatuan Farm">
         </div>
         <div class="form-group">
           <label class="form-label">Email *</label>
@@ -323,7 +321,7 @@
         <button class="btn btn-ghost" onclick="closeModal()">Batal</button>
         <button class="btn btn-primary" id="btn-submit-client">
           <span class="material-symbols-outlined" style="font-size:17px;">person_add</span>
-          Daftarkan Klien
+          Tambah Proyek
         </button>
       </div>
     </div>
