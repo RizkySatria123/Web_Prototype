@@ -1,59 +1,102 @@
 /* =====================================================
    AGRIVISION DESIGN SYSTEM
-   Version: 1.0 | Premium AgriTech SaaS
+   Version: 2.0 | Premium AgriTech SaaS — Expanded Palette
    Roles: Board | Manager | Super Admin
+   Color Direction: Deep Emerald × Teal × Blue-Grey × Slate
    ===================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 /* ─── CSS CUSTOM PROPERTIES ──────────────────────── */
 :root {
-  /* Primary Brand Colors */
-  --color-main-green:     #116a3a;
-  --color-forest-green:   #1f5438;
-  --color-light-grass:    #c8ddad;
-  --color-main-gold:      #fdb134;
-  --color-dark-amber:     #d97706;
+  /* ── Core Brand: Deep Emerald (Deepened from v1) ── */
+  --color-main-green:         #0d5c34;
+  --color-forest-green:       #1a4a35;
+  --color-light-grass:        #b8d4a0;
+  --color-main-gold:          #fdb134;
+  --color-dark-amber:         #c96b06;
 
-  /* Earth Green Family */
-  --color-dark-emerald:   #056046;
-  --color-medium-emerald: #059669;
-  --color-bright-emerald: #10b981;
-  --color-light-mint:     #6ee7b7;
-  --color-pale-mint:      #d1fae5;
-  --color-whisper-green:  #ecfdf5;
+  /* ── Earth Green Family (Deepened & Richer) ── */
+  --color-deep-forest:        #022c1a;   /* NEW: darkest forest for sidebars */
+  --color-dark-emerald:       #065f46;   /* deepened */
+  --color-medium-emerald:     #059669;
+  --color-bright-emerald:     #10b981;
+  --color-light-mint:         #6ee7b7;
+  --color-pale-mint:          #d1fae5;
+  --color-whisper-green:      #ecfdf5;
 
-  /* Harvest Gold Family */
-  --color-dark-gold:      #f59e0b;
-  --color-light-gold:     #fcd34d;
-  --color-light-yellow:   #fde68a;
-  --color-pale-yellow:    #fef3c7;
+  /* ── NEW: Teal Family (Blue-Kehijauan Expansion) ── */
+  --color-teal-deep:          #0f4c4c;   /* deep teal for accents */
+  --color-teal-dark:          #0d6e6e;
+  --color-teal-medium:        #0d9488;   /* primary teal */
+  --color-teal-bright:        #14b8a6;
+  --color-teal-light:         #99f6e4;
+  --color-teal-pale:          #f0fdfa;
+  --color-teal-whisper:       #f0fdfc;
 
-  /* Neutral Tech */
-  --color-indigo:         #1f2937;
-  --color-dark-gray:      #374151;
-  --color-medium-gray:    #6b7280;
-  --color-light-gray:     #9ca3af;
-  --color-border-gray:    #e5e7eb;
-  --color-pure-white:     #ffffff;
+  /* ── NEW: Blue-Grey / Slate Family ── */
+  --color-slate-deepest:      #0f172a;   /* near-black blue */
+  --color-slate-dark:         #1e293b;
+  --color-slate-medium:       #334155;
+  --color-slate-muted:        #475569;   /* slate green-grey */
+  --color-slate-light:        #94a3b8;
+  --color-slate-pale:         #e2e8f0;
+  --color-slate-whisper:      #f8fafc;
 
-  /* Semantic UI Colors (from DESIGN.md) */
-  --color-primary:        #002415;
-  --color-primary-container: #053b26;
-  --color-surface:        #f6faf7;
-  --color-surface-white:  #ffffff;
-  --color-surface-container: #eaefec;
-  --color-surface-container-low: #f0f5f2;
-  --color-surface-container-high: #e4e9e6;
-  --color-border-muted:   #E0EBE4;
-  --color-table-stripe:   #F8FBF9;
-  --color-text-main:      #053B26;
-  --color-text-muted:     #5C7A6D;
-  --color-on-surface:     #171d1b;
-  --color-tertiary-fixed: #9cf973;
-  --color-secondary-container: #feb235;
-  --color-error:          #ba1a1a;
-  --color-error-container:#ffdad6;
+  /* ── NEW: Steel Blue Family ── */
+  --color-steel-dark:         #0c4a6e;
+  --color-steel-medium:       #0369a1;
+  --color-steel-bright:       #0ea5e9;
+  --color-steel-light:        #bae6fd;
+  --color-steel-pale:         #f0f9ff;
+
+  /* ── Harvest Gold Family (Brand - unchanged) ── */
+  --color-dark-gold:          #f59e0b;
+  --color-light-gold:         #fcd34d;
+  --color-light-yellow:       #fde68a;
+  --color-pale-yellow:        #fef3c7;
+
+  /* ── Neutral Tech (upgraded with blue-grey tint) ── */
+  --color-indigo:             #1e293b;
+  --color-dark-gray:          #334155;
+  --color-medium-gray:        #64748b;
+  --color-light-gray:         #94a3b8;
+  --color-border-gray:        #e2e8f0;
+  --color-pure-white:         #ffffff;
+
+  /* ── Semantic UI Colors ── */
+  --color-primary:            #022c1a;   /* deep forest */
+  --color-primary-container:  #065f46;   /* deepened emerald */
+  --color-surface:            #f4f7f5;   /* subtle blue-green tint */
+  --color-surface-white:      #ffffff;
+  --color-surface-container:  #e8eeed;
+  --color-surface-container-low:  #f0f5f3;
+  --color-surface-container-high: #dde6e3;
+  --color-border-muted:       #d4e0da;
+  --color-table-stripe:       #f6faf8;
+  --color-text-main:          #042918;   /* darker, richer */
+  --color-text-muted:         #4a7065;   /* teal-grey muted */
+  --color-on-surface:         #0f1f1b;
+  --color-tertiary-fixed:     #9cf973;   /* brand lime accent */
+  --color-secondary-container:#feb235;
+  --color-error:              #b91c1c;
+  --color-error-container:    #fef2f2;
+
+  /* ── Manager Role Accent (Teal) ── */
+  --manager-accent:           #0d9488;   /* teal primary for manager role */
+  --manager-accent-dark:      #0f766e;
+  --manager-accent-light:     #f0fdfa;
+  --manager-sidebar-bg:       #042918;   /* deep forest sidebar */
+  --manager-sidebar-active:   rgba(13, 148, 136, 0.15);  /* teal active bg */
+  --manager-sidebar-hover:    rgba(255,255,255,0.06);
+
+  /* ── Data Type Colors (Semantic for charts/badges) ── */
+  --data-ndvi:        #059669;    /* emerald green */
+  --data-soc:         #0d9488;    /* teal */
+  --data-carbon:      #0369a1;    /* steel blue */
+  --data-yield:       #d97706;    /* amber gold */
+  --data-water:       #0ea5e9;    /* sky blue */
+  --data-alert:       #dc2626;    /* red */
 
   /* Typography — Poppins sebagai font tunggal */
   --font-display:  'Poppins', sans-serif;
@@ -76,10 +119,12 @@
   --radius-xl:  32px;
   --radius-pill: 9999px;
 
-  /* Shadows */
-  --shadow-soft:    0 10px 30px -10px rgba(5, 59, 38, 0.08);
-  --shadow-card:    0 4px 16px rgba(5, 59, 38, 0.06);
-  --shadow-elevated:0 8px 32px rgba(5, 59, 38, 0.12);
+  /* Shadows — now with teal undertone */
+  --shadow-soft:    0 10px 30px -10px rgba(6, 95, 70, 0.10);
+  --shadow-card:    0 2px 12px rgba(6, 95, 70, 0.07);
+  --shadow-elevated:0 8px 32px rgba(6, 95, 70, 0.14);
+  --shadow-teal:    0 4px 20px rgba(13, 148, 136, 0.18);
+  --shadow-sidebar: 4px 0 24px rgba(2, 44, 26, 0.20);
 
   /* Sidebar */
   --sidebar-width: 280px;
@@ -87,6 +132,7 @@
 
   /* Transition */
   --transition: 200ms ease;
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ─── RESET & BASE ───────────────────────────────── */
@@ -107,7 +153,8 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: var(--color-on-surface);
-  background-color: #f4f5f4;
+  /* Subtle blue-green tint instead of plain grey */
+  background-color: #eef3f1;
   min-height: 100vh;
 }
 
@@ -143,8 +190,10 @@ img { max-width: 100%; display: block; }
   top: 0;
   height: 100vh;
   width: var(--sidebar-width);
-  background: #ffffff;
-  border-right: 1px solid #e8ebe9;
+  /* Premium dark forest sidebar */
+  background: linear-gradient(180deg, #042918 0%, #031e12 60%, #021408 100%);
+  border-right: none;
+  box-shadow: var(--shadow-sidebar);
   display: flex;
   flex-direction: column;
   padding: var(--space-lg) 0 var(--space-md);
@@ -171,7 +220,7 @@ img { max-width: 100%; display: block; }
   font-family: 'Poppins', sans-serif;
   font-size: 20px;
   font-weight: 800;
-  color: var(--color-text-main);
+  color: #ffffff;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
@@ -179,7 +228,7 @@ img { max-width: 100%; display: block; }
 .sidebar-brand-role {
   font-size: 10px;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: rgba(156, 249, 115, 0.7);  /* lime tint for subtitle */
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -192,7 +241,7 @@ img { max-width: 100%; display: block; }
 .sidebar-section-label {
   font-size: 10px;
   font-weight: 700;
-  color: var(--color-text-muted);
+  color: rgba(255,255,255,0.3);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 0 12px;
@@ -207,7 +256,7 @@ img { max-width: 100%; display: block; }
   border-radius: var(--radius-sm);
   font-size: 13.5px;
   font-weight: 500;
-  color: #6b7280;
+  color: rgba(255,255,255,0.55);
   transition: all var(--transition);
   position: relative;
   margin-bottom: 1px;
@@ -216,26 +265,35 @@ img { max-width: 100%; display: block; }
 }
 
 .sidebar-nav-item:hover {
-  background: #f4f5f4;
-  color: var(--color-text-main);
-  border-left-color: #d1d5db;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.90);
+  border-left-color: rgba(13, 148, 136, 0.5);  /* teal accent on hover */
 }
 
 .sidebar-nav-item.active {
-  background: #f0fdf4;
-  color: var(--color-primary-container);
+  background: rgba(13, 148, 136, 0.16);  /* teal active bg */
+  color: #5eead4;  /* teal bright text */
   font-weight: 700;
-  border-left-color: var(--color-primary-container);
+  border-left-color: #0d9488;  /* solid teal border */
 }
 
 .sidebar-nav-item .material-symbols-outlined {
   font-size: 20px;
   flex-shrink: 0;
+  /* Icons inherit color from parent */
+}
+
+.sidebar-nav-item.active .material-symbols-outlined {
+  color: #14b8a6;  /* bright teal icon when active */
+}
+
+.sidebar-nav-item:hover .material-symbols-outlined {
+  color: rgba(255,255,255,0.85);
 }
 
 .sidebar-footer {
   padding: var(--space-md);
-  border-top: 1px solid var(--color-border-muted);
+  border-top: 1px solid rgba(255,255,255,0.08);
   margin-top: auto;
 }
 
@@ -250,7 +308,7 @@ img { max-width: 100%; display: block; }
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--color-primary-container);
+  background: linear-gradient(135deg, #0d9488, #065f46);  /* teal to emerald */
   color: white;
   display: flex;
   align-items: center;
@@ -258,17 +316,18 @@ img { max-width: 100%; display: block; }
   font-weight: 700;
   font-size: 13px;
   flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(13,148,136,0.3);
 }
 
 .sidebar-user-name {
   font-size: 13px;
   font-weight: 700;
-  color: var(--color-text-main);
+  color: rgba(255,255,255,0.90);
 }
 
 .sidebar-user-role {
   font-size: 11px;
-  color: var(--color-text-muted);
+  color: rgba(255,255,255,0.45);
 }
 
 .sidebar-logout {
@@ -276,12 +335,12 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: var(--color-text-muted);
+  color: rgba(255,255,255,0.40);
   transition: color var(--transition);
   padding: 4px 0;
 }
 
-.sidebar-logout:hover { color: var(--color-error); }
+.sidebar-logout:hover { color: #fca5a5; }
 
 /* ─── TOP NAV ────────────────────────────────────── */
 .topnav {
@@ -290,13 +349,17 @@ img { max-width: 100%; display: block; }
   right: 0;
   left: var(--sidebar-width);
   height: var(--topnav-height);
-  background: #ffffff;
-  border-bottom: 1px solid #e8ebe9;
+  /* Slightly tinted white topnav */
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212, 224, 218, 0.8);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
   z-index: 40;
+  box-shadow: 0 1px 8px rgba(6, 95, 70, 0.05);
 }
 
 .topnav-actions {
@@ -413,19 +476,40 @@ img { max-width: 100%; display: block; }
 
 .stat-card {
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 20px;
-  border: 1px solid #e8ebe9;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid rgba(212,224,218,0.8);
+  box-shadow: 0 1px 6px rgba(6,95,70,0.05), 0 0 0 0px rgba(13,148,136,0);
   position: relative;
   overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition-slow);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #065f46, #0d9488, #14b8a6);
+  opacity: 0;
+  transition: opacity var(--transition-slow);
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(5,59,38,0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(6,95,70,0.10), 0 0 0 1px rgba(13,148,136,0.08);
 }
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* Semantic stat card color variants */
+.stat-card--emerald { border-top: 3px solid #059669; }
+.stat-card--teal    { border-top: 3px solid #0d9488; }
+.stat-card--blue    { border-top: 3px solid #0369a1; }
+.stat-card--gold    { border-top: 3px solid #f59e0b; }
+.stat-card--slate   { border-top: 3px solid #64748b; }
 
 .stat-card-header {
   display: flex;
@@ -567,14 +651,21 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 
-.badge-active  { background: rgba(156,249,115,0.2); color: #195200; }
-.badge-active::before  { background: #81dc5a; }
-.badge-trial   { background: rgba(254,178,53,0.3); color: #6d4700; }
+.badge-active  { background: rgba(16, 185, 129, 0.12); color: #065f46; border: 1px solid rgba(16,185,129,0.2); }
+.badge-active::before  { background: #10b981; box-shadow: 0 0 4px rgba(16,185,129,0.6); }
+.badge-trial   { background: rgba(254,178,53,0.2); color: #7c3800; border: 1px solid rgba(254,178,53,0.3); }
 .badge-trial::before   { background: #feb235; }
-.badge-expired { background: var(--color-error-container); color: #93000a; }
-.badge-expired::before { background: var(--color-error); }
-.badge-stable  { background: var(--color-pale-mint); color: var(--color-dark-emerald); }
-.badge-warning { background: var(--color-pale-yellow); color: var(--color-dark-amber); }
+.badge-expired { background: #fef2f2; color: #991b1b; border: 1px solid rgba(185,28,28,0.15); }
+.badge-expired::before { background: #ef4444; }
+.badge-stable  { background: rgba(13,148,136,0.10); color: #0f766e; border: 1px solid rgba(13,148,136,0.2); }  /* teal stable */
+.badge-warning { background: rgba(251,191,36,0.15); color: #92400e; border: 1px solid rgba(251,191,36,0.25); }
+/* NEW badge variants using expanded palette */
+.badge-teal    { background: rgba(13,148,136,0.12); color: #0d9488; border: 1px solid rgba(13,148,136,0.2); }
+.badge-teal::before { background: #14b8a6; }
+.badge-blue    { background: rgba(3,105,161,0.10); color: #0369a1; border: 1px solid rgba(3,105,161,0.2); }
+.badge-blue::before { background: #0ea5e9; }
+.badge-slate   { background: rgba(71,85,105,0.10); color: #475569; border: 1px solid rgba(71,85,105,0.15); }
+.badge-slate::before { background: #64748b; }
 
 /* ─── BUTTONS ────────────────────────────────────── */
 .btn {
@@ -593,27 +684,28 @@ img { max-width: 100%; display: block; }
 }
 
 .btn-primary {
-  background: var(--color-primary-container);
+  background: linear-gradient(135deg, #065f46 0%, #0d9488 100%);  /* emerald to teal gradient */
   color: white;
-  box-shadow: 0 2px 8px rgba(5, 59, 38, 0.2);
+  box-shadow: 0 2px 12px rgba(6, 95, 70, 0.28);
 }
 
 .btn-primary:hover {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, #042918 0%, #0f766e 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(5, 59, 38, 0.25);
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.30);
 }
 
 .btn-secondary {
   background: var(--color-main-gold);
   color: #291800;
-  box-shadow: 0 2px 8px rgba(253, 177, 52, 0.25);
+  box-shadow: 0 2px 8px rgba(253, 177, 52, 0.30);
 }
 
 .btn-secondary:hover {
-  background: #d97706;
+  background: #c96b06;
   color: white;
   transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(201, 107, 6, 0.30);
 }
 
 .btn-ghost {
@@ -624,7 +716,31 @@ img { max-width: 100%; display: block; }
 
 .btn-ghost:hover {
   background: var(--color-surface-container-low);
-  border-color: var(--color-primary-container);
+  border-color: var(--color-teal-medium);
+  color: var(--color-teal-medium);
+}
+
+/* NEW: Teal Button Variant */
+.btn-teal {
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  color: white;
+  box-shadow: var(--shadow-teal);
+}
+.btn-teal:hover {
+  background: linear-gradient(135deg, #0f766e, #0d9488);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(13,148,136,0.35);
+}
+
+/* NEW: Steel Blue Button Variant */
+.btn-steel {
+  background: var(--color-steel-medium);
+  color: white;
+  box-shadow: 0 2px 8px rgba(3,105,161,0.20);
+}
+.btn-steel:hover {
+  background: var(--color-steel-dark);
+  transform: translateY(-1px);
 }
 
 .btn-sm { padding: 6px 16px; font-size: 13px; }

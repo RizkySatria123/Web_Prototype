@@ -152,44 +152,59 @@
   </header>
 
   <!-- ── MAIN CONTENT ── -->
-  <main class="main-content" style="background:#f4f5f4;">
+  <main class="main-content" style="background:#eef3f1;">
 
-    <div class="page-header" style="margin-bottom:28px;">
-      <div>
-        <h1 class="page-title" style="font-size:24px;">Dashboard Manajer</h1>
-        <p class="page-subtitle" style="font-size:13px;margin-top:4px;">Ringkasan operasional dan data perusahaan Anda.</p>
+    <!-- ── Welcome Banner ── -->
+    <div style="background:linear-gradient(135deg,#042918 0%,#0a3d30 50%,#0f4c4c 100%);border-radius:20px;padding:28px 32px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;border:1px solid rgba(13,148,136,0.2);pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,148,136,0.85);margin-bottom:6px;">AGRIVISION MANAGER</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:22px;font-weight:800;color:#ffffff;margin-bottom:4px;">Dashboard Manajer</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.5);">Ringkasan operasional dan data perusahaan Anda.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">
+        <div style="background:rgba(13,148,136,0.15);border:1px solid rgba(13,148,136,0.3);border-radius:12px;padding:10px 18px;font-size:12px;font-weight:700;color:#5eead4;">📅 Sep 2026</div>
+        <button class="btn btn-secondary" style="font-size:13px;padding:10px 20px;" onclick="window.location.href='manager-reports.html'">
+          <span class="material-symbols-outlined" style="font-size:16px;">download</span> Laporan
+        </button>
       </div>
     </div>
 
+    <div class="page-header" style="display:none;"></div>
+
     <!-- ── KPI Row 1: 4 Utama ── -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;">
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap" style="background:#ecfdf5;">
+      <!-- Emerald: Lahan -->
+      <div class="kpi-card stat-card--emerald" style="border-top:3px solid #059669;">
+        <div class="kpi-icon-wrap" style="background:rgba(5,150,105,0.10);">
           <span class="material-symbols-outlined" style="color:#059669;font-size:22px;">landscape</span>
         </div>
         <div class="kpi-label">Total Lahan / Proyek</div>
         <div class="kpi-value">8</div>
         <div class="kpi-sub">4 aktif · 4 monitoring</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap" style="background:#ecfdf5;">
-          <span class="material-symbols-outlined" style="color:#059669;font-size:22px;">straighten</span>
+      <!-- Teal: Luas -->
+      <div class="kpi-card stat-card--teal" style="border-top:3px solid #0d9488;">
+        <div class="kpi-icon-wrap" style="background:rgba(13,148,136,0.10);">
+          <span class="material-symbols-outlined" style="color:#0d9488;font-size:22px;">straighten</span>
         </div>
         <div class="kpi-label">Total Luas Lahan</div>
         <div class="kpi-value">150 <span style="font-size:16px;color:#6b7280;">Ha</span></div>
         <div class="kpi-sub kpi-trend-up">↑ +15 Ha dari tahun lalu</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap" style="background:#fffbeb;">
+      <!-- Gold: Ekonomi -->
+      <div class="kpi-card stat-card--gold" style="border-top:3px solid #f59e0b;">
+        <div class="kpi-icon-wrap" style="background:rgba(245,158,11,0.10);">
           <span class="material-symbols-outlined" style="color:#d97706;font-size:22px;">payments</span>
         </div>
         <div class="kpi-label">Nilai Ekonomi Total</div>
         <div class="kpi-value" style="font-size:22px;">Rp 2.35 M</div>
         <div class="kpi-sub">Produktivitas × Harga/Kg</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap" style="background:#ecfdf5;">
-          <span class="material-symbols-outlined" style="color:#059669;font-size:22px;">group</span>
+      <!-- Slate: Petani -->
+      <div class="kpi-card stat-card--slate" style="border-top:3px solid #64748b;">
+        <div class="kpi-icon-wrap" style="background:rgba(100,116,139,0.10);">
+          <span class="material-symbols-outlined" style="color:#64748b;font-size:22px;">group</span>
         </div>
         <div class="kpi-label">Jumlah Petani</div>
         <div class="kpi-value">45</div>
@@ -199,17 +214,19 @@
 
     <!-- ── KPI Row 2: 3 Sekunder ── -->
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;">
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap" style="background:#ecfdf5;">
+      <!-- Emerald: Karbon -->
+      <div class="kpi-card stat-card--emerald" style="border-top:3px solid #059669;">
+        <div class="kpi-icon-wrap" style="background:rgba(5,150,105,0.10);">
           <span class="material-symbols-outlined" style="color:#059669;font-size:22px;">eco</span>
         </div>
         <div class="kpi-label">Serapan Karbon (SOC + Biomassa)</div>
         <div class="kpi-value">1,250 <span style="font-size:16px;color:#6b7280;">Ton CO₂e</span></div>
         <div class="kpi-sub kpi-trend-up">↑ +4.2 Ton bulan ini</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap" style="background:#f0f9ff;">
-          <span class="material-symbols-outlined" style="color:#0284c7;font-size:22px;">local_florist</span>
+      <!-- Steel Blue: Komoditas -->
+      <div class="kpi-card stat-card--blue" style="border-top:3px solid #0369a1;">
+        <div class="kpi-icon-wrap" style="background:rgba(3,105,161,0.10);">
+          <span class="material-symbols-outlined" style="color:#0369a1;font-size:22px;">local_florist</span>
         </div>
         <div class="kpi-label">Komoditas Dikelola</div>
         <div class="kpi-value" style="font-size:18px;margin-top:4px;">
@@ -219,9 +236,10 @@
           <span class="komoditas-tag">🌲 Kayu Sengon</span>
         </div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-icon-wrap" style="background:#fdf4ff;">
-          <span class="material-symbols-outlined" style="color:#7c3aed;font-size:22px;">bar_chart</span>
+      <!-- Teal: Produksi -->
+      <div class="kpi-card stat-card--teal" style="border-top:3px solid #0d9488;">
+        <div class="kpi-icon-wrap" style="background:rgba(13,148,136,0.10);">
+          <span class="material-symbols-outlined" style="color:#0d9488;font-size:22px;">bar_chart</span>
         </div>
         <div class="kpi-label">Total Produksi (Estimasi)</div>
         <div class="kpi-value">25.5 <span style="font-size:16px;color:#6b7280;">Ton</span></div>
